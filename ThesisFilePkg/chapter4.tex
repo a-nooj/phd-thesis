@@ -1,0 +1,66 @@
+% Based on: two accompanying sampling-based dynamics planning papers
+% (whole-body non-prehensile manipulation under failures; liquid container
+% manipulation with obstacle avoidance).
+
+\chapter{Extending Sampling-Based Dynamics Planning to Constrained Settings}
+\label{ch:constrained}
+
+% TODO: Describe how the Poke-RRT line of thinking generalizes to two
+% richer settings: constrained embodiments and constrained payloads.
+
+\section{Whole-Body Non-Prehensile Manipulation Under Actuation Failures}
+\label{sec:constrained:failures}
+
+\subsection{Long Deployments and Locked-Joint Failures}
+\label{sec:constrained:deployments}
+
+% TODO: Motivate long deployments in harsh environments and the prevalence
+% of locked-joint failures.
+
+\subsection{Effects on Workspace, Manipulability, and Feasibility}
+\label{sec:constrained:effects}
+
+% TODO: Quantify how a locked joint reshapes the reachable workspace,
+% manipulability, and feasible interactions.
+
+\subsection{Whole-Body Non-Prehensile Manipulation as Recovery}
+\label{sec:constrained:wholebody}
+
+% TODO: Present whole-body non-prehensile manipulation as a recovery
+% strategy for the failed embodiment.
+
+\section{Liquid Container Manipulation with Obstacle Avoidance}
+\label{sec:constrained:liquid}
+
+\subsection{Task-Biased Geometric Planning}
+\label{sec:constrained:biased}
+
+% TODO: Geometric planner biased toward task-relevant configurations of
+% the container.
+
+\subsection{Analytical Static Models for Fill Level}
+\label{sec:constrained:analytical}
+
+% TODO: Tie end-effector orientation to fill level via analytical static
+% models.
+
+\subsection{Learned Dynamics Model for Trajectory Verification}
+\label{sec:constrained:learned}
+
+% TODO: Train a learned dynamics model on real-world data; use it to
+% verify candidate trajectories.
+
+\subsection{Where Analytical and Learned Components Meet}
+\label{sec:constrained:hybrid}
+
+% TODO: Discuss the boundary between analytical and learned model
+% components in the planner.
+
+\section{Lessons Learned}
+\label{sec:constrained:lessons}
+
+% TODO: Synthesize the strengths and limits of sampling combined with
+% heuristics and analytical or learned models.
+
+% TODO: Foreshadow the multi-query and learning-based directions taken in
+% Chapters~\ref{ch:multiquery} through~\ref{ch:seeding}.
