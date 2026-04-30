@@ -1,0 +1,123 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+
+% \documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+
+\IEEEoverridecommandlockouts                              % This command is only needed if 
+                                                          % you want to use the \thanks command
+
+\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+%In case you encounter the following error:
+%Error 1010 The PDF file may be corrupt (unable to open PDF file) OR
+%Error 1000 An error occurred while parsing a contents stream. Unable to analyze the PDF file.
+%This is a known problem with pdfLaTeX conversion filter. The file cannot be opened with acrobat reader
+%Please use one of the alternatives below to circumvent this error by uncommenting one or the other
+%\pdfobjcompresslevel=0
+%\pdfminorversion=4
+
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+% The following packages can be found on http:\\www.ctan.org
+% \usepackage{graphics} % for pdf, bitmapped graphics files
+%\usepackage{epsfig} % for postscript graphics files
+% \usepackage{mathptmx} % assumes new font selection scheme installed
+
+\let\proof\relax
+\let\endproof\relax
+
+\usepackage{amsthm}
+\usepackage{times} % assumes new font selection scheme installed
+\usepackage{amsmath} % assumes amsmath package installed
+\usepackage{amssymb}  % assumes amsmath package installed
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage[usenames, dvipsnames, table]{xcolor}
+\usepackage{float}
+\usepackage[style=ieee,sorting=none,backend=biber, maxbibnames=99]{biblatex}
+\addbibresource{bib.bib}
+\usepackage[hidelinks]{hyperref}
+\usepackage[ruled,resetcount,vlined]{algorithm2e}
+\usepackage{commath}
+\usepackage[font=small]{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{diagbox}
+% \usepackage{transparent}
+% \usepackage{xcolor}
+\definecolor{dusty_blue}{HTML}{56B4E9}
+\definecolor{dusty_green}{HTML}{009E73}
+\definecolor{dusty_pink}{HTML}{CC79A7}
+
+\colorlet{mylinkcolor}{BrickRed}
+\colorlet{mycitecolor}{Green}
+\colorlet{myurlcolor}{NavyBlue}
+
+\hypersetup{
+  linkcolor  = mylinkcolor,
+  citecolor  = mycitecolor,
+  urlcolor   = myurlcolor,
+  colorlinks = true,
+}
+
+\newcommand{\ar}[1]{{\color{ForestGreen}AR:#1} }
+\newcommand{\ap}[1]{{\color{purple}AP:#1} }
+\newcommand{\ava}[1]{{\color{blue}ava:#1} }
+\newcommand{\gm}[1]{{\color{red}GM:#1} }
+
+\usepackage[capitalize]{cleveref}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\renewcommand{\Cref}[1]{\cref{#1}}
+\Crefname{definition}{Def.}{Defs.}
+
+\title{\LARGE \bf
+Exploring How Non-Prehensile Manipulation Expands Capability in Robots Experiencing Multi-Joint Failure
+}
+
+
+\author{Gilberto Briscoe-Martinez$^{*}$, Anuj Pasricha, Ava Abderezaei, Santosh Chaganti,\\ Sarath Chandra Vajrala, Sri Kanth Popuri, and Alessandro Roncone% <-this % stops a space
+\thanks{$^{*}$ Corresponding author.}
+\thanks{GBM is supported by NASA Space Technology Graduate Research
+Opportunity Grant 80NSSC22K1211.}% <-this % stops a space
+\thanks{All authors are with the Department of Computer Science, University of Colorado Boulder, 1111 Engineering Drive, Boulder, CO USA.
+{\tt\small firstname.lastname@colorado.edu}}
+}
+
+
+
+\begin{document}
+
+
+
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+This work explores non-prehensile manipulation (NPM) and whole-body interaction as strategies for enabling robotic manipulators to conduct manipulation tasks despite experiencing locked multi-joint (LMJ) failures. LMJs are critical system faults where two or more joints become inoperable; they impose constraints on the robot's configuration and control spaces, consequently limiting the capability and reach of a prehensile-only approach. This approach involves three components: i) modeling the failure-constrained workspace of the robot, ii) generating a kinodynamic map of NPM actions within this workspace, and iii) a manipulation action planner that uses a sim-in-the-loop approach to select the best actions to take from the kinodynamic map. The experimental evaluation shows that our approach can increase the failure-constrained reachable area in LMJ cases by 79\%. Further, it demonstrates the ability to complete real-world manipulation with up to 88.9\% success when the end-effector is unusable and up to 100\% success when it is usable.
+\end{abstract}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \input{intro}
+\input{new_intro}
+% \input{anuj_intro}
+\input{new_related}
+% \input{adaptr_related}
+\input{methods}
+\input{Evaluation}
+\input{conclusion}
+
+\AtNextBibliography{\small}
+\printbibliography
+
+\end{document}

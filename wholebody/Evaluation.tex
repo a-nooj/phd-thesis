@@ -1,0 +1,72 @@
+\section{Experimental Design}\label{sec:eval-design}
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=\columnwidth]{figures/planner_ops_smol.png}
+%     \caption{The Planning Procedure: Step 1: Using the method from \cref{fig:edge_selection}, select edges to try in simulation; Step 2: Try the edges in simulation and save the action that moves the object closest to the goal; Step 3: Execute that edge on the real robot.}\vspace{-15pt}
+%     \label{fig:timeline}
+% \end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{figures/Figure_3_update_02b_comp-1.pdf}
+    
+    \caption{Franka Emika Panda robotic arm with multiple locked joints. The left represents Failure Case 1, with the locked Anterior and Posterior Elbow Rotation and Wrist Rotation joints locked. The right represents Failure Case 2 with locked Wrist Lift and Rotation joints.}
+    \label{fig:panda_crippled}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{figures/action_sequence.pdf}
+    
+    \caption{This figure presents two action sequences demonstrating the NPM interaction using different robot embodiment areas. The top sequence (1a-c) illustrates the interaction using the end effector, while the bottom sequence (2a-c) shows the interaction utilizing the robot’s whole embodiment. These sequences represent a composite scenario derived from scenarios 2 and 3, providing an illustrative view of the robot’s expanded capabilities.}
+    \label{fig:action_example}
+\end{figure}
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{figures/scenarios-compressed_9.pdf}
+    \caption{This figure presents three distinct scenarios tested in the study. Scenario 1 (left) features three movable obstacles (white with fiducial markers) and one target object (yellow). Scenario 2 (center) introduces a tunnel obstacle partitioning the table. Scenario 3 (right) includes 11 movable obstacles and one target object. The green shaded area represents the goal for each Scenario. \vspace{-15pt}}
+    \label{fig:scenarios}
+\end{figure*}
+We test our system in three real-world scenarios with two LMJ cases across three different ablative ASMs. These failure cases, shown in \cref{fig:panda_crippled}, demonstrate two different families of failures that can occur: Case 1 limits the end effector grasping ability to a portion of the reachable area, and Case 2 precludes the use of the end effector in its entirety. Without loss of generality, these two cases represent a subset of the many permutations of faults that can occur due to LMJs. Our results are a quantitative analysis of the planning time, success rate, and reachability improvements resulting from utilizing the robot's whole embodiment combined with NPM actions. Two representative NPM actions are shown in \cref{fig:action_example}.
+% \textit{ADAPT-R} enables the robot to complete tasks in these failure cases where prior approaches would fail \cite{xie2021maximizing, porges2021planning}.
+
+We consider two failure cases in our evaluation: 
+% The Failure Cases are as follows:
+\begin{itemize}
+    \item \textbf{Failure Case 1} (\cref{fig:panda_crippled}, left): The first case involves locking three joints: the Posterior Elbow Rotation, Anterior Elbow Rotation, and Wrist Rotation Joints.
+    % This limits the robot's PM capability by drastically restricting the set of valid grasp configurations, as reflected by robot's reachable task space area and by limiting the end-effector orientations.
+    This limits the graspable area and reduces the range of grasping configurations by coupling the end-effector orientation to the joint configuration.
+    \item \textbf{Failure Case 2} (\cref{fig:panda_crippled}, right): In the second case, two joints are locked: the wrist lift and wrist rotation joints. This failure case precludes the use of the end-effector in completing manipulation tasks. This enables us to test the system using exclusively the non-end-effector parts of the robot's embodiment. 
+\end{itemize}
+The experimental scenarios are presented in \cref{fig:scenarios}. Each scenario involves manipulating the target object (the yellow cube) to the goal location (green area):
+\begin{itemize}
+    \item \textbf{Scenario 1} (\cref{fig:scenarios}, left): This scenario has three movable obstacles and one target object. This scenario is motivated by the need to be able to manipulate in cluttered environments that hinder direct access to the target object. 
+     \item \textbf{Scenario 2} (\cref{fig:scenarios}, center): The second scenario has a tunnel obstacle in the middle, partitioning the two halves of the table. This scenario is motivated by the need to perform dexterous manipulation while maneuvering around environmental obstacles.
+    \item \textbf{Scenario 3} (\cref{fig:scenarios}, right): There are 11 movable obstacles and one target object. This scenario allows us to explore the utility of our planner in the presence of increased object-obstacle interactions.
+\end{itemize}
+
+% We conduct an ablative study across multiple Pick Action Methods:
+% \begin{itemize}
+%     \item \textbf{Greedy}: The Greedy action selection method utilizes our sim-in-the-loop planner to find an edge that moves the target object toward the goal. Of all the edges that intersect the object, it selects the first action that moves the target towards the goal in the simulator.
+%     \item \textbf{Random}: The Random action selection method finds all the edges that intersect the object and picks one randomly.
+%     \item \textbf{Cautious}: The Cautious action selection will sample five percent of the edges that intersect the object and score them based on how close the target object is to the goal after simulating the selected actions. It will command the highest-scored edge for the real robot.
+% \end{itemize}
+
+% because our planner’s primary purpose is to complete tasks under failure.
+To comprehensively understand how NPM abilities expand the robot's task space, we conduct the reachability analysis in \cref{sec:reach_anls}. In \cref{sec:planner_eval}, we show the effectiveness of our system across the three scenarios shown in \cref{fig:scenarios}, for the two failure cases described in \cref{fig:panda_crippled}, using the three Action Selection Mechanisms described in \cref{sec:methods-planning} over a total of 267 trials. This analysis shows the limitations of grasping-only actions and demonstrates the improvements brought about by NPM abilities.
+% to show the limits in the task space of grasping-only actions and the improvements enabled through NPM abilities.
+% Below, we present our findings on the increase in reachability for a given task plane in \cref{sec:reach_anls} and an analysis of our experimental results in testing \textit{ADAPT-R} in \cref{sec:planner_eval}. 
+Through these results, we seek to verify two hypotheses:
+% \begin{itemize}
+%     \item[\textbf{H.1}] Combining NPM abilities with whole-body interaction increases the manipulable area of a robot arm experiencing LMJs.
+%     \item[\textbf{H.2}] Implementing NPM abilities can increase the success of a robot conducting tabletop manipulation tasks.
+% \end{itemize}
+\begin{itemize}
+    \item[\textbf{H.1}] When experiencing LMJs that limit or disallow the use of the end-effector, whole-body NPM abilities increase the manipulable area of a robot manipulator.
+    \item[\textbf{H.2}] When experiencing LMJs that limit or disallow the use of the end-effector, whole-body NPM abilities can increase the success rate of a robot conducting tabletop manipulation tasks.
+\end{itemize}
+
+
+\input{evaluation-reachability}
+
+\input{evaluation-planner-new-new}
+% \input{evaluation-planner-new}
+

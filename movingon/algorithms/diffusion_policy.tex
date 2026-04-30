@@ -1,0 +1,55 @@
+% \begin{algorithm}[t]
+% \caption{Constraint-Aware Diffusion Step}
+% \label{alg:diffusion}
+% \KwIn{Ground-truth trajectory $\mathbf{x}$, timestep $t$, failure embedding $\mathbf{f}$, primitive encoding $\mathbf{p}$}
+% \KwOut{Denoised trajectory $\hat{\mathbf{x}}$}
+% Sample noise $\boldsymbol{\epsilon} \sim \mathcal{N}(0, I)$\;
+% Compute noisy input: $\tilde{\mathbf{x}}_t = \sqrt{\alpha_t} \cdot \mathbf{x} + \sqrt{1 - \alpha_t} \cdot \boldsymbol{\epsilon}$\;
+% \textbf{Inpaint} start and goal: $\tilde{\mathbf{x}}_t[\text{start/goal}] \leftarrow \mathbf{x}[\text{start/goal}]$\;
+% \textbf{Clamp} $\tilde{\mathbf{x}}_t$ to limits specified by $\mathbf{f}$\;
+% Fuse failure and primitive encodings: $\mathbf{c} \leftarrow \text{MLP}_f(\mathbf{f}) \, \| \, \text{MLP}_p(\mathbf{p})$\;
+% Predict denoised trajectory: $\hat{\mathbf{x}} = \text{Unet}(\tilde{\mathbf{x}}_t, t, \mathbf{c})$\;
+% \textbf{Clamp} output $\hat{\mathbf{x}}$ to limits in $\mathbf{f}$\;
+% \textbf{Inpaint} start and goal: $\hat{\mathbf{x}}[\text{start/goal}] \leftarrow \mathbf{x}[\text{start/goal}]$\;
+% \Return{$\hat{\mathbf{x}}$}
+% \end{algorithm}
+% Uses your existing \usepackage{algorithm} and \usepackage{algorithmic}
+% \begin{algorithm}[t]
+% \caption{\textit{DEFT}}
+% \label{alg:diffusion}
+% \begin{algorithmic}[1]
+% \REQUIRE Denoising Steps $K$; Failure embedding $\mathbf{\xi}$; Primitive encoding $\mathbf{\tau}$
+% \ENSURE Denoised trajectory $\hat{\mathbf{x}}$
+% \STATE Sample noisy trajectory $\tilde{\mathbf{x}} \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$
+% % \STATE Compute noisy input: $\tilde{\mathbf{x}}_t \gets \sqrt{\alpha_t}\,\mathbf{x} + \sqrt{1 - \alpha_t}\,\boldsymbol{\epsilon}$
+% \FORALL{$k\in K$}
+%     \STATE Inpaint start and goal: $\tilde{\mathbf{x}}_t[\mathrm{start/goal}] \leftarrow  Q_{s,g} $
+%     \STATE Clamp $\tilde{\mathbf{x}}_t$ to limits specified by $\mathbf{\xi}$
+%     \STATE Fuse encodings: $\zeta \gets \mathrm{MLP}_\xi(\mathbf{\xi}) \,\|\, \mathbf{\tau}$
+%     \STATE Predict denoised trajectory: $\hat{\mathbf{x}} \gets \mathrm{UNet}(\tilde{\mathbf{x}}_t,\, t,\, \zeta)$
+%     \STATE Clamp output $\hat{\mathbf{x}}$ to limits in $\xi$
+%     \STATE Inpaint start and goal: $\hat{\mathbf{x}}[\mathrm{start/goal}] \leftarrow  Q_{s,g} $
+% \ENDFOR
+% \RETURN $\hat{\mathbf{x}}$
+% \end{algorithmic}
+% \end{algorithm}
+
+\begin{algorithm}[t]
+\caption{DEFT}
+\label{alg:diffusion}
+\LinesNumbered % Adds line numbers
+\KwIn{Denoising Steps $K$; Failure embedding $\mathbf{\xi}$; Primitive encoding $\mathbf{\tau}$}
+\KwOut{Denoised trajectory $\hat{\mathbf{x}}$}
+
+Sample noisy trajectory $\tilde{\mathbf{x}} \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$\;
+
+\ForEach{$k \in K$}{
+    Inpaint start and goal: $\tilde{\mathbf{x}}_t[\mathrm{start/goal}] \leftarrow Q_{s,g}$\;
+    Clamp $\tilde{\mathbf{x}}_t$ to limits specified by $\mathbf{\xi}$\;
+    Fuse encodings: $\zeta \gets \mathrm{MLP}_\xi(\mathbf{\xi}) \,\|\, \mathbf{\tau}$\;
+    Predict denoised trajectory: $\hat{\mathbf{x}} \gets \mathrm{UNet}(\tilde{\mathbf{x}}_t,\, t,\, \zeta)$\;
+    Clamp output $\hat{\mathbf{x}}$ to limits in $\xi$\;
+    Inpaint start and goal: $\hat{\mathbf{x}}[\mathrm{start/goal}] \leftarrow Q_{s,g}$\;
+}
+\Return{$\hat{\mathbf{x}}$}
+\end{algorithm}

@@ -1,0 +1,10 @@
+\input{figs/pert_analysis}
+
+\section{Methods}\label{sec:methods}
+
+In this section, we present \textsl{LazyBoE}, our multi-query kinodynamic motion planner. The planner relies on two key contributions: 1) a method for generating a bundle of edges in order to provide a discrete approximation to the robot's state and control spaces (\cref{sec:methods-eb_construction}), and 2) a quantification of lazy propagation and collision probabilities to reduce planning time (\cref{sec:methods-perturbation}). These pieces enable us to design and implement a planner that defers computation in the form of simulation and collision-checking until there is a viable path that minimizes a heuristic value (\cref{sec:methods-planner}).
+
+\input{3a.problem-setup}
+\input{3b.fwd-model}
+\input{3c.pert-analysis}
+\input{3d.planner}

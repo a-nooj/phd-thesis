@@ -1,0 +1,59 @@
+% \begin{wrapfigure}{r}{0.55\textwidth}
+% \vspace{-10pt}
+% \begin{minipage}{0.55\textwidth}
+% \begin{algorithm}[H]\small
+% \caption{\small Trajectory Generation with Failure Conditioning (Constrained \& Unconstrained)}
+% \label{alg:traj_generation}
+% \begin{algorithmic}[1]
+% \REQUIRE Start-goal pairs $Q_{s,g}$, nominal joint limits $\mathbf{Q}, \dot{\mathbf{Q}}$, primitive encoding $\tau$
+% \ENSURE Valid trajectories with associated failure-conditioned limits
+
+% \FORALL{$(\mathbf{q}_{\text{s}}, \mathbf{q}_{\text{g}}) \in Q(s,g)$}
+%     \IF{$\tau = \texttt{constrained}$}
+%         \STATE $\mathbf{p}_{1:T} \gets \textsc{InterpolateEEPath}(\mathbf{q}_{\text{s}}, \mathbf{q}_{\text{g}})$
+%         \STATE $\mathbf{q}_{1:T} \gets \textsc{SolveIKPath}(\mathbf{p}_{1:T})$
+%     \ELSIF{$\tau = \texttt{unconstrained}$}
+%         \STATE $\mathbf{q}_{1:T} \gets \textsc{RRTConnect}(\mathbf{q}_{\text{s}}, \mathbf{q}_{\text{g}})$
+%     \ENDIF
+
+%     \IF{$\textsc{IsValid}(\mathbf{q}_{1:T}, \tau)$}
+%         \STATE $(\mathbf{q}, \dot{\mathbf{q}}) \gets \textsc{MinJerkOptimize}(\mathbf{q}_{1:T})$
+%         \STATE $J_f \gets \textsc{SampleFailureJoints}()$
+%         \STATE $f \gets \textsc{SampleFailureType}()$
+%         \STATE $\xi\gets \textsc{ApplyFailures}(J_f, f, \mathbf{q}, \dot{\mathbf{q}}, \mathbf{Q}, \dot{\mathbf{Q}})$
+%         \STATE $\textsc{StoreTrajectory}(\mathbf{q}, \dot{\mathbf{q}}, \xi, \tau)$
+%     \ENDIF
+% \ENDFOR
+% \end{algorithmic}
+% \end{algorithm}
+\begin{algorithm}
+\small
+\caption{Trajectory Generation with Failure Conditioning (Constrained \& Unconstrained)}
+\label{alg:traj_generation}
+\LinesNumbered
+\KwIn{Start-goal pairs $Q_{s,g}$, nominal joint limits $\mathbf{Q}, \dot{\mathbf{Q}}$, primitive encoding $\tau$}
+\KwOut{Valid trajectories with associated failure-conditioned limits}
+
+\ForEach{$(\mathbf{q}_{\text{s}}, \mathbf{q}_{\text{g}}) \in Q(s,g)$}{
+    \eIf{$\tau = \texttt{constrained}$}{
+        $\mathbf{p}_{1:T} \gets \textsc{InterpolateEEPath}(\mathbf{q}_{\text{s}}, \mathbf{q}_{\text{g}})$\;
+        $\mathbf{q}_{1:T} \gets \textsc{SolveIKPath}(\mathbf{p}_{1:T})$\;
+    }{
+        \If{$\tau = \texttt{unconstrained}$}{
+            $\mathbf{q}_{1:T} \gets \textsc{RRTConnect}(\mathbf{q}_{\text{s}}, \mathbf{q}_{\text{g}})$\;
+        }
+    }
+
+    \If{$\textsc{IsValid}(\mathbf{q}_{1:T}, \tau)$}{
+        $(\mathbf{q}, \dot{\mathbf{q}}) \gets \textsc{MinJerkOptimize}(\mathbf{q}_{1:T})$\;
+        $J_f \gets \textsc{SampleFailureJoints}()$\;
+        $f \gets \textsc{SampleFailureType}()$\;
+        $\xi\gets \textsc{ApplyFailures}(J_f, f, \mathbf{q}, \dot{\mathbf{q}}, \mathbf{Q}, \dot{\mathbf{Q}})$\;
+        $\textsc{StoreTrajectory}(\mathbf{q}, \dot{\mathbf{q}}, \xi, \tau)$\;
+    }
+}
+\end{algorithm}
+
+% \end{minipage}
+% \vspace{-10pt}
+% \end{wrapfigure}

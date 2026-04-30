@@ -1,0 +1,37 @@
+\begin{abstract}
+In this work, we present a novel algorithm to perform spill-free handling of open-top liquid-filled containers that operates in cluttered environments.
+By allowing liquid-filled containers to be tilted at higher angles and enabling motion along all axes of end-effector orientation, our work extends the reachable space and enhances maneuverability around obstacles, broadening the range of feasible scenarios.
+Our key contributions include: i) generating spill-free paths through the use of RRT* with an informed sampler that leverages container properties to avoid spill-inducing states (such as an upside-down container), ii) parameterizing the resulting path to generate spill-free trajectories through the implementation of a time parameterization algorithm, coupled with a transformer-based machine-learning model capable of classifying trajectories as spill-free or not.
+We validate our approach in real-world, obstacle-rich task settings using containers of various shapes and fill levels and demonstrate an extended solution space that is at least 3x larger than an existing approach.
+
+
+% Specifically, we first leverage the container shape to generate a path using RRT* such that the path is spill-free (by not including states in the path that are not spill-free such as an upside-down container). 
+
+
+% In this work, we cast the problem of spill-free liquid transport to the problem of how to move a container such that it doesn't spill the liquid. This removes the necessity to model the liquid inside the container and needs to only rely on the container motions and the container shape to generate a spill-free trajectory. 
+ 
+
+
+% We present a novel approach that enables spill-free transport of open-top liquid-filled containers through cluttered spaces while avoiding obstacles, and performing complex behaviors such as operating inside a fume hood. 
+% Our method enables flexible maneuvering in cluttered environments by leveraging a model that has implicitly learned liquid spillage dynamics and utilizing the learned dynamics for motion planning. Specifically, we trained a transformer-based machine-learning model capable of classifying trajectories that result in spills. We use this model, alongside an RRT* planner to generate a collision-free spill-free trajectory. Specifically, the RRT* planner generates a path by using an informed sampler, that guides the exploration of spill-free states (such as avoiding upside-down container states). The generated path is then time parameterized using a time parameterization algorithm that leverages the model to ensure the generated trajectory is spill-free.
+% We validate our approach through real-world robotics applications in cluttered scenes, using containers of various fill levels, and achieved a 93\%($\frac{28}{30}$) success rate in maintaining spill-free trajectories.
+
+% By integrating this model with an RRT* algorithm an an informed sampler for spill-free space exploration, we can generate spill-free trajectories tailored to the container's geometry. We validated our approach through real-world robotics applications in cluttered scenes and achieved a 93\% success rate in maintaining spill-free trajectories.
+% In this work, we introduce SFRRT*, a data-driven method that overcomes these limitations, by implicitly and empirically, learning the liquid spillage dynamics. 
+% We train a machine-learning model to classify trajectories as spill/no-spill. 
+% This model captures complex fluid dynamics implicitly and enables navigation in cluttered scenarios without kinematic constraints due to its inherent nonlinearity. 
+% To generate spill-free trajectories using this model, we utilize a geometric RRT* algorithm and design an informed sampler based on container geometry to guide the search through the spill-free submanifold. We then use the model to parameterize the path, resulting in a spill-free trajectory.
+% We validate our approach through real-world robotics applications in cluttered scenes, using containers of various fill levels, and achieved a 93\%($\frac{28}{30}$) success rate in maintaining spill-free trajectories.
+\end{abstract}
+% Spill-free fluid manipulation is a fundamental challenge spanning diverse applications, including chemical laboratories and assistive technologies for individuals with different abilities. Robotic liquid transportation presents a particularly complex problem. 
+% This paper discusses the spill-free manipulation of liquid. We introduce SFRRT*, a spill-free sampling-based planner to enable spill-free transport of liquid-filled open-top containers. 
+% By training a machine learning model to implicitly learn the nonlinear liquid spillage dynamics and leveraging an informed sampler formalized based on the container properties to sample spill-free states, this algorithm surpasses existing methods by eliminating kinematic constraints that limit the robot's motion range, enabling navigation through complex obstacle-filled scenarios. Moreover, it eliminates the constant need for external sensors during trajectory execution and can work with containers of various shapes. \ar{this whole line (starting from "by training..") should be reworded. It's not exciting and falls flat}
+% Overall, our contributions include: 
+% \begin{enumerate*}[label=(\roman*)]
+% \item a transformer-based neural network designed for classifying trajectories as either spill-free or not
+% \item an informed sampler formalized based on container properties to sample spill-free states 
+% \item data collected from multiple individuals handling different container scenarios.
+% \end{enumerate*}
+% We validate our approach on a 7Dof Franka Emika Panda robot.
+% \ar{you don't talk about what problem you are working backwards from. This reads liek a report , not an abstract for an exciting work}
+% \end{abstract}

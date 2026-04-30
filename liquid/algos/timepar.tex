@@ -1,0 +1,19 @@
+\begin{algorithm} \footnotesize
+\caption{Spill Free Time Parametization (SFTP)} \label{alg:sftp}
+\begin{algorithmic}[1]
+\STATE {\bfseries Input:} Waypoints $\mathcal{W}$, Max Jerk $J_{max}$, Max Acceleration $A_{max}$, Max Velocity $V_{max}$, Jerk Decrease Factor $rate$, Max Iterations $N$,
+\STATE {\bfseries Output:} Trajectory $\mathcal{T}$
+\STATE $P_{s}, P_{f} \gets W[0]$, $W[length(W)-1]$
+\STATE $V_{s}, V_{f}, A_{s}, A_{f} \gets 0$
+\FOR{$ i = 1 ... N$} \label{sftp:loop}
+    \STATE $\mathcal{T} \gets$ Ruckig($\mathcal{W}, J, V, A, P$)
+    \STATE $\mathcal{T}_{fk} \gets ForwardKinematics(P)$ \label{sftp:fk}
+    \STATE $spillFree \gets$ SpillFreeClassifier($\mathcal{T}_{fk}$) \label{sftp:sfc}
+    \IF{$spillFree$}
+        \RETURN $\mathcal{T}$ \label{sftp:stop}   
+    \ELSE
+    \STATE $J_{max} \gets \frac{J_{max}}{rate}$ \label{sftp:jerk_reduce}
+    \ENDIF
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}

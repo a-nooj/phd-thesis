@@ -1,0 +1,9 @@
+\section{Conclusion}
+
+
+This work demonstrates that manipulators can safely operate well beyond their nominal payload ratings through diffusion-based trajectory generation, challenging the traditional approach of hardware over-provisioning in industrial automation.
+By training on trajectories that span the full range of payload-dependent dynamic constraints and leveraging the successes of ``imperfect'' planners, our model learns to generate motions for complex tasks in constant time that naturally respect system limitations without explicit constraint checking at runtime. This enables safe operation even at super-nominal payloads, maintaining $67.6\%$ of the nominal workspace at $3\times$ rated capacity.\footnote{More details on accessible workspace regions in the supplementary material.}
+
+Potential avenues for future work include studying how to determine the optimal composition of training data from different planners operating in varied environments.
+Moreover, the notion of conditioning on object-level characteristics can be generalized to handle objects with internal dynamics like liquids or articulated parts, moving beyond rigid-body assumptions. 
+Such a framework could significantly reduce robotic system integration complexity and design burden by eliminating separate subsystems for different planning aspects, while maintaining the computational efficiency advantages and higher-order constraint satisfaction demonstrated in this work.

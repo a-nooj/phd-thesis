@@ -1,0 +1,24 @@
+% FindIntersectingEdgesAndSetTheirScore
+
+\begin{algorithm}\footnotesize
+
+\caption{FindIntersectingEdgesAndSet- \\ TheirScore}\label{algo:edges-score-inters}
+
+\KwIn{$\mathcal{E}$, a set of edges, $\mathcal{S}$ the state of the environment}
+\KwOut{$\mathcal{E}_I$, a set of edges that intersect with the object}
+$\mathcal{E}_I \longleftarrow \emptyset$\\
+\For{$edge$ in $\mathcal{E}$} {
+\textsc{SimulateRobotWithEdge($edge$, $\mathcal{S}$)} \\
+\If{\textsc{TargetObjectMoved($\mathcal{S}$)}}{
+$d \longleftarrow$ \textsc{GetObjectDistanceToGoal($\mathcal{S}$)}\\
+$edge\cdot score \longleftarrow \frac{1}{d}$ \\
+$\mathcal{E}_I \longleftarrow \mathcal{E}_I \cup edge $
+}
+
+\textsc{ResetSimEnvironment()}
+}
+
+\Return{$\mathcal{E}_I$}
+\end{algorithm}
+
+% $E_n \longleftarrow$

@@ -1,0 +1,40 @@
+\begin{algorithm}\footnotesize
+
+\caption{Generate Kinodynamic Manifold.}\label{algo:generate-kinodynamic-manifold}
+
+\KwIn{$\mathcal{C}^c$, Constrained Configuration Space; $\mathcal{U}^c$, Constrained Control Space; $n$, number of samples; $\mathcal{W}^c$, failure-constrained workspace; $\Delta t$, the control timestep of the robot}
+% ; $m_{min}$, the minimum acceptable manipulability measure
+\KwOut{$\mathcal{E}$, a set of edges}
+
+$\mathcal{E} \longleftarrow \emptyset$
+
+\For{$i = 1 \ldots n$} {
+    $\mathbf{e} \longleftarrow \emptyset$ \tcp{edge}
+    $\xi_{EE} \longleftarrow$ \textsc{SamplePoint}($\mathcal{W}^c$) \tcp{XYZ Only}
+    $\mathbf{q} \longleftarrow$ \textsc{PositionalInverseKinematics}($\xi_{EE}, \mathcal{C}^c$) \tcp{Orientation Unconstrained}
+    $t \longleftarrow$ \textsc{SampleDuration}()\\
+    $\mathbf{\dot{q}} \longleftarrow$ \textsc{SampleControlInput}($\mathcal{U}^c$) \\
+    $valid \longleftarrow True$ \\
+    \tcp{simulate}
+    \While{\textsc{TimeRemaining}($t$)} {
+        % $\dot{\mathbf{\dot{q}}} = \mathbf{0}$ \\ \tcp{const vel}
+        $\ddot{\mathbf{q}} \longleftarrow J(\mathbf{q})^\dagger \times (\dot{\mathbf{\dot{q}}} - \dot{J}(\mathbf{q}))\mathbf{\dot{q}})$\\
+        $\mathbf{\tau} \longleftarrow M(\mathbf{q})\ddot{\mathbf{q}} + C(\mathbf{q}, \mathbf{\dot{q}})\mathbf{\dot{q}} + g(\mathbf{q}) + f(\mathbf{\dot{q}})$\\
+        $m \longleftarrow \sqrt{\det{J(\mathbf{q})J(\mathbf{q})^T}}$ \\
+        \If{\textsc{LimitsViolated($\mathbf{q}$, $\ddot{\mathbf{q}}$, $\mathbf{\tau}$)} \textbf{or} \textsc{InCollision}($\mathbf{q}$)} 
+        % \textbf{or} $m < m_{min}$
+        { 
+            $valid \longleftarrow False$\\
+            \textbf{break}
+        }
+        $\mathbf{q}_{k+1} \longleftarrow \mathbf{q}_{k} + \mathbf{\dot{q}} \Delta t$ \\
+        $\mathbf{e} \longleftarrow \mathbf{e} \cup \{\mathbf{q}_k, \mathbf{\dot{q}}\}$
+    }
+    \If{valid} {
+            $\mathcal{E} \longleftarrow \mathcal{E} \cup \mathbf{e}$
+    }
+
+}
+\Return{$\mathcal{E}$}
+
+\end{algorithm}

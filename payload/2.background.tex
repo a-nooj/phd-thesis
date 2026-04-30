@@ -1,0 +1,21 @@
+\vspace{-0.3in}
+\section{Related Work}
+\vspace{-0.14in}
+Manufacturer-specified operational parameters for general deployment of robots are typically far more conservative than hardware-level physical limits and often lack transparency in their derivation.
+This has led to significant under-utilization of robotic capabilities, as evidenced by geometric motion planning and time parameterization approaches dominating most industrial use \cite{berscheid2021jerk,coleman2014reducing,orthey2023sampling} and recent advances in foundation models for manipulation in unstructured environments being restricted to exclusively geometric reasoning tasks \cite{o2024open,team2024octo,zitkovich2023rt}.
+A nuanced, configuration-dependent understanding of the robot’s specifications that considers both robot and environment dynamics could enable a broader spectrum of manipulation capabilities within hardware limits.
+
+Higher-order constraints such as joint torques and end-effector accelerations can be addressed through several approaches that range from ``plan-and-filter'' methods which post-process geometric paths \cite{abderezaei2024clutter,kuntz2019fast} to kinodynamic planners that directly incorporate dynamics during planning \cite{li2015sparse,nayak2022bidirectional,pasricha2024virtues}.
+While these approaches offer completeness guarantees, they face practical limitations in high-dimensional manipulation spaces and often exhibit high variance in planning times especially when faced with state or model uncertainty.
+These challenges are particularly acute when planning near operational limits, where the feasible solution space becomes increasingly constrained \cite{kingston2018sampling}.
+Optimization-based methods naturally accommodate dynamics constraints but rely heavily on good initialization, leading to hybrid approaches that bootstrap the optimization process with learning or sampling-based solutions \cite{ichnowski2020deep,kuntz2019fast,yan2024impact}.
+Optimal control formulations for dynamics-aware manipulation also exist \cite{arrizabalaga2024slosh,kim2014catching}. Despite their theoretical rigor, they face practical limitations in handling complex constraints and achieving reliable convergence for real-world manipulation problems.
+
+Importantly, there exist a large body of works that demonstrate how a robot's behavioral repertoire can be significantly expanded when incorporating dynamic constraints---e.g. nonprehensile manipulation \cite{dogar2011framework,pasricha2022pokerrt,ruggiero2018nonprehensile,yu2016more,zeng2020tossingbot} or fast inertial transport \cite{arrizabalaga2024slosh,ichnowski2022gomp,muchacho2022solution,avigal2022gomp}.
+These capabilities and considerations are particularly relevant for the specific problem of payload manipulation, where the interaction between payload and induced joint torques significantly influence task success.
+Interestingly, payload manipulation presents unique challenges that intersect robot design and control.
+Traditionally, prior work has focused on mechanical modeling for specific low-DoF systems \cite{wang2001payload}, with emphasis on payload capacity optimization \cite{korayem2008maximum} and joint torque considerations \cite{nho2003intelligent}. Other work in this domain tackles super-nominal payload handling through the use of multi-arm systems \cite{kim2021enhancing,yan2016coordinated}.
+However, the field lacks generalizable approaches for high-DoF systems that can reason about dynamic payload-robot interactions across diverse tasks.
+
+Learning-based approaches offer promising directions for both generalizability and efficient trajectory generation in high-dimensional constrained spaces while respecting system dynamics. Autoregressive models implicitly encode dynamics through dataset design \cite{fishman2023motion,qureshi2020motion}, while recent diffusion-based approaches provide non-autoregressive alternatives with improved sampling diversity \cite{carvalho2023motion,saha2024edmp}. Task-level diffusion policies, conditioned on language and visual embeddings \cite{ajay2023is,chi2023diffusionpolicy}, demonstrate potential for generating diverse behaviors from high-level task specifications.
+Our method conditions a denoising diffusion model on the target payload to generate dynamically feasible trajectories.

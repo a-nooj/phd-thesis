@@ -1,0 +1,28 @@
+\subsection{Construction of the Failure-Centric Kinodynamic Map}\label{sec:methods-modeling}
+
+% \begin{itemize}
+%     \item Introduce the notion of robot joint space manifold, $\mathcal{C}_q$
+%     \item corresponding control space manifold $\mathcal{C}_u$
+%     \item when a failure occurs, these manifolds are constrained, becoming $\mathcal{C}_q_c $ and$ \mathcal{C}_u_c$, respectively
+%     \item $\mathcal{C}_q_c$ is constrained so much that finding valid plans via uniform random sampling and connecting them in $\mathcal{C}_u_c$ is unfeasible
+%     \item so we use edge bundles to approximate $\mathcal{C}_q_c$ by forward propagating the robot's dynamics equation for a valid sampled control input in $\mathcal{C}_u_c$
+%     \item each of these rollouts $r_q$ is saved in $\mathcal{E}$
+% \end{itemize}
+
+We can represent the set of all possible joint states and valid control inputs as the manifolds $\mathcal{C}$ and $\mathcal{U}$, respectively. We note the end-effector workspace of the robot as $\mathcal{W}$. When an LMJ occurs, these manifolds become degenerate, failure-constrained spaces. We note these constrained manifolds as $\mathcal{C}_c$, $\mathcal{U}_c$, and $\mathcal{W}_c$, respectively. 
+
+The mapping between these spaces, $\mathcal{C} \mapsto \mathcal{C}_c$ and $\mathcal{U} \mapsto \mathcal{U}_c$, is nonlinear and dependent on the failure configuration of the robot. They also lose $n$ dimensions for $n$ locked joints. This degeneration means the failure-constrained manifolds have a significantly smaller volume than the unconstrained manifolds. As a result, the probability of finding a valid connecting plan between two uniformly, randomly sampled points in $\mathcal{C}_c$, with control inputs sampled from $\mathcal{U}_c$, approaches zero. \cite{kingston2018sampling}.
+
+% Assuming a valid diagnosis of failure modes and the corresponding joint values for the locked joints, we follow a joint angle discretization approach on the remaining movable joints to map the robot's kinematically reachable space. 
+Theoretically, an analytical solution to the inverse kinematics exists for any given point in $\mathcal{W}_c$. However, the multiple possible permutations of failures across the joints mean deriving the relevant equations or sampling valid configurations is untenable. As a result, we approximate $\mathcal{C}_c$ through a discretization-based approach.
+
+We utilize the notion of edge bundles from \cite{shome2021asymptotically}. These edge bundles, $\mathcal{E}$, are a collection of Monte Carlo rollouts, or edges, $\mathbf{e}$ of the robot dynamical model with random control inputs, $\mathbf{\Dot{q}} \in \mathcal{U}_c$.
+The nature of these edges, i.e., simulating a random control input from a random state for a random duration, ensures probabilistic completeness of the planning algorithm in \cref{sec:methods-planning} \cite{kleinbort2018probabilistic}. 
+% (Note that claims on completeness may be inconclusive with respect to our planner since it uses the best-first input approach \cite{kleinbort2018probabilistic}.)
+Following the procedure outlined in \cref{algo:generate-kinodynamic-manifold}, we use this Monte Carlo generation of edge bundles to produce a \textsl{failure-centric kinodynamic map} (\cref{fig:methods}, Center Column).
+In practice, the set of all edges, $\mathcal{E}$, provides a discrete approximation to $\mathcal{C}_c$.
+
+\input{algos/generate-kinodynamic-manifold.tex}
+
+A kinodynamic map is computed once offline for a given failure. Since NPM interactions are inherently stochastic, we explicitly only model the robot's dynamics in our edge bundle. These attributes allow reuse across many planning problems, making our motion planner multi-query. 
+

@@ -1,0 +1,41 @@
+\section{Methods}\label{sec:methods}
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{figures/Algorithm_Schematic-1-comp.pdf}
+    \caption{An overview of the approach to expand manipulation capability in a robot experiencing LMJs. We generate a reachability map that captures the manipulation capability via \cref{algo:reachability} and smooth it with interpolation. We use this reachability map to determine the failure-centric kinodynamic map, via \cref{algo:generate-kinodynamic-manifold}, by sampling points in the reachable space and then saving dynamics rollouts (yellow arrows) as edges. To use this kinodynamic map, we developed an edge planner that can vary its use of sim-in-the-loop to determine which action the robot will take via the Random, Lazy, and Greedy Action Selection Mechanisms in \cref{algo:planner}. }
+    \label{fig:methods}
+\end{figure*}
+
+To enable robotic arms to maintain operational utility in the face of locked multi-joint failures, our method diverges from traditional paradigms by employing non-prehensile manipulation, particularly poking actions, to extend the operational capabilities of robots after failure (\cref{sec:methods-npm}). By redefining motion primitives within the robot's new kinematic constraints, we explore an expanded operational space through a strategy that includes the pre-computation of reachable states (\cref{sec:methods-reachability}, \cref{fig:methods}, Left Column) and the formulation of kinodynamic edge bundles for feasible action planning (\cref{sec:methods-modeling}, \cref{fig:methods}, Center Column). We developed multiple approaches to selecting actions to understand the benefits of including a simulation in the planning and execution loop (\cref{sec:methods-planning}, \cref{fig:methods}, Right Column).
+
+
+
+\subsection{Expanding Robot Capabilities through Non-Prehensile Manipulation}\label{sec:methods-npm}
+
+%The prehensile perspective on robotic manipulation constrains existing approaches in enabling continuous robot operation in the presence of LMJs
+
+Existing manipulation approaches cannot complete tasks in the presence of LMJs as they are restricted to exclusively prehensile actions. They regard grasping as a dependable method for engaging with the surroundings and consider the end-effector as the exclusive point of interaction between the robot and its environment.
+Our approach challenges these notions by utilizing whole-body NPM to enhance the probability of task completion. 
+
+We leverage the poking primitive in our work as a representative NPM ability to enable manipulation in the presence of LMJs since it significantly expands the set of reachable configurations and the number of degrees of freedom of the robot's operational space. Prior work has defined poking as a fundamental nonprehensile motion primitive
+that is composed of two sequential phases: i) impact: a robot
+end-effector applies an instantaneous force to an object at
+rest, setting it in planar translational and rotational motion;
+and, ii) free-sliding: the object slows down and comes to
+a halt due to Coulomb friction between the object and its
+support surface.  This primitive is not limited by robot
+reach and leads to faster manipulation of objects in dense clutter, in the presence of occlusion, and in ungraspable configurations. \cite{pasricha2022pokerrt}
+
+The challenge of identifying a viable sequence of NPM actions, such as poking, for a robot is exemplified by the high computational demands seen in algorithms like \textit{PokeRRT} \cite{pasricha2022pokerrt}. This process requires the simulation of numerous action sequences, many of which may prove infeasible for a specific robot failure mode. Therefore, this uniformly random exploration of the manifold of valid states and control parameters is inherently inefficient.
+The complexity is further compounded when dealing with robots experiencing locked joint failures. In such scenarios, the search must look beyond only the space of control parameters for our chosen motion primitives and require these actions to be feasible within the altered kinematic landscape imposed by the failure. This intersection often leads to a zero-measure manifold, which is difficult to sample when following a uniformly random strategy.
+To mitigate this issue, we propose a pre-computation approach, which maps the reach and capability post-LMJ and then finds a set of dynamic actions the robot can achieve, considering the limitations imposed by LMJs. This precomputed map of kinodynamically feasible actions serves as a guide, significantly reducing the computational overhead by providing a reference for what is achievable given the current failure mode.
+
+\input{algos/reachability}
+
+\input{methods-reachability}
+
+
+\input{methods-modeling}
+
+
+\input{methods-planning}

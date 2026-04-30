@@ -1,0 +1,12 @@
+\subsection{Quantitative Analysis}
+
+Our \textsl{LazyBoE} planner outperformed baseline kinodynamic methods in multiple key metrics. %approach over baseline kinodynamic planners.
+% LazyBoE achieved higher success rates than RRT, SST, and standard BoE, succeeding in 92\% of trials versus 88\%, 80-88\%, and 84\% respectively. This shows the benefits of broader exploration from lazy techniques (\cref{fig:eval-success}).
+% \textsl{LazyBoE} found initial solutions significantly faster,
+First, it achieved an average solution time of $1.06$s, substantially faster than the other methods that were in the range $[2.18$s$, 21.94$s$]$ (\cref{fig:eval-time}). 
+This is due to deferred propagation and collision checking, which enable a more focused search.
+Of note, despite this significant performance improvement, \textsl{LazyBoE}'s final solution cost was competitive in quality ($3.42$ cost) to the best performing alternatives, BoE ($3.43$ cost) and SST (\cref{fig:eval-cost}). In essence, our method provides efficiency without sacrificing optimality.
+
+The planner also found an average of $3.12$ solutions, over $1.5$x more than the other methods (\cref{fig:eval-num_solutions}). 
+This increased solution diversity arises from stochastic edge selection and reuse compared to greedy approaches. Lazily reusing edges rather than discarding them expands the search frontier faster. More paths are available to evaluate and iterate on, thereby directly translating to higher success rates. With more valid candidate paths approximated and available to the search, the likelihood of discovering a collision-free solution path increases substantially. The results validate this, with \textsl{LazyBoE} succeeding $92$\% of the time compared to $[80-88]$\% for other methods (\cref{fig:eval-success}).
+In summary, \textsl{LazyBoE}'s use of lazy propagation and collisions to minimize wasted computations allows efficient searches that find high quality solutions quickly, while maintaining a broad exploration. This quantitative analysis validates lazy techniques can improve performance in kinodynamic planning.

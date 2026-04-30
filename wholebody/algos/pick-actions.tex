@@ -1,0 +1,38 @@
+\begin{algorithm}\footnotesize
+
+\caption{Pick Actions.}\label{algo:pick-actions}
+
+\KwIn{$n$, number of samples; $e$, edges; $o$, movable objects;\\$b_{RA}$, random action bias; $b_{IA}$, indirect action bias}
+\KwOut{$\mathcal{A}$, chosen actions}
+
+$\mathcal{I}, \mathcal{O} \longleftarrow$ \textsc{FindIntersectingEdges}($e$, $o$)\\
+
+$objects \longleftarrow \emptyset$\\
+$ee \longleftarrow \emptyset$\\
+$\mathcal{I}_{target}, \mathcal{O}_{target} \longleftarrow$ \textsc{FindTarget}($e$, $o$)\\
+\If{$rand() > b_{IA}$} {
+    $ee \longleftarrow ee \cup I_{target}$
+}
+\Else {
+    $ee \longleftarrow ee \cup (I \cap I_{target})$
+}
+
+$\mathcal{A} \longleftarrow \emptyset$ \\
+$n_{rand} = b_{RA} * n$
+
+\For{i = 1 \ldots n} {
+    \For{j = 1 \ldots $n_{rand}$} {
+        $\mathcal{A} \longleftarrow \mathcal{A} \; \cup$ \textsc{PickRandom}($e$)\\
+    }
+    $sorted\_e \longleftarrow$ \textsc{PriorityQueue}($e$)\\
+    \For{j = 1 \ldots $n - n\_rand$} {
+        $a \longleftarrow$ \textsc{POP}($sorted\_e$)\\
+        \If{$a \notin \mathcal{A}$}{
+            $\mathcal{A} \longleftarrow \mathcal{A} \cup a$
+        }
+    }
+}
+
+\Return{$\mathcal{A}$}
+
+\end{algorithm}

@@ -1,0 +1,14 @@
+\section{Background and Related Work}\label{sec:background}
+
+Kinodynamic planning involves navigating the complex interplay between the robot's \textsl{state space}---comprising position, velocity, and higher-order derivatives---and its \textsl{control space}, defined by the set of feasible actions for a given task.
+The existing literature mainly bifurcates this analysis into two approaches: \textsl{sequential} and \textsl{interleaved}. 
+Sequential methods, such as TrajOpt \cite{schulman2013finding}, CHOMP \cite{ratliff2009chomp}, STOMP \cite{kalakrishnan2011stomp}, KOMO \cite{toussaint2014newton}, and ITOMP \cite{park2012itomp}, 
+construct a geometric path in the robot's state space first and then assign valid controls to each waypoint. %Exemplified by the likes of
+While these methods are advantageous for their minimal design complexity and capability to handle non-linear constraints, they have a number of limitations.
+They are highly susceptible to the quality of the initial seed trajectories, often confining trajectories to a narrow set homotopic classes \cite{schulman2013finding,ichnowski2020deep}.
+Moreover, they generally lack theoretical guarantees regarding the completeness or optimality of solutions \cite{kuntz2019fast}.
+Within this line of work, there exist hybrid methods that attempt to reconcile these limitations by incorporating sampling-based planning, which in turn brings about theoretical properties such as probabilistic completeness and asymptotic optimality \cite{kuntz2019fast} and permits the discovery of multiple solution classes \cite{kamat2022bitkomo}.
+Time parameterization techniques can also be applied in place of optimization to assign timesteps to each waypoint in the geometric path \cite{pham2014general,Berscheid-RSS-21,macfarlane}.
+
+\input{2c.interleaved-steering}
+\input{2d.interleaved-fwd-prop}

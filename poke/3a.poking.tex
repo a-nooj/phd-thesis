@@ -1,0 +1,8 @@
+\subsection{Formalization of the Poking Motion Primitive}\label{sec:poking}
+
+Poking manipulation is modeled as a process composed of two phases: i) \textsl{impact}, where the robot end-effector makes instantaneous contact with the object; and ii) \textsl{free-sliding}, where the object slides on a planar surface and comes to a stop due to Coulomb friction.
+As detailed in \cref{fig:blockdiag}c, two parameters are required to describe the first phase of poking: the point of contact $p_c$ (i.e., where on the contour of the object to strike), and the magnitude of the impact velocity $\|\vec{v}_{EE}\|$.
+Slippage at the contact point between the end-effector and the object may lead to non-linearities; therefore, we fix the direction of $\vec{v}_{EE}$ as being normal to the object's contour.
+Importantly, in order to apply an instantaneous force, the robot must come to a complete halt upon contact with the object. Therefore, collision between the end-effector and the object is treated as an elastic collision. The motor torques applied to stop the end-effector upon contact prevent the impulsive interaction from being truly elastic; however, this can be safely ignored by stopping the end-effector slightly past the contact point.
+
+Given a uniform-density object of mass $m$ with a coefficient of friction $\mu$ whose center of mass starts in an initial planar pose $q_i = (x_i, y_i, \theta_i)$  and the control parameters (see \cref{fig:blockdiag}c) that determine the contour of the object to strike ($p_c$) and the velocity magnitude ($\|\vec{v}_{EE}\|$), we can solve the second phase of poking and determine the final pose of the object $q_f = (x_f, y_f, \theta_f)$ using a physics simulation engine.

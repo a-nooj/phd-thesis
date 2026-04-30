@@ -1,0 +1,59 @@
+\begin{algorithm}\footnotesize
+\caption{Edge Planner.}\label{algo:planner}
+\KwIn{$E$, The Environment State; $\mathcal{E}$, a set of edges; $m$, Action Selection Method Mode}
+\KwOut{$\mathcal{A}$, an action for the robot to execute}
+
+$\mathcal{T} \longleftarrow \emptyset$
+% \textsc{TimeRemaining}() \textbf{or} 
+
+\While{\textbf{not} \textsc{GoalReached($E$)}} {
+    % node = \textsc{PickNode}()\\
+    % \textsc{ResetEnvToState}(node)\\
+    $\mathcal{E}_I \longleftarrow$
+    \textsc{EdgesIntersectingObject}($\mathcal{E}$, $E$)\\
+    \color{dusty_pink}
+    \If{m=``Random"}{
+        $e \longleftarrow \textsc{RandomUniformSelect}(\mathcal{E}_I)$\\
+        $\mathcal{A} \longleftarrow e$ \\
+        \Return{$\mathcal{A}$}
+    }
+    \color{dusty_green}
+    \If{m=``Lazy"}{
+        $E_{sim} \longleftarrow E $ \tcp{set sim env}
+        \For{$\mathbf{e}$ in \textsc{SampleWithoutReplacement}($\mathcal{E}_I$)} {
+            \textsc{SimulateRobotWithEdge($\mathbf{e}, E_{sim}$)} \\
+            \If{\textsc{TargetMovedTowardsGoal}($E_{sim}$)}{
+            $\mathcal{A} \longleftarrow \mathbf{e}$\\
+            \textbf{break}
+            }
+        $E_{sim} \longleftarrow E$ \tcp{reset sim env}
+        }
+        \Return{$\mathcal{A}$}
+    }
+    \color{dusty_blue}
+    \If{m=``Greedy"}{
+        $\mathcal{A} \longleftarrow \emptyset$\\
+    
+        $\mathcal{E}_T \longleftarrow \emptyset$ \tcp{Edges Scored}
+        $scores \longleftarrow \emptyset$ \\
+        $\mathcal{E}_s \longleftarrow \textsc{UniformlySampleSubset}(\mathcal{E}_I)$ \\
+        $E_{sim} \longleftarrow E $ \tcp{set sim env}
+        \For{$\mathbf{e}$ in \textsc{SampleWithoutReplacement}($\mathcal{E}_s$)} {
+            \textsc{SimulateRobotWithEdge($\mathbf{e}, E_{sim}$)} \\
+            \If{\textsc{TargetMovedTowardsGoal}($E_{sim}$)}{
+            $scores \longleftarrow scores \cup \textsc{ScoreExecution}(E_{sim}$)}
+        $\mathcal{E}_T \longleftarrow \mathcal{E}_T \cup \mathbf{e} $ 
+        
+        
+        $E_{sim} \longleftarrow E$ \tcp{reset sim env}
+        }
+         
+        $\mathcal{A}\longleftarrow \textsc{SelectBestEdge}(\mathcal{E}_T, scores, m)$\\
+        % $ \longleftarrow e_{best}$ \\
+        % }
+        \Return{$\mathcal{A}$}
+    }
+    % }
+}
+
+\end{algorithm}

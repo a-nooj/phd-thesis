@@ -1,0 +1,18 @@
+\begin{algorithm}\footnotesize
+
+\caption{Lazy Action Selection}\label{algo:lazy-asm}
+\color{dusty_green}
+\KwIn{$\mathcal{E}$, a set of edges; $E$ environment state}
+\KwOut{$\mathcal{A}$, Chosen Action}
+$E_{sim} \longleftarrow E $ \tcp{set sim env}\\ 
+\For{$\mathbf{e}$ in \textsc{SampleWithoutReplacement}($\mathcal{E}_s$)} {
+    \textsc{SimulateRobotWithEdge($\mathbf{e}, E_{sim}$)} \\
+    \If{\textsc{TargetMovedTowardsGoal}($E_{sim}$)}{
+    $\mathcal{A} \longleftarrow \mathbf{e}$\\
+    \textbf{break}
+    }
+$E_{sim} \longleftarrow E$ \tcp{reset sim env}
+}
+\Return{$\mathcal{A}$}
+
+\end{algorithm}

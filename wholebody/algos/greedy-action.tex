@@ -1,0 +1,30 @@
+\begin{algorithm}\footnotesize
+
+\caption{Greedy Action Selection}\label{algo:greedy-asm}
+\color{dusty_blue}
+\KwIn{$\mathcal{E}$, a set of edges; $E$ environment state}
+%$\mathcal{C}^c$, Failure-Constrained Configuration Space;
+\KwOut{$\mathcal{A}$, Chosen Action}
+$\mathcal{A} \longleftarrow \emptyset$\\
+% \While{\textbf{not} \textsc{ObjectInGoalRegion}($E$)}{
+
+$\mathcal{E}_T \longleftarrow \emptyset$ \tcp{Edges Scored}\\
+$scores \longleftarrow \emptyset$ \\
+$\mathcal{E}_s \longleftarrow \textsc{UniformlySampleSubset}(\mathcal{E})$ \\
+$E_{sim} \longleftarrow E $ \tcp{set sim env}\\ 
+\For{$\mathbf{e}$ in \textsc{SampleWithoutReplacement}($\mathcal{E}_s$)} {
+    \textsc{SimulateRobotWithEdge($\mathbf{e}, E_{sim}$)} \\
+    \If{\textsc{TargetMovedTowardsGoal}($E_{sim}$)}{
+    $scores \longleftarrow scores \cup \textsc{ScoreExecution}(E_{sim}$)}\\
+$\mathcal{E}_T \longleftarrow \mathcal{E}_T \cup \mathbf{e} $ \\
+
+
+$E_{sim} \longleftarrow E$ \tcp{reset sim env}
+}
+ 
+$\mathcal{A}\longleftarrow \textsc{SelectBestEdge}(\mathcal{E}_T, scores, m)$\\
+% $ \longleftarrow e_{best}$ \\
+% }
+\Return{$\mathcal{A}$}
+
+\end{algorithm}

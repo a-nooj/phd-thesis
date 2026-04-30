@@ -1,0 +1,20 @@
+\section{Diffusion Models for Trajectory Generation}\label{sec:diffusion}
+
+Diffusion models are a class of generative models that prdouce high-quality and diverse samples across multiple data modalities \cite{ho2020denoising}. 
+These models operate through a two-phase process: first, gradually corrupting training data with Gaussian noise in a forward process, then learning to reverse this corruption through an iterative denoising process.
+In the context of robot motion planning, we use diffusion to generate collision-free and dynamically feasible trajectories.
+
+A joint space trajectory with $t$ waypoints at denoising step $k$ is defined as
+$\bm{\pi}^k = [ X_0^k, X_1^k, \dots, X_{t-1}^k ]^T$
+where $X_i = (q_i, \dot{q}_i, \ddot{q}_i) \in \mathbb{R}^{3n}$ represents the complete state (joint angles, velocities, and accelerations) of an $n$-DoF robot arm at timestep $i$.
+The training process for the diffusion model approximates the conditional distribution $p(\bm{\pi}\ |\ \mathcal{P})$, where $\mathcal{P}$ is the target payload representation (\Cref{sec:model}).
+It does so by sampling $\bm{\pi}$ from dataset $\mathcal{D}$, adding noise according to a noise schedule parameterized by $\alpha$, $\gamma$, and $\sigma$, and learning to predict the underlying sample. The noise prediction network $\epsilon_\theta$, where $\theta$ represents the parameters of the 1D U-Net architecture, is trained to minimize
+    $\mathcal{L}(\theta) = MSE(\epsilon^k, \epsilon_\theta(\mathcal{P}, \bm{\pi}^0 + \epsilon^k, k))$.
+
+Given a trained $\epsilon_\theta$, the $K$-step iterative denoising process
+    $\bm{\pi}^{k-1} = \alpha \cdot (\bm{\pi}^k - \gamma\epsilon_\theta(\mathcal{P}, \bm{\pi}^k, k) + \mathcal{N}(0, \sigma^2I))$
+starts from $\bm{\pi}^K \sim \mathcal{N}(0, I)$ and generates a trajectory $\bm{\pi}^0$ that can support a target payload and obeys start, goal, joint limit, and collision constraints.
+In practice, start and goal states are enforced via inpainting \cite{carvalho2023motion}, i.e., $\bm{\pi}_0^k = X_{start}$ and $\bm{\pi}_{t-1}^k = X_{goal}$ where $\dot{q}_{start} = \dot{q}_{goal} = \ddot{q}_{start} = \ddot{q}_{goal} = \bm{0}$.
+Collisions are avoided via inference-time gradient guidance $\bm{\pi}^{k-1} = \bm{\pi}^k - \beta\ \cdot \nabla J(\bm{\pi}; E)$ where $\beta$ is a tunable guidance weight, $J$ defines the collision cost function, and $E$ represents the set of all obstacles in the environment \cite{saha2024edmp}.
+Additionally, joint limits are enforced via clamping during the training and inference processes.
+Specific to our work, $p(\bm{\pi}\ |\ \mathcal{P})$ implicitly models dynamically feasible payload-induced torques through an object property-based global conditioning mechanism that influences the entire trajectory by appending target payload representation $m$ to the diffusion timestep embedding in the noise prediction network architecture \cite{chi2023diffusionpolicy}.

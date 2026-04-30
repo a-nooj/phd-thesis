@@ -1,0 +1,13 @@
+\begin{algorithm}\footnotesize
+
+\caption{Random Action Selection}\label{algo:random-asm}
+\color{dusty_pink}
+\KwIn{$\mathcal{E}$, a set of edges; $E$ environment state}
+%$\mathcal{C}^c$, Failure-Constrained Configuration Space;
+\KwOut{$\mathcal{A}$, Chosen Action}
+
+$e \longleftarrow \textsc{RandomUniformSelect}(\mathcal{E})$\\
+$\mathcal{A} \longleftarrow e$ \\
+\Return{$\mathcal{A}$}
+
+\end{algorithm}

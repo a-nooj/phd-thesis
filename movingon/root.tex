@@ -1,0 +1,130 @@
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+
+\IEEEoverridecommandlockouts                              % This command is only needed if 
+                                                          % you want to use the \thanks command
+
+\overrideIEEEmargins     
+\let\proof\relax
+\let\endproof\relax
+\let\labelindent\relax
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage[ruled,resetcount,vlined]{algorithm2e}
+\usepackage{commath}
+\usepackage[font=small]{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{diagbox}
+\usepackage{amsthm}
+\usepackage{times} % assumes new font selection scheme installed
+\usepackage{amsmath} % assumes amsmath package installed
+% \usepackage{algorithm}
+% \usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage[dvipsnames, table]{xcolor}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{svg}
+\usepackage{color, soul}
+\usepackage[capitalize]{cleveref}
+\usepackage[style=ieee, sorting=none,backend=biber, maxbibnames=2, minbibnames=1]{biblatex}
+\addbibresource{bib.bib}
+\usepackage{tikz,subcaption}
+\usetikzlibrary{arrows.meta}
+\usepackage{enumitem}
+\usepackage{lipsum}
+
+
+\newcommand{\ar}[1]{{\color{ForestGreen}AR:#1} }
+\newcommand{\ap}[1]{{\color{purple}AP:#1} }
+\newcommand{\gm}[1]{{\color{red}GM:#1} }
+\newcommand{\rs}[1]{{\color{blue}RS:#1} }
+
+
+\title{Moving On, Even When You're Broken: Fail-Active Trajectory Generation via Diffusion Policies Conditioned on Embodiment and Task \vspace{-10pt}}
+
+% The \author macro works with any number of authors. There are two
+% commands used to separate the names and addresses of multiple
+% authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to
+% break the lines. Using \AND forces a line break at that point. So,
+% if LaTeX puts 3 of 4 authors names on the first line, and the last
+% on the second line, try using \AND instead of \And before the third
+% author name.
+
+% NOTE: authors will be visible only in the camera-ready and preprint versions (i.e., when using the option 'final' or 'preprint'). 
+% 	For the initial submission the authors will be anonymized.
+
+% \author{ \textbf{Authors Anonymous}}
+
+% \author{
+% \textbf{Gilberto G.~Briscoe-Martinez}$^{*, 1}$, 
+% \textbf{Yaashia Gautam} $^{2}$,
+% \textbf{Rahul Shetty}$^{1}$,% 
+% \textbf{Anuj Pasricha}$^{1}$, \\
+% \textbf{Marco M. Nicotra}$^{2}$,
+% \textbf{Alessandro Roncone}$^{1}$\\[0.5em]
+% \thanks{$^{*}$ Corresponding author.}
+% \thanks{GBM is supported by NASA Space Technology Graduate Research
+% Opportunity Grant 80NSSC22K1211.}% <-this % stops a space
+% \thanks{$^{1}$ Department of Computer Science, $^{2}$, Department of Electrical and Computer Engineering, University of Colorado Boulder, 1111 Engineering Drive, Boulder, CO USA.
+% {\tt\small firstname.lastname@colorado.edu}}
+% }
+
+\author{Gilberto G.~Briscoe-Martinez$^{*, 1}$, Yaashia Gautam$^{2}$, Rahul Shetty$^{1}$, Anuj Pasricha$^{1}$, \\ Marco M. Nicotra$^{2}$, and Alessandro Roncone$^{1}$\vspace{-10pt}%
+\thanks{$^{*}$ Corresponding author. GBM is supported by NASA Space Technology Graduate Research Opportunity Grant 80NSSC22K1211.}%
+\thanks{$^{1}$ Dept. of Computer Science, University of Colorado Boulder, CO, USA.}%
+\thanks{$^{2}$ Dept. of Electrical, Computer, and Energy Engineering, University of Colorado Boulder, CO, USA.}%
+\thanks{Emails: {\tt\small \{firstname.lastname\}@colorado.edu}}%
+}
+
+
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+
+%===============================================================================
+\begin{abstract}
+% \gm{todo}
+% \lipsum[1][1-40]
+Robot failure is detrimental and disruptive, often requiring human intervention to recover. Our vision is \textsl{fail-active} operation, allowing robots to safely complete their tasks even when damaged. Focusing on \textsl{actuation failures}, we introduce DEFT, a diffusion-based trajectory generator conditioned on the robot’s current embodiment and task constraints. DEFT generalizes across failure types, supports constrained and unconstrained motions, and enables task completion under arbitrary failure. We evaluate DEFT in both simulation and real-world scenarios using a 7-DoF robotic arm. DEFT outperforms its baselines over thousands of failure conditions, achieving a 99.5\% success rate for unconstrained motions versus RRT's 42.4\%, and 46.4\% for constrained motions versus differential IK's 30.9\%. Furthermore, DEFT demonstrates robust zero-shot generalization by maintaining performance on failure conditions unseen during training. Finally, we perform real-world evaluations on two multi-step tasks, drawer manipulation and whiteboard erasing. These experiments demonstrate DEFT succeeding on tasks where classical methods fail. Our results show that DEFT achieves fail-active manipulation across arbitrary failure configurations and real-world deployments.
+
+\end{abstract}
+
+% Two or three meaningful keywords should be added here
+% \keywords{Failure Recovery, Diffusion Models, Multimodal Motion Planning, Fault tolerance} 
+
+%===============================================================================
+
+
+\input{sections/intro}
+\input{sections/related_works}
+\input{sections/methods}
+\input{sections/experiments}
+\input{sections/conclusion}% 
+
+\AtNextBibliography{\small}
+\printbibliography
+%===============================================================================
+
+\clearpage
+% The acknowledgments are automatically included only in the final and preprint versions of the paper.
+% \acknowledgments{If a paper is accepted, the final camera-ready version will (and probably should) include acknowledgments. All acknowledgments go at the end of the paper, including thanks to reviewers who gave useful comments, to colleagues who contributed to the ideas, and to funding agencies and corporate sponsors that provided financial support.}
+
+%===============================================================================
+
+% no \bibliographystyle is required, since the corl style is automatically used.
+
+
+
+% \input{sections/limitations}
+% \input{sections/appendix}
+
+\end{document}

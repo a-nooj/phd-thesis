@@ -1,0 +1,38 @@
+\begin{algorithm}\footnotesize
+
+\caption{Kartographer}\label{algo:kino-map}
+
+\KwIn{$\mathcal{R}$, the state of the robot; $discr$, discretizationSize}
+\KwOut{$\mathcal{E}$, a set of edges approximating $\mathcal{F}$}
+
+$\mathcal{E} \longleftarrow \emptyset$ \\
+$q_{limits} \longleftarrow$  \textsc{getJointAnglesLimits}$(\mathcal{R})$  \\
+$qs \longleftarrow$ \textsc{DiscretizeJointSpace($q_{limits}, discr$)} \\
+\For{$q$ in $qs$}{
+$ee_{pos} \longleftarrow$ \textsc{ForwardKinematics}$(q)$ \\
+\If{\textsc{IsInWorkspaceLimits($ee_{pos}$)}}{
+$e \longleftarrow Edge()$ \\
+$e\cdot q_{init} \longleftarrow q$ \\
+$stepSize \longleftarrow$ \textsc{SampleStepSize()} \\
+$e\cdot q_{final} \longleftarrow q_{init}.Interpolate(stepSize)$ \\
+$e\cdot qdot \longleftarrow$ \textsc{SamplePrimitiveVelocity()} \\
+$\mathcal{E} \longleftarrow \mathcal{E} \cup e$
+}
+}
+
+
+\Return{$\mathcal{E}$}
+
+\end{algorithm}
+
+% To generate
+% the failure case edges for the robot, we first identify the
+% new reachable volume of the robot in joint space, as shown
+% in Figure 2. For the remaining useable joints, we identify
+% principal motion joints that impart the most significant in-
+% teraction point motion and make a dense grid of joint con-
+% figurations between the lowest and highest ranges relevant
+% to the environment. We apply dynamic motions to these
+% principal motion joints, which provide the most movement
+% and force in a specific direction and save their trajectories
+% as edges.

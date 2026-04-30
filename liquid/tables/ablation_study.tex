@@ -1,0 +1,16 @@
+\begin{table}[H]
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c | c | c| c|} 
+ \hline
+ Task & \textbf{SFRRT*} & SFRRT*$_{u}$ & SFRRT*$_{r}$ \\\hline
+  1 & \textbf{$5 / 5$} & $0 / 5$ & $1 / 5$ \\\hline 
+  2 & \textbf{$5 / 5$} & $1 / 5$ & $1 / 5$ \\\hline
+\end{tabular}
+
+\caption{\label{table:ablation} \textbf{Success Rate Comparison:} 
+SFRRT*$_{u}$ uses a uniform sampler, while SFRRT*$_{r}$ skips the SFC spillage checks and uses random sampling for jerk constraints in time parameterization. Overall, SFRRT* outperforms all variants.
+% SFRRT*$_{u}$ utilizes a uniform sampler, while SFRRT*$_{r}$ excludes the SFC model for spillage checks, instead opting for random sampling of jerk constraints for time parameterization. As depicted, SFRRT* outperforms all variations significantly.
+}
+\end{center}
+\end{table}

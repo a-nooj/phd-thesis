@@ -1,0 +1,12 @@
+\section{Evaluation}\label{sec:evaluation}\vspace{-2pt}
+
+% \input{table-scenarios}
+
+In this section, we qualitatively and quantitatively evaluate \textsl{PokeRRT} and \textsl{PokeRRT*} in simulation and the real-world under various environment setups.\footnote{Links to our code, videos, and demonstrations of the experiments are available here: \href{https://hiro-group.ronc.one/poke-rrt-icra-22.html}{https://hiro-group.ronc.one/poke-rrt-icra-22.html}.} We measure success rates, task times (in seconds), and number of executed actions in the final planned path for both motion planners. Success rates are averaged across all scenarios for a given planner, whereas task times and number of executed actions are presented separately for each scenario. Task time is defined as the sum of planning, execution, and replanning times. Object start pose is kept fixed across various trials to aid reproducibility of results. Simulation and real-world results are averaged over 250 and 10 trials, respectively.
+%
+Collectively, our results demonstrate that \textsl{PokeRRT} and \textsl{PokeRRT*} indeed enable fast and successful manipulation of objects in conditions where push planning and pick-and-place fail.
+
+\input{4a.setup}
+\input{4b.planner}
+
+\input{table-real}

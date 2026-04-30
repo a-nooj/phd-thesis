@@ -1,0 +1,104 @@
+\pdfoutput=1 
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+
+\IEEEoverridecommandlockouts                              % This command is only needed if 
+                                                          % you want to use the \thanks command
+\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+% \usepackage{bm}
+        \usepackage{commath}
+\usepackage{textcomp}
+\let\labelindent\relax
+\usepackage{enumitem}
+\usepackage[ruled,linesnumbered,resetcount,vlined]{algorithm2e}
+\usepackage{graphicx} % for pdf, bitmapped graphics files
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\usepackage[style=ieee,sorting=none,backend=biber,giveninits=true]{biblatex}
+\addbibresource{icra2024.bib}
+
+\usepackage[bookmarks=true]{hyperref}
+\usepackage[capitalize]{cleveref}
+\usepackage{float}
+\usepackage{multirow}
+% \usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage[usenames, dvipsnames, table]{xcolor}
+
+% \colorlet{mylinkcolor}{black}
+% \colorlet{mycitecolor}{black}
+% \colorlet{myurlcolor}{black}
+
+\colorlet{mylinkcolor}{BrickRed}
+\colorlet{mycitecolor}{Green}
+\colorlet{myurlcolor}{NavyBlue}
+
+\hypersetup{
+  linkcolor  = mylinkcolor,
+  citecolor  = mycitecolor,
+  urlcolor   = myurlcolor,
+  colorlinks = true,
+}
+
+%\let\comment=\relax
+%\usepackage[markup=bfit, deletedmarkup=sout, authormarkup=superscript]{changes}
+%\definechangesauthor[name={td}, color=      red] {TODO}
+%\definechangesauthor[name={ar}, color=PineGreen] {AR}
+%\definechangesauthor[name={ap}, color=Purple] {AP}
+%\definechangesauthor[name={jk}, color=RubineRed] {JK}
+%\newcommand{\td}[1]{\added[id=TODO]{#1}}
+%\newcommand{\gm}[1]{\added[id=  GM]{#1}}
+%\newcommand{\ar}[1]{\added[id=  AR]{#1}}
+%\newcommand{\ap}[1]{\added[id=  AP]{#1}}
+%\newcommand{\jk}[1]{\added[id=  JK]{#1}}
+%
+
+\newcommand{\centered}[1]{\begin{tabular}{c} #1 \end{tabular}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\usepackage{subcaption}
+\captionsetup{font=small}
+
+\begin{document}
+
+\title{\LARGE \bf
+The Virtues of Laziness: Multi-Query\\ Kinodynamic Motion Planning with Lazy Methods
+}
+
+
+
+\author{Anuj Pasricha$^*$ and Alessandro Roncone%
+\thanks{$*$ Corresponding author.}%
+\thanks{The authors are with the Department of Computer Science, University of Colorado Boulder, 1111 Engineering Drive, Boulder, CO USA. This work was supported by the Office of Naval Research under Grant N00014-22-1-2482. Alessandro Roncone is with Lab0, Inc. {\tt\small firstname.lastname@colorado.edu}}%
+}
+
+
+
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+
+
+\begin{abstract}
+In this work, we introduce \textsl{LazyBoE}, a multi-query method for kinodynamic motion planning with forward propagation. This algorithm allows for the simultaneous exploration of a robot's state and control spaces, thereby enabling a wider suite of dynamic tasks in real-world applications. Our contributions are three-fold: i) a method for discretizing the state and control spaces to amortize planning times across multiple queries; ii) lazy approaches to collision checking and propagation of control sequences that decrease the cost of physics-based simulation; and iii) \textsl{LazyBoE}, a robust kinodynamic planner that leverages these two contributions to produce dynamically-feasible trajectories. The proposed framework not only reduces planning time but also increases success rate in comparison to previous approaches.
+\end{abstract}
+
+\input{1.introduction}
+\input{2.background}
+\input{3.methods}
+\input{4.evaluation}
+\input{5.conclusion}
+
+% \bibliographystyle{IEEEtran}
+% \bibliography{icra2024}
+
+\AtNextBibliography{\footnotesize}
+\printbibliography
+
+\end{document}

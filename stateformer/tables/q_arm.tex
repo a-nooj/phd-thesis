@@ -1,0 +1,286 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\
+\begin{table*}[]
+\centering
+\vspace{6pt}
+\caption{Results for the robot arm position ($q$) and velocity ($\dot{q}$) estimates. Prediction is in rads/$dt$ where $dt$ is 0.1 seconds. $\Bar{q}$ and $\Bar{\dot{q}}$ represent average join position error and average joint velocity error respectively}
+\scalebox{0.86}{
+\begin{tabular}{cc|c|c|c|c|c|c|c|c||c|c|c|c|c|c|c|c|}
+\cline{3-18}
+ &
+   &
+  $q_0$ &
+  $q_1$ &
+  $q_2$ &
+  $q_3$ &
+  $q_4$ &
+  $q_5$ &
+  $q_6$ &
+  $\Bar{q}$ &
+  $\dot{q}_0$ &
+  $\dot{q}_1$ &
+  $\dot{q}_2$ &
+  $\dot{q}_3$ &
+  $\dot{q}_4$ &
+  $\dot{q}_5$ &
+  $\dot{q}_6$ &
+  $\Bar{\dot{q}}$\\ \hline
+\multicolumn{1}{|c|}{\multirow{4}{*}{P50}} & STF \cite{grigsby2021longrange} & 0.045 & 0.038 & 0.029 & 0.055 & 0.024 & \textbf{0.014} & 0.0059 & \textbf{0.0301} &\textbf{0.072} & \textbf{0.086} & \textbf{0.077} & \textbf{0.095} & \textbf{0.096} & \textbf{0.054} & 0.036& \textbf{0.0737} \\
+\multicolumn{1}{|c|}{} &
+  GAM \cite{gaz2019dynamic} &
+  \textbf{0.011} &
+  0.0832 &
+  \textbf{0.024} &
+  0.101 &
+  \textbf{0.013} &
+  0.053 &
+  \textbf{0.0020} &
+  0.0410 &
+  0.195 &
+  1.625 &
+  0.444 &
+  1.891 &
+  0.145 &
+  0.822 &
+  \textbf{0.0211} &
+  0.734\\
+\multicolumn{1}{|c|}{} &
+  LSTM--3 &
+  0.069  &
+\textbf{0.030}  &
+0.137  &
+0.080  &
+0.107  &
+0.029  &
+0.187  &
+0.0912&
+0.179  &
+0.144  &
+0.181  &
+0.212  &
+0.309  &
+0.184  &
+0.109 &
+0.188\\
+\multicolumn{1}{|c|}{} &
+  LSTM--64 &
+0.144  &
+0.092  &
+0.128  &
+\textbf{0.046}  &
+0.163  &
+0.124  &
+0.360  &
+0.151 &
+0.137  &
+0.128  &
+0.096  &
+0.147  &
+0.174  &
+0.098  &
+0.107 &
+0.126\\
+\multicolumn{1}{|c|}{} &
+  FF \cite{goldfain2019autorally} &
+  1.831 &
+  1.007 &
+  3.139 &
+  0.697 &
+  1.226 &
+  0.696 &
+  0.9009 &
+  1.3567&
+  0.336 &
+  0.407 &
+  0.273 &
+  0.580 &
+  0.292 &
+  0.0959 &
+  0.056 &
+  0.291\\ \hline
+\multicolumn{1}{|c|}{\multirow{4}{*}{P90}} &
+  STF \cite{grigsby2021longrange} &
+  0.163 &
+  \textbf{0.095} &
+  \textbf{0.081} &
+  0.132 &
+  0.135 &
+  0.091 &
+  0.041 &
+  0.105&
+  \textbf{0.195} &
+  \textbf{0.206} &
+  \textbf{0.199} &
+  \textbf{0.237} &
+  \textbf{0.372} &
+  \textbf{0.230} &
+  \textbf{0.168} &
+  \textbf{0.229}\\
+\multicolumn{1}{|c|}{} &
+  GAM \cite{gaz2019dynamic} &
+  \textbf{0.042} &
+  0.135 &
+  0.082 &
+  0.174 &
+  \textbf{0.075} &
+  0.163 &
+  \textbf{0.031} &
+  \textbf{0.100}&
+  0.755 &
+  2.641 &
+  1.686 &
+  3.287 &
+  0.920 &
+  3.029 &
+  0.317 &
+  1.805\\
+\multicolumn{1}{|c|}{} &
+  LSTM--3 &
+  0.160 &
+0.100  &
+0.284  &
+0.166  &
+0.268  &
+\textbf{0.081}  &
+0.319  &
+0.196 &
+0.561  &
+0.402  &
+0.430  &
+0.637  &
+0.738  &
+0.440  &
+0.427 &
+0.439\\
+\multicolumn{1}{|c|}{} &
+  LSTM--64 &
+0.417  &
+0.207  &
+0.261  &
+\textbf{0.121}  &
+0.507  &
+0.206  &
+0.476  &
+0.313 &
+0.418  &
+0.404  &
+0.297  &
+0.404  &
+0.556  &
+0.289  &
+0.349 &
+0.388\\
+\multicolumn{1}{|c|}{} &
+  FF \cite{goldfain2019autorally} &
+  3.080 &
+  2.130 &
+  4.113 &
+  1.245 &
+  1.787 &
+  1.220 &
+  1.360 &
+  2.133&
+  1.035 &
+  0.906 &
+  0.884 &
+  1.364 &
+  1.461 &
+  0.707 &
+  0.537 &
+  0.984\\ \hline
+\multicolumn{1}{|c|}{\multirow{4}{*}{Max}} &
+  STF \cite{grigsby2021longrange} &
+  0.315 &
+  \textbf{0.153} &
+  \textbf{0.151} &
+  0.273 &
+  0.319 &
+  \textbf{0.206} &
+  0.190 &
+  0.229&
+  \textbf{0.517} &
+  \textbf{0.411} &
+  \textbf{0.546} &
+  \textbf{0.511} &
+  \textbf{0.949} &
+  \textbf{0.626} &
+  \textbf{0.902}&
+  \textbf{0.637}\\
+\multicolumn{1}{|c|}{} &
+  GAM \cite{gaz2019dynamic} &
+  \textbf{0.159} &
+  0.172 &
+  0.214 &
+  0.235 &
+  \textbf{0.223} &
+  0.375 &
+  \textbf{0.173} &
+ \textbf{0.22}1&
+  3.640 &
+  3.248 &
+  4.616 &
+  4.344 &
+  2.863 &
+  1.699 &
+  1.699 &
+  3.158\\
+\multicolumn{1}{|c|}{} &
+  LSTM--3 &
+  0.327  &
+0.267  &
+0.487  &
+0.255  &
+0.347  &
+0.182  &
+0.423  &
+0.326&
+1.415  &
+1.070  &
+1.191  &
+1.031  &
+2.057  &
+1.801  &
+1.625  &
+1.455 \\
+\multicolumn{1}{|c|}{} &
+  LSTM--64 &
+0.725  &
+0.311  &
+0.442  &
+\textbf{0.204}  &
+0.661  &
+0.301  &
+0.618  &
+0.466&
+1.006  &
+0.812  &
+1.202  &
+0.969  &
+1.775  &
+1.592  &
+1.344  &
+1.242\\
+\multicolumn{1}{|c|}{} &
+  FF \cite{goldfain2019autorally} &
+  4.537 &
+  2.468 &
+  4.291 &
+  2.068 &
+  2.871 &
+  1.442 &
+  1.629 &
+  2.758&
+  1.895 &
+  1.664 &
+  1.533 &
+  2.557 &
+  3.345 &
+  2.072 &
+  1.642 &
+  2.101\\ \hline
+\end{tabular}}
+
+\label{table:arm_results}
+\end{table*}
+

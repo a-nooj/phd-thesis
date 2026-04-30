@@ -1,0 +1,26 @@
+\section{Experimental Results}\label{sec:eval}
+
+\subsection{Reachability and Manipulation Capability Analysis}\label{sec:reach_anls}
+Relying solely on the end effector renders the robot ineffectual in failure cases that severely or entirely limit its use.
+NPM abilities and the capability to interact with the environment using the whole embodiment allow for increased robot manipulable area. To study this, we analyzed the robot's manipulable area and capabilities over the task space of the evaluation scenarios.
+The manipulable area is found through the method presented in \cref{sec:methods-reachability}.
+
+\begin{table}[]
+\centering
+\begin{tabular}{@{}cccc@{}}
+\toprule
+\textit{\textbf{Failure Case}} & \textit{\textbf{Ability}} & \textit{\textbf{Area (m$^2$)}} & \textit{\textbf{Change in Reachable Area}}\\ \midrule
+\textit{No Failure} & \textbf{NPM+PM} & \textbf{0.92} & Datum \\ %\midrule \textit{No Failure}
+ & PM     & 0.85 & -$8\%$ \\ \midrule
+\textit{1}       & \textbf{NPM+PM} & \textbf{0.85} & \textbf{-8\%} \\ %\midrule % 0.8521 \textit{1} 
+      & PM     & 0.62 & -$33\%$ \\ \midrule
+\textit{2}       & \textbf{NPM+PM} & \textbf{0.73} & \textbf{-21\%}  \\ %\midrule \textit{2}  
+     & PM     & 0 & -$100\%$      \\ \bottomrule
+\end{tabular}
+\caption{Reachability Data \vspace{-15pt}}
+\label{tab:reachability}
+\end{table}
+
+The nominal full-dexterity manipulable area is 0.85 $m^2$; the use of NPM increases this area to 108\% of nominal (\cref{tab:reachability}, rows 1 and 2). The manipulable area in the first failure case is severely limited by the inability to control the end-effector's orientation and task space movements in the z-axis when the end-effector is closer to the robot's base. When using NPM actions, the robot maintains 92\% of the reachable area compared to 67\% when using PM actions only (\cref{tab:reachability}, rows 3 \& 4). Since Failure Case 2 precludes the use of the end-effector, the PM-only reachable area is eliminated. However, using NPM actions, the reachable area is only reduced by 21\% (\cref{tab:reachability}, rows 5 \& 6).
+
+The results show that \textbf{in failure modes that disallow or limit the use of the end effector, utilizing the whole body of the robot with NPM actions significantly expands the area of the robot's reachable space, supporting H.1.}

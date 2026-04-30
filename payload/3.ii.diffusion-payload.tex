@@ -1,0 +1,31 @@
+\section{Payload-Conditioned Trajectory Denoising}
+
+In this section, we present our payload-conditioned diffusion model to generate pick-and-place trajectories that transport super-nominal payloads while obeying kinematic and dynamic constraints.
+
+\subsection{Training Data}
+
+Our payload-conditioned diffusion model (\Cref{sec:model}) is trained on $25,000$ time-parameterized, collision-free joint space trajectories (state dimension = DoF$\times3$, corresponding to joint angles, velocities, and accelerations) for tabletop pick-and-place motions. These trajectories are generated using a plan-and-filter pipeline that uses cuRobo, a GPU-accelerated trajectory optimization framework \cite{sundaralingam2023curobo}, followed by a dynamics validation step (\Cref{fig:data-generation}).
+\input{figs/data-generation}
+First, trajectories are generated for the 7DoF Franka Emika Panda robot arm with an effective payload mass of $0$kg.
+Second, to ensure that payload-induced joint torques remain within hardware limits, each trajectory is verified through an analytically-derived dynamics model parameterized on real-world data \cite{gaz2019dynamic}.
+This model captures both the standard dynamic elements (inertia, Coriolis, and gravity) and velocity-dependent joint friction.
+By using a dynamics model fitted to real robot trajectory data, we ensure that our training dataset reflects the physical constraints observed in hardware.
+
+This dynamics verification step utilizes a complete robot model where $q$, $\dot{q}$, $\ddot{q}$, and $\tau$ are $7\times1$ vectors representing joint angles, velocities, accelerations, and torques respectively.
+The dynamics matrices include: $M(q)$ ($7\times7$ positive-definite, symmetric joint inertia matrix), $C(q,\dot{q})$ ($7\times7$ Coriolis/centrifugal matrix), $g(q)$ ($7\times1$ gravity compensation torque vector), and $f(\dot{q})$ ($7\times1$ joint friction torque vector). External task space forces $F_{ext}$ ($6\times1$) map to joint torques through the Jacobian $J(q)$ ($7\times7$).
+The dynamics model is parameterized as:
+\begin{equation}\label{eq:arm-dyns}
+    \tau = M(q)\ddot{q} + C(q, \dot{q})\dot{q} + g(q) + f(\dot{q}) + J^{-1}(q)F_{ext}
+\end{equation}
+Note that this analytically-derived model represents the robot without external payloads which can affect model accuracy when considering varying payload masses in real-world deployment.
+To account for payload-induced joint torques, we model the gravitational effects as a 6D Cartesian wrench transformed from the world frame to the end-effector frame.
+This frame transformation is critical for accurately projecting gravitational forces acting on the payload along the robot's embodiment.
+We represent the external gravitational wrench $\bm{F}_g \in \mathbb{R}^6$ in the world frame with a simplified point mass model:
+$\bm{F}_g = mg \cdot [0,\ 0,\ -1,\ 0,\ 0,\ 0]^T$
+where $m \in \mathbb{R}^+$ denotes payload mass and $g \approx 9.81 \text{ m/s}^2$ is gravitational acceleration. This representation assumes force application at the object's center of mass, neglecting potential moment contributions.
+The wrench's structure combines linear forces (first three components) and angular forces (last three components), which are
+mapped to induced joint torques through the manipulator Jacobian, contributing to the total joint torque vector (\cref{eq:arm-dyns}).
+
+The training dataset $\mathcal{D}$ is constructed from these trajectories that satisfy both kinematic and dynamic constraints. Each element $d_i \in \mathcal{D}$ is a tuple of trajectory $\bm{\pi}_i$ and maximum supported payload $m_i$. %, where $\bm{\pi}_i$ is as defined in \Cref{sec:diffusion}.
+Each $m_i$ is the maximum supported payload mass for trajectory $i$ subject to $|\tau(\bm{\pi}_i, m_i)| \leq \tau_{max}$, $\forall t \in [0,T]$ where $\tau_t$ is computed via the dynamics equation (\cref{eq:arm-dyns}).
+\input{3b.payload-conditioning}

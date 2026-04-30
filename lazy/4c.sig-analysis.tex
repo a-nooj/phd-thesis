@@ -1,0 +1,14 @@
+\input{figs/eval-cost}
+\input{figs/eval-num_solutions}
+
+\subsection{Significance Testing}
+
+Statistical analysis using the Mann-Whitney U test further reinforces the results above.
+$p-$values for each test are highlighted in \cref{fig:eval-time}, \cref{fig:eval-cost}, and \cref{fig:eval-num_solutions} and marked by `ns' for $p > 0.05$, `*' for $p \leq 0.05$, `**' for $p \leq 0.01$, `***' for $p \leq 0.001$, and `****' for $p \leq 0.0001$.
+
+\textsl{LazyBoE}'s speedup improvement is statistically significant with respect to most baseline algorithms, with notably low $p-$values in comparison to RRT, SST ($0.5$x), and SST ($2$x). However, the comparison with SST ($1$x) did not reach statistical significance (p = 0.0529), indicating that the time difference with this baseline is not conclusive.
+
+For a more robust analysis, we look at the median value, which provides a more accurate representation of the data's central tendency, particularly in the presence of a skewed distribution.
+\textsl{LazyBoE} has a lower median cost when compared to various iterations of SST (0.5x) and RRT, demonstrating a potential advantage. It is worth noting that the cost comparison with the BoE algorithm did not yield a significant difference (p = 0.8142), suggesting comparable cost-efficiency between these two algorithms.
+Our algorithm also generated a higher median number of solutions compared to all baselines, with statistically significant results in all comparisons.
+In summary, this significance testing reinforces our claims that \textsl{LazyBoE} offers performance improvements in terms of both speed and cost-effectiveness.

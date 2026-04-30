@@ -1,0 +1,7 @@
+\begin{definition}[Control Mechanism]\label{def:control-mechanism}
+Given a vector of control parameters $u \in \mathcal{U}_{MP}$ from a set of feasible parameters corresponding to a motion primitive $MP$, the \textsl{control mechanism} $\phi_{MP}$ generates a robot trajectory that executes $u$.
+\begin{center}
+$\phi_{MP} \longrightarrow \tau: [0, 1]$ s.t. $\tau(0) = q_s, \hspace{3pt} \tau(1) = q_f, \hspace{3pt} \dot{q}_s = \dot{q}_f = 0$
+\end{center}
+where $q_s, q_f \in \mathcal{R}$ correspond to the static start and end joint configurations of the robot.
+\end{definition}

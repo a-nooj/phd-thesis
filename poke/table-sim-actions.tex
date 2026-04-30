@@ -1,0 +1,48 @@
+\begin{table}[]
+\resizebox{\columnwidth}{!}{
+\centering
+\begin{tabular}{c|c|c|c|c|c|c|}
+\cline{2-7}
+                                                                                     & \multicolumn{6}{c|}{\textbf{Number of Actions in Execution Path}}                                 \\ \hline
+\multicolumn{1}{|c|}{\textbf{Planner}}                                               & \textbf{S1} & \textbf{S2} & \textbf{S3} & \textbf{S4} & \textbf{S5} & \textbf{S6} \\ \hline
+\multicolumn{1}{|c|}{PokeRRT*}                                                       & 
+\textbf{\begin{tabular}[c]{@{}c@{}}3.93\\ (0.98)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}4.62\\ (1.04)\end{tabular}}                       
+&   \textbf{\begin{tabular}[c]{@{}c@{}}4.49\\ (1.02)\end{tabular}}   
+&   \textbf{\begin{tabular}[c]{@{}c@{}}4.76\\ (1.20)\end{tabular}}   
+& \textbf{\begin{tabular}[c]{@{}c@{}}3.71\\ (1.02)\end{tabular}} &  \textbf{\begin{tabular}[c]{@{}c@{}}3.65\\ (1.08)\end{tabular}}\\ \hline
+\multicolumn{1}{|c|}{PokeRRT} &
+  \begin{tabular}[c]{@{}c@{}}6.10 \\ (1.96)\end{tabular} &
+\begin{tabular}[c]{@{}c@{}}8.21\\ (2.95)\end{tabular}  &
+\begin{tabular}[c]{@{}c@{}}7.94\\ (2.08)\end{tabular}  &\begin{tabular}[c]{@{}c@{}}6.77\\ (2.35)\end{tabular}
+  &
+\begin{tabular}[c]{@{}c@{}}4.56\\ (1.27)\end{tabular}  &
+ \begin{tabular}[c]{@{}c@{}}8.17\\ (2.46)\end{tabular} \\ \hline
+\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}LI-PokeRRT*\end{tabular}} & 
+\begin{tabular}[c]{@{}c@{}}16.43\\ (2.28)\end{tabular}&
+\begin{tabular}[c]{@{}c@{}}22.27\\ (2.26)\end{tabular}
+&\begin{tabular}[c]{@{}c@{}}19.00\\ (1.54)\end{tabular}
+&\begin{tabular}[c]{@{}c@{}}18.54\\ (1.44)\end{tabular}
+&N/A
+& N/A            \\ \hline
+
+\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}LI-PokeRRT\end{tabular}} &
+\begin{tabular}[c]{@{}c@{}}19.08 \\ (1.51)\end{tabular}
+  &
+\begin{tabular}[c]{@{}c@{}}19.62\\ (1.64)\end{tabular}  &
+ \begin{tabular}[c]{@{}c@{}}20.74\\ (2.13)\end{tabular} &\begin{tabular}[c]{@{}c@{}}19.38\\ (1.59)\end{tabular}
+  &
+N/A  &
+N/A  \\ \hline
+\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Push Planner\end{tabular}} &
+\begin{tabular}[c]{@{}c@{}}8.72 \\ (1.42)\end{tabular} &
+\begin{tabular}[c]{@{}c@{}}8.61\\ (1.71)\end{tabular}   &
+\begin{tabular}[c]{@{}c@{}}7.68\\ (1.19)\end{tabular}   &\begin{tabular}[c]{@{}c@{}}8.53 \\ (1.51)\end{tabular}
+  &N/A
+   &N/A
+   \\ \hline\hline
+\multicolumn{1}{|c|}{Pick-and-Place}                                                 & \begin{tabular}[c]{@{}c@{}}1.00\\ (0.00)\end{tabular}           & \begin{tabular}[c]{@{}c@{}}1.00\\ (0.00)\end{tabular}           & \begin{tabular}[c]{@{}c@{}}1.00\\ (0.00)\end{tabular}           & N/A           & \begin{tabular}[c]{@{}c@{}}1.00\\ (0.00)\end{tabular}           & N/A           \\ \hline
+\end{tabular}
+}
+\caption{Number of executed actions in the planned path for various algorithms in simulation are presented here. Both \textsl{PokeRRT*} and  \textsl{Low-Impulse PokeRRT*} lead to fewer actions than their RRT-based counterparts, thus exploiting the large displacement property inherent to poking manipulation.\vspace{-12pt}}
+\label{tab:eval-sim-actions}
+\end{table}

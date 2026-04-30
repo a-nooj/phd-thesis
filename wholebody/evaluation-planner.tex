@@ -1,0 +1,28 @@
+\subsection{Planner Evaluation}\label{sec:planner_eval}
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/success_rate_r_c.png}
+         \caption{Success Rate}
+         \label{fig:succ_rate}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/stacked_bar_c.png}
+         \caption{Planning Time and Execution Time}
+         \label{fig:exec_rate}
+     \end{subfigure}
+    \caption{Success rate, planning time, and execution time across different scenarios and failures\vspace{-10pt}}
+    \label{fig:experiments}
+\end{figure}
+In many locked-joint failure combinations, the end-effector would be in a configuration that would severely limit its ability to grasp. However, in this work we want to eliminate the need for restrictions on the robot's kinematic configurations prior to failure to maximize the utility of the robot. With these two conflicting constraints, we must move beyond the exclusive use of end effectors to complete tasks. Furthermore, the increased area with which the robot can interact with the surrounding environment increases the efficacy of manipulating clutter, with actions often moving multiple objects at a time. In these results, summarized in \cref{fig:succ_rate,fig:exec_rate}, we show that our approach of leveraging whole-arm contact combined with multimodal actions allows the robot to complete tasks that would not be possible with grasp only approaches.
+
+\subsubsection{Experiments with Failure Case 1} Our approach allows the robot to operate where grasp-only methods would fail completely, as seen in \cref{fig:reach_comp}. The findings of Failure Case 1 show that this case significantly hampers the abilities of the robot. In Scenario 1 the success rate was 20\%; the success was severely hampered by the interactions from the moveable obstacles pushing the target object outside of the limited reachable area, however, it is still a success given that the robot was unable to move its end effector to the goal region. Scenario 2 fared much better, with a 75\% success rate and a much improved task time over Failure Case 1, given that the system was able to utilize actions across the wrist and end-effector to interact with the objects.
+
+\subsubsection{Experiments with Failure Case 2} The experimental findings garnered from Failure Case 2 attest to the capacity of the system to undertake demanding tasks that necessitate the robot to maneuver objects beyond its accessible range. Since this failure case renders the end-effector unusable, prior work \cite{brooks2016analysis} would not be applicable in addressing this Failure Case. The lower task times of this failure case in Scenario 1 was aided by the ability to interact with multiple objects at once. Across scenarios, the system worked consistently in managing the failure case, as seen in \cref{fig:succ_rate}, with 90\% success rate in Scenario 1 and 80\% success in Scenario 2. The outcomes provide compelling evidence of making full use of the available embodiment through non-prehensile actions and whole arm manipulation.
+
+\subsubsection{Planning and Execution Times} Across the failure case and scenario combinations, the execution times for completing the tasks ranged between an average of 6 and 35 seconds, as highlighted in \cref{fig:exec_rate}. This demonstrates that, even when hindered by rapid-onset failures, the system was able to utilize the increased range and whole-body interaction to quickly complete these tasks. The planning times were a significant portion of the overall task time, also shown in the timeline of \cref{fig:timeline}. This can be attributed to our use of sim-in-the-loop edge selections, as shown in \cref{algo:adaptr}. However, as will be discussed in \cref{sec:conclusion}, future work can lower this overhead significantly.
+
+The results show that \textbf{taking advantage of the whole embodiment of the robot, combined with non-prehensile actions, facilitates the robot's ability to accomplish tasks in the face of debilitating failure states. In other words, without \textit{ADAPT-R}, the robot would be unable to complete the tasks at hand, proving H.2.}

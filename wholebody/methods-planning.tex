@@ -1,0 +1,84 @@
+% \subsection{Planning for Failure Recovery}\label{sec:methods-planning}
+\subsection{Motion Planning under LMJ Failure Conditions}\label{sec:methods-planning}
+
+The \textsl{failure-constrained kinodynamic map} provides a set of actions for our planner to complete the manipulation task. It provides two main advantages in the context of failure-constrained motion planning: i) it removes the need for an inverse model such that no action sampling is required during the planning process, and ii) it caters to a multi-query planning framework to speed up planning times for the failure-case significantly. 
+% \gm{add reason why multi-query is good}
+
+\input{algos/planner.tex}
+
+% Keeping these advantages in mind, and based on the definition of the planning configuration space that supports multiple movable and fixed obstacles (\Cref{sec:methods}), we can formulate the multi--modal motion planning problem as follows:
+
+% \begin{definition}[Multimodal Motion Planning Problem]
+% Given the start configuration $x_{s} \in \mathcal{X}$ of an object at rest on a planar support surface, the \textsl{multimodal motion planning problem} finds a path $\mathcal{P} = ((x_{s}, x_{s+1}), (x_{s+1}, x_{s+2}), \dots, (x_{g-1}, x_g))$ in collision-free space $\mathcal{X}_{free} \subseteq \mathcal{X}$ to the desired goal object configuration $x_g \in \mathcal{X}$ under the influence of $p$ motion primitives, $MP_{1 \ldots p}$.
+% \end{definition}
+
+% This broad definition relies on several steps (\Cref{algo:multimodal-planner}) and we outline our design decisions next.
+
+
+% \ap{explain each, and use; refer to algo}
+
+% \subsubsection{Goal Region}\label{methods:goal-region}
+
+% We focus on the task of relocating a single target object to the goal region. 
+% Since multiple non--target objects in the scene can move under the influence of various motion primitives, our goal region is underspecified. Since the goal region is underspecific and computing the distance between every pair of movable objects is intractable in our problem definition involving multiple objects \ap{cite jenking's}, we calculate the distance from target object pose in the planning tree (\Cref{algo:multimodal-planner}, L2) when picking the nearest node to this sampled node. This incentivizes the planner to move the target object more than non--target objects.
+
+% \subsubsection{Picking a Node}
+
+% As is standard with most randomized kinodynamic planners \ap{cite}, we either sample a random node ($x_{rand} \in O$) or the goal node ($x_g$) if $rand(0, 1) < b_G$. Since the goal region is underspecific and computing the distance between every pair of movable objects is intractable in our problem setup involving multiple objects \ap{cite jenking's}, we calculate the distance from target object pose in the planning tree (\Cref{algo:multimodal-planner}, L2) when picking the nearest node to this sampled node. This influences the planner to move the target object more so than non--target objects and provides a solution to . Additionally, 
+
+% \input{algos/pick-actions.tex}
+
+% \input{algos/random-action}
+% \input{algos/lazy-action}
+% \input{algos/greedy-action}
+
+% \subsubsection{Picking an Action}
+
+% Picking a valid action requires finding intersections between the situated kinodynamic manifolds for each primitive \ap{cite} and current environment configuration. This yields a subset of relevant objects and edges, weighted by primitive--specific utility values. In order to balance exploration and exploitation during the planning in this high--dimensional space as well as ensure progress towards goal, we introduce the indirect action $b_{IA}$ and random action biases $b_{RA}$, in addition to the goal bias $b_g$ that is typical in kinodynamic motion planning approaches \ap{cite}. Actions are ordered in a priority queue and greedily selected if $rand(0, 1) > b_{RA}$. Otherwise, a random action is chosen. Additionally, actions can either be chosen for the target object or non--target, movable objects. This balance is dictated by the indirect action bias $b_{IA}$. A higher values caters to actions on non--target objects which is useful in a cluttered scenario.
+
+% \subsubsection{Simulating Object Dynamics}
+
+
+
+% Our planning approach is designed to take maximal advantage of the motion primitives available to the robot. We next show an extensive ablative analysis of our planner and a comparison to a baseline kinodynamic planner. Task success is independent of the robot's start and end states.
+
+Based on the approximations of the configuration and control manifolds ($\mathcal{C}_c$ and $\mathcal{U}_c$), our use of nonprehensile actions and environmental contact with the full embodiment of the robot arm enhances task success in the presence of LMJs.
+Given a start configuration of the scene $x_0 \in E$, the motion planning for the failure recovery problem is to find a trajectory $\tau: [0, 1] \rightarrow E_{free} \cap \mathcal{W}_c$ such that $\tau(0) = x_0$ and $\tau(1) \in E_{goal}$ (\cref{fig:methods}, Right Column). Success is manipulating the target object from its starting pose to the goal region (\cref{algo:planner}).
+% We specifically leverage the concept of multiple modalities across PM and NPM skills to accomplish manipulation tasks in the face of LMJ. For example, if the end-effector joints are locked and positioned in a way such that the robot cannot grasp, as shown in \cref{fig:panda_crippled}, we take advantage of poking to interact with the object. 
+
+While the failure-constrained kinodynamic manifold captures the robot dynamics, interactions with scene objects are unmodeled because physical properties, especially friction for NPM interactions, behave stochastically in the real--world \cite{ALBERTINI2021104242}. However, physics engines provide approximately realistic predictions of rigid body dynamics. We use the Bullet physics simulation engine in the planning loop to get the resultant pose $x_{k+1}$ \cite{coumans2021}.  This allows us to capture an approximation of robot and object dynamics faster and safer than execution on a real robot. 
+% Each action execution follows a validity check to ensure all objects remain within workspace bounds and no collisions occur between movable objects and fixed obstacles (\Cref{algo:multimodal-planner}, L8).
+
+% Our planner interleaves planning and execution to compensate for discrepancies between simulation and real-world dynamics (\cref{algo:adaptr}).
+To understand the benefits of utilizing a simulator in the planning loop, we study multiple Action Selection Mechanisms (ASMs):
+\begin{itemize}
+    \item \textbf{\color{dusty_pink}Random} (\cref{algo:planner}, L4-7): The Random ASM finds all the edges that intersect the object and picks one randomly.
+    \item \textbf{\color{dusty_green}Lazy} (\cref{algo:planner}, L8-16): The Lazy ASM utilizes our sim-in-the-loop planner to find an edge that moves the target object toward the goal. Of all the edges that intersect the object, it picks the first action that moves the target towards the goal in the simulator.
+    \item \textbf{\color{dusty_blue}Greedy} (\cref{algo:planner}, L17-30): The Greedy ASM will sample a subset of the edges that intersect the object and score them based on how close the target object is to the goal after simulating the selected actions. It will command the highest-scored edge for the real robot.
+\end{itemize}
+
+% With every action, the planning step follows the specified ASM to minimize the distance between the target object and the goal region (\cref{algo:adaptr}, L13). More specifically, the ASMs select, without replacement, from a set of edges approximating the failure-centric kinodynamic manifold and intersecting the target object (\cref{fig:edge_selection}) at every planning iteration (\cref{algo:adaptr}, L6).
+% % , from $\mathcal{E}$, $\mathcal{F}$, 
+% These edges are simulated in PyBullet \cite{coumans2021} on the current environmental scene to get resultant object poses (\cref{algo:adaptr}, L7). %The planner is described graphically in \cref{fig:timeline}.
+
+% NPM actions compensate for the robot's limited reachable workspace by increasing the effective manipulable area.
+% Additionally, in the presence of multiple joint failures, the end-effector reachable space may not intersect with the goal region. Using non-end-effector links, combined with NPM actions, increases the likelihood of task-relevant contact between the robot and the environment.
+% We discuss the method for determining the reachability of the robot under failure and nominal conditions in the following section.
+
+
+
+% Now that we have the edges, we call Algo. \ref{algo:adaptr} and pass the generated edges. In Line 1, 
+
+% While the target object has not reached the goal region, 
+
+% it will find edges that intersect with the target object by calling Algo. \ref{algo:edges-score-inters}. In Algo. \ref{algo:edges-score-inters} it iterates over all the edges. In Line 3, the robot performs the edge in simulation by following the joint angle velocities encoded in the edge starting from the edge initial joint angles. It does this by using PyBullet \cite{coumans2021}. If the object position has changed (Algo. \ref{algo:edges-score-inters}, L4) 
+
+% it will set the edge score.
+% \ap{uninvert edge score in algo, do argmin}
+
+% The closer the edge moves the object toward the goal, the higher the score of that specific edge (Algo. \ref{algo:edges-score-inters}, L 6). The reason we use PyBullet to check for intersections is that the robot can intersect with the object with any part of its body not just the end effector. Now that we have set the score of all intersecting edges, we select the edge with the highest score in Line 3 in Algo. \ref{algo:adaptr} and execute the edge in the real world. We will continue looping through until the target object reaches the goal region. 
+
+
+
+
+

@@ -1,0 +1,21 @@
+\subsection{Formalization of Motion Primitives}\label{sec:motion-primitives}
+
+As motivated in \Cref{sec:introduction}, there exist a variety of prehensile and nonprehensile motion primitives, each with its core set of capabilities and limitations.
+We unify this diverse portfolio under a single definition of \textsl{motion primitive} $MP$ as an entity with four components: 
+i) $f_{MP}$, a forward model (\Cref{def:forward-model}); 
+ii) $\phi_{MP}$, a control mechanism for generating the robot--object motion (\Cref{def:control-mechanism}); 
+iii) $\mathcal{M}_{MP}$, a situated kinodynamic manifold (\Cref{def:situated-manifold}); and, 
+iv) $proj_{MP}$, a control projection function (\Cref{def:projection}).
+A more extensive treatment of these components and our design choices is presented in the context of our motion planning framework in \Cref{sec:methods-planning}. 
+
+% \begin{enumerate}
+%     \item $f_{MP}$, a forward model that computes the final object pose from an initial pose and a set of control parameters (\Cref{def:forward-model});
+%     \item $\phi_{MP}$, a control mechanism for generating the robot--object motion resulting from a set of control parameters (\Cref{def:control-mechanism});
+%     \item $\mathcal{M}_{MP}$, a situated kinodynamic manifold that maps the current environment state and primitive control parameters to a real value to determine goodness of action (\Cref{def:situated-manifold}); and,
+%     \item $proj_{MP}$, a control projection function that maps a generic robot dynamics rollout to the primitive's situated kinodynamic manifold, thus allowing for experience reuse (\Cref{def:projection}).
+% \end{enumerate}
+
+% \input{definitions/forward-model.tex}
+% \input{definitions/control-mechanism.tex}
+
+In this work, we leverage \textsl{poking} as our motion primitives for \gm{give a reason}. A discussion of its characteristics is provided next.

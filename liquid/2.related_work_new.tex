@@ -1,0 +1,27 @@
+\section{Related Work}
+Transporting open-top, liquid-filled containers requires the modeling of liquid motion along with the planning of time-parameterized motion paths.
+% Generating spill-free trajectories requires modeling the liquid motion. 
+A common approach in liquid modeling relies on using Computational Fluid Dynamics (CFD) simulations to achieve spill-free motions by designing controllers to suppress or limit slosh effects, i.e. liquid vibration effects \cite{cfdbook1, cfdbook2}.
+Despite the accuracy of CFD simulations, they are computationally demanding and require considerable time to converge, making real-time control applications in robotics unfeasible \cite{cfd1, cfd2, meal1}. 
+
+To overcome the computational cost associated with CFD, prior work considers two approaches for modeling the sloshing dynamics inside a container: a spherical pendulum \cite{pendulum, spill1, pendulum2019} and a two Degrees-of-Freedom (2DoF) mass-spring-damper system \cite{springdamper2021, springdamper2022}. 
+These models are inherently nonlinear and computational constraints necessitate linearization for practical implementation. However, linearization introduces several kinematic constraints that restrict robots' range of motions, thereby limiting their ability to navigate through cluttered scenes.
+
+\textit{Spherical pendulums.} These approaches present controllers that are designed to prevent liquid spillage \cite{spill1, pendulum2019}.
+% , controllers are designed to prevent liquid spillage.
+They limit the cup's freedom to only one axis of orientation, while also relying on continuous sensor input to monitor the liquid surface for modeling slosh dynamics. In contrast, our approach dispenses with the need for continuous liquid surface observation and allows the container to retain all its degrees of freedom.
+Additional work assumes that a higher-level motion planner already provides an obstacle-free trajectory \cite{pendulum}. A quadratic program is then employed to optimize the trajectory within a linearized spherical pendulum dynamics model. While the method eliminates the need for continuous liquid surface monitoring, the linearization restricts object yaw to be constant and allows only tilting the container up to 15$^{\circ}$ to maintain acceptable linearization accuracy. In contrast, our approach enables motion along all three rotation axes and allows the container to be tilted to significantly larger angles, up to the point of spillage, by modeling the quasi-static fluid dynamics.
+
+
+\textit{Mass-spring-dampers.} In these approaches, a sloshing-height evaluation method is employed for time-optimal trajectory planning \cite{springdamper2021}. However, this method is tailored for cylindrical containers subject to 1D and 2D motions. This sloshing estimation technique is extended to accommodate 3D motions but the model assumes that the container remains upright during motion \cite{springdamper2022}. In contrast, our approach allows the container to be tilted on each axis and is compatible with various container shapes.
+
+
+Finally, a notable limitation of both mass-spring-dampers and pendulum-based slosh dynamics models is their inability to navigate around obstacles consistently. These models rely on maintaining pendulum-like or mass-spring-damper-like motions for spill-free movement, and obstacles can disrupt these motions, rendering these approaches ineffective.
+
+
+\textit{Other Approaches.} 
+Among other approaches, \cite{gompfit} presents an effective method for the rapid, spill-free transport of containers. However, it explicitly states that this technique is not intended for the transportation of liquids, as it does not incorporate constraints to inhibit the accumulation of energy within the cup, which could subsequently lead to sloshing.
+Additionally, the method proposed in \cite{sloshbydata} aims to accurately learn slosh dynamics through machine learning, taking into account various liquid properties including thermodynamics. However, its applicability to motion planning with robots has not been evaluated, and its practical implementation necessitates continuous accurate liquid surface monitoring.
+
+
+Overall, our approach outperforms prior methods by implicitly learning the dynamics of liquid spillage. It does not impose kinematic constraints that would limit the robot's range of motion such as setting a fixed container orientation, thereby enabling its maneuverability in cluttered environments. Moreover, it does not require constant observation of the liquid surface to generate motions and it is not restricted to a particular container shape.

@@ -1,0 +1,126 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+
+\IEEEoverridecommandlockouts                              % This command is only needed if 
+                                                          % you want to use the \thanks command
+
+\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+%In case you encounter the following error:
+%Error 1010 The PDF file may be corrupt (unable to open PDF file) OR
+%Error 1000 An error occurred while parsing a contents stream. Unable to analyze the PDF file.
+%This is a known problem with pdfLaTeX conversion filter. The file cannot be opened with acrobat reader
+%Please use one of the alternatives below to circumvent this error by uncommenting one or the other
+%\pdfobjcompresslevel=0
+%\pdfminorversion=4
+
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+% The following packages can be found on http:\\www.ctan.org
+%\usepackage{graphics} % for pdf, bitmapped graphics files
+%\usepackage{epsfig} % for postscript graphics files
+%\usepackage{mathptmx} % assumes new font selection scheme installed
+%\usepackage{times} % assumes new font selection scheme installed
+%\usepackage{amsmath} % assumes amsmath package installed
+%\usepackage{amssymb}  % assumes amsmath package installed
+\usepackage{graphics} % for pdf, bitmapped graphics files
+%\usepackage{epsfig} % for postscript graphics files
+% \usepackage{mathptmx} % assumes new font selection scheme installed
+\usepackage{times} % assumes new font selection scheme installed
+% \usepackage{amsthm}
+\usepackage{amsmath} % assumes amsmath package installed
+\usepackage{amssymb}  % assumes amsmath package installed
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage[usenames, dvipsnames, table]{xcolor}
+\usepackage{float}
+\usepackage[style=ieee,sorting=none,backend=biber, maxbibnames=99]{biblatex}
+\addbibresource{bib.bib}
+\usepackage{hyperref}
+\usepackage[ruled,linesnumbered,resetcount,vlined]{algorithm2e}
+\usepackage{commath}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{mathtools}
+
+\usepackage{array}% http://ctan.org/pkg/array
+
+\usepackage{bbding}
+\usepackage{pifont}
+\usepackage{wasysym}
+% \usepackage{amssymb}
+
+% \usepackage{pifont}
+\usepackage{xcolor}
+\newcommand{\cmark}{\textcolor{black}{\ding{51}}}
+\newcommand{\xmark}{\textcolor{black}{\ding{55}}}
+
+\let\labelindent\relax
+\usepackage[inline]{enumitem}
+% \usepackage{transparent}
+% \usepackage{xcolor}
+
+% \usepackage{ntheorem}
+% \theoremseparator{:}
+% \newtheorem{hyp}{Hypothesis}
+
+\colorlet{mylinkcolor}{BrickRed}
+\colorlet{mycitecolor}{Green}
+\colorlet{myurlcolor}{NavyBlue}
+
+\hypersetup{
+  linkcolor  = mylinkcolor,
+  citecolor  = mycitecolor,
+  urlcolor   = myurlcolor,
+  colorlinks = true,
+}
+
+\usepackage[capitalize]{cleveref}
+\newcommand{\ava}[1]{{\color{purple}ava:#1} }
+\newcommand{\alex}[1]{{\color{blue}alex:#1} }
+\newcommand{\ar}[1]{{\color{ForestGreen}ar:#1} }
+\newcommand{\ap}[1]{{\color{red}ap:#1} }
+
+
+
+\title{\LARGE \bf Clutter-Aware Spill-Free Liquid Transport via Learned Dynamics}
+
+
+\author{Ava Abderezaei$^{*}$, Anuj Pasricha, Alex Klausenstock, and Alessandro Roncone%
+\thanks{$^{*}$ Corresponding author.}
+\thanks{All authors are with the Department of Computer Science, University of Colorado Boulder, 1111 Engineering Drive, Boulder, CO USA. This work is partly supported by NSF \#2222952/2953.
+{\tt\small firstname.lastname@colorado.edu}}
+}
+
+\setlength{\textfloatsep}{5pt plus 1.0pt minus 1.0pt}
+\setlength{\floatsep}{5pt plus 1.0pt minus 1.0pt}
+\setlength{\intextsep}{8pt plus 1.0pt minus 1.0pt}
+
+
+% \graphicspath{{figs/}}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+
+\input{0.abstract}
+\input{1.intro_new}
+\input{2.related_work_new}
+\input{3.methods_new}
+\input{4.evaluation_new}
+\input{5.conclusion}
+% \input{6.acknowledgement}
+
+\AtNextBibliography{\small}
+\printbibliography
+\end{document}

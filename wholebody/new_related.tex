@@ -1,0 +1,43 @@
+\section{Related Work}\label{sec:related}
+Developing fault-tolerant systems is critical for autonomous robots that operate in harsh environments for extended periods \cite{muirhead2012coalescing, papadopoulos2021robotic}. This involves the ability to diagnose, recover from, and communicate failure modes \cite{visinsky1991fault, lewis1997fault, honig2018understanding}. While diagnosis and communication have been studied extensively, modeling and planning for autonomous failure recovery is underexplored. This is due to a limited, prehensile view of robotic manipulation \cite{Billard2019, SUOMALAINEN2022104224}. 
+The proliferation of prehensile methods for robotic manipulation is primarily due to certainty in object pose once it is grasped. Prehensile-only approaches limit the scope of robot capability \cite{ruggiero2018nonprehensile}, necessitating the need for exploring NPM abilities.
+
+\subsection{Failure Recovery}
+To recover from failure, we must understand what effects a failure causes. Partial or total degradation resulting from extended operation and environmental factors may lead to a mismatch between task requirements and available system capability \cite{austin2020robotic, muirhead2012coalescing, shafaei2022dust}. 
+The current literature has not thoroughly explored approaches to recovering from kinematic impairments in redundant robot manipulators.  The redundancies of robot manipulators can ensure recoverability for single-joint failures. However, multi-joint failures can severely reduce the robot's workspace to the point of task failure \cite{ porges2021planning}. Task success with joint failures is low using prehensile-only approaches but can be improved by considering non-prehensile modes of manipulation \cite{ruggiero2018nonprehensile}.
+
+% The impact the failure has on the robot falls on a continuous spectrum of severity, from \textsl{completely irrecoverable} to \textsl{completely recoverable} \cite{vonasek2015online, xie2021maximizing, jamshidi2019machine}.
+
+% Prior work mainly follows a limited scope of prehensile manipulation \cite{SUOMALAINEN2022104224}\gm{investigate citation}.
+% grasping and end-effector.
+
+
+
+Prior approaches to recovering from mechanical impairments include modeling the failures via analytical methods \cite{du2017fault, shome2021asymptotically} and using analytical inverse kinematics to explore and plan in the reachable space \cite{mu2016kinematic}. This requires time-consuming computation of the analytical models. Other work has developed approaches of constricting the motion plan of the robot before failure to maximize post-fault reachable space, \cite{xie2021maximizing, lewis1997fault}. 
+In contrast, our approach does not need pre-failure constraints or analytical computation. This allows us to plan for an arbitrary permutation of multi-joint failures efficiently.
+
+\subsection{Non-Prehensile Manipulation Modeling and Planning}
+
+Non-prehensile manipulation in robotics has traditionally focused on isolated tasks or scenarios with redundant or fully-actuated robots \cite{ruggiero2018nonprehensile,mason2018toward}.
+Past research has explored various NPM primitives, such as throwing \cite{zeng2020tossingbot}, pushing \cite{stuber2020let}, poking \cite{pasricha2022pokerrt}, catching \cite{kim2014catching}, flipping, and rolling \cite{lynch1999dynamic, ruggiero2018nonprehensile}, each with its own set of advantages and challenges. Yet, the integration of these primitives in under-actuated, LMJ-constrained robots remains unexplored.
+%There exist a multitude of skills that fall in this domain, such as poking \cite{pasricha2022pokerrt}, pushing \cite{RSS2020Changkyu}, throwing \cite{zeng2020tossingbot}, flipping, and rolling \cite{lynch1999dynamic, ruggiero2018nonprehensile}. 
+
+The likelihood of generating a valid plan over this severely constrained reachable space in an online manner, especially for dynamic actions such as poking, is near-zero \cite{kingston2018sampling}. This informs the need for precomputation of valid actions to guide planning for NPM primitives in the failure-constrained kinematic and control spaces \cite{westbrook2020anytime,chamzas2019using,shome2021asymptotically}.
+% Leveraging this pre-generated map of actions to guide search becomes a key component for planning in high-dimensional configuration spaces, common in non-prehensile planning .
+% Sampling from the constrained robot configuration space can be expensive, 
+% so adaptive sampling on the relevant action subspaces may be combined with nearest neighbor search to reduce task times \cite{jentzsch2015mopl}.
+To that end, we extend the concept of uniformly-sampled kinodynamic edge bundles \cite{shome2021asymptotically} to the failure domain by sampling edges using failure-constrained control inputs, boosting the likelihood of task success \cite{li2015sparse, kingston2018sampling}.
+% on the failure manifold based on forward propagation of the robot dynamics.
+
+% Previous work assumes uniform coverage of the configuration space in these edge bundles.
+% However, this assumption will not hold for the failure constrained action space as the liklihood of sampling a feasible action approaches zero.
+
+
+% Therefore, we introduce the generation of edge bundles by exploring parts of the control and configuration space that lie within the robot's failure-constrained reachable space.
+
+
+% The prehensile view of robotic manipulation limits these approaches--grasping as a reliable skill for interacting with the environment and the end-effector as the sole point of contact between the robot and the surrounding environment \cite{king2015nonprehensile}.
+
+
+
+

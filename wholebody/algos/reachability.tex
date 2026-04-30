@@ -1,0 +1,28 @@
+\begin{algorithm}\footnotesize
+    \caption{Generate Reach-Ability Map}\label{algo:reachability}
+
+    \KwIn{$\mathcal{W}$, Workspace of the Robot; $\mathcal{X}$, set of joint constraints; $k$ replan attempts; $\epsilon$, perturbation radius}
+    \KwOut{$\mathcal{W}^c$, the Failure-Constrained Workspace of the Robot}
+    $iter = 0$ \\
+    \For{$\mathbf{p} \in \mathcal{W}$}{
+        \textsc{InteractionType} = ``PM" \\
+        \textsc{InteractionArea} = ``End Effector" \\
+        success $\longleftarrow$ inverseKinematics($\mathbf{p}$, $\mathcal{X}$, \textsc{InteractionType}, \textsc{InteractionArea}) \\
+        \While{iter $< k$}{
+            \If{iter $> 1$}{
+                $\mathbf{\rho} \longleftarrow$ \textsc{SampleUniformEpsilonBall}($\epsilon$) \\
+                $\mathbf{p}_{\rho} \longleftarrow \mathbf{p} + \mathbf{\rho}$ \\
+                \If{iter $>k/2$}{
+                \textsc{InteractionType}, \textsc{InteractionArea} $\longleftarrow$
+                \textsc{ChangeInteraction}() }
+                success $\longleftarrow$ \textsc{InverseKinematics}($\mathbf{p}_{\rho}$, $\mathcal{X}$, \textsc{InteractionType}, \textsc{InteractionArea})
+            }            
+            \If{success}{
+                $\mathcal{W}^c \longleftarrow \mathcal{W}^c \cup \mathbf{p}$
+                \break
+            }
+            $iter \longleftarrow iter + 1$ 
+        }
+    }
+    \Return{$\mathcal{W}^c$}
+\end{algorithm}

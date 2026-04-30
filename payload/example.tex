@@ -1,0 +1,77 @@
+\documentclass{article}
+\usepackage{amssymb}
+\usepackage[bookmarks=true]{hyperref}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{cleveref}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{multirow}
+\usepackage{soul}
+
+\usepackage[usenames, dvipsnames, table]{xcolor}
+
+\usepackage[small]{caption}
+
+
+
+\usepackage[final]{corl_2025} % Uncomment for the camera-ready ``final'' version.
+
+\usepackage[markup=bfit, deletedmarkup=sout, authormarkup=superscript]{changes}
+\definechangesauthor[name={ar}, color=PineGreen] {AR}
+\definechangesauthor[name={ap}, color=Purple] {AP}
+\newcommand{\ar}[1]{\added[id=  AR]{#1}}
+\newcommand{\ap}[1]{\added[id=  AP]{#1}}
+
+\definecolor{pastelred}{HTML}{FF746C}
+\definecolor{pink}{HTML}{FF9E99}
+\definecolor{green}{HTML}{006837}
+\definecolor{midgreen}{HTML}{84CA66}
+\definecolor{mid}{HTML}{EFBF04}
+\definecolor{midred}{HTML}{F98E52}
+\definecolor{red}{HTML}{A50026}
+
+\title{Dynamics-Compliant Trajectory Diffusion for Super-Nominal Payload Manipulation}
+
+\author{
+  Anuj Pasricha, Joewie Koh, Jay Vakil, Alessandro Roncone\\
+  Department of Computer Science\\
+  University of Colorado Boulder\\
+  \texttt{firstname.lastname@colorado.edu}
+}
+
+\newcommand{\insertfig}{\vspace{-0.4in}
+\includegraphics[width=\textwidth]{graphics/firstnew.pdf}\captionof{figure}{The diffusion model presented in this work learns to generate dynamically feasible trajectories directly in joint angle, velocity, and acceleration space, enabling super-nominal payload manipulation.}\label{fig:firstpg}}
+
+\apptocmd{\keywords}{\par\medskip{\centering\insertfig\par}}{}{}
+
+
+\begin{document}
+\maketitle
+
+\input{0.abstract}
+
+% Two or three meaningful keywords should be added here
+\keywords{Diffusion Models, Dynamics-Informed Planning, Payload Transport}
+
+
+%     Submission to CoRL 2025 will be entirely electronic, via a web site (not email). Information about the submission process and \LaTeX{} templates are available on the conference web site at \url{https://corl.org/}. For camera ready submission, use the \texttt{final} option for the \verb|\usepackage| command. 
+\input{1.introduction}
+\input{2.background}
+\input{3.methods}
+\input{4.evaluation}
+\input{5.conclusion}
+
+\clearpage
+\input{6.limitations}
+
+% The acknowledgments are automatically included only in the final and preprint versions of the paper.
+\acknowledgments{We thank the anonymous reviewers for their insightful feedback and constructive questions, which greatly improved the final version of this paper. This work was supported by the Office of Naval Research under Grant N00014-22-1-2482.}
+
+%===============================================================================
+
+% no \bibliographystyle is required, since the corl style is automatically used.
+\bibliography{example}  % .bib
+
+\end{document}

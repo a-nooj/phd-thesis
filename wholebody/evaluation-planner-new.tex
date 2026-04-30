@@ -1,0 +1,40 @@
+\subsection{Planner Evaluation}\label{sec:planner_eval}
+% \begin{figure*}
+%     \centering
+%     \includegraphics[width=0.95\textwidth]{figures/planner_eval_smol.pdf}
+%     \caption{Representative Scenario Solutions. Each image represents how the robot solved the scenario for each failure case. The colored lines are the motions of the robot end effector tip, with the color representing the manipulability of the robot. For each, the yellow boxes represent the target object or objects. The black outlined boxes in the first scenario represent the obstacles. For the first two scenarios, the black lines represent the motion of the target object. For visual simplicity, the final scenario only shows the final positions of the target objects.}
+%     \label{fig:planner_ops}\vspace{-15pt}
+% \end{figure*}
+
+
+
+\subsubsection{Behavior of the Planner} 
+We analyze the planner's quality through its behavior in the two failure scenarios through an analysis of the robot's actions to complete the tasks. For some of the cases, we will discuss two examples, one good and one bad, to understand better how the planner can be limited. In each of the cases, in \cref{fig:planner_ops}, we see the path the target object or objects took, the final position of any obstacles, and the path of the robot's end effector tip colored by the manipulability of the arm through the path.
+
+\textbf{Failure Case 1}: In Test Scenario 1, we see the error in the sim-to-real action execution. The planner commands several actions, but the actions executed on the robot fail to move the target object from its initial position. During that time, the robot rearranges the obstacle objects significantly. Once the robot moves the target object initially, the arm is then able to execute a strong action and move the target object deep into the goal region.
+
+In Test Scenario 2, we see the robot initially staying clear of the tunnel and then poking its end effector under the tunnel to move the object into the goal region outside of its reachable range.
+
+Test Scenario 3 highlighted the challenges of manipulating objects near the edge of the robot's working space. Many of the actions here didn't go smoothly and had low manipulability throughout, causing significant discrepancies between what the simulation predicted and what the real robot could achieve. As a result, it took a total of eleven actions to move all four objects to the target region successfully.
+
+\textbf{Failure Case 2}: In Test Scenario 1, we see that the scenario was completed in two actions, with each action moving the block in the direction of the goal. This represents the best-case scenario of the planner, where the sim-to-real system has very small errors and will move the object consistently with the goal of shrinking the gap to the target area. 
+
+In Test Scenario 2,  we see how errors in the sim-to-real system can lower the performance of the planner. For this scenario, the planner commanded the robot to execute six actions. In the simulation-in-the-loop, these six actions interact with the target object and move it towards the goal. However, we only see the target object move five steps from the initial position to the goal; thus, the robot misses touching the target object entirely. There was only minimal contact between the arm and the object for two of the actions, causing only small movements. 
+
+In Test Scenario 3, the robot efficiently moves three of the four target objects to the goal region with just two actions. However, those first two motions knock the fourth object away from the robot to an area with consistently lower manipulability. This means the planner commands four actions before a quality contact is made and the target reaches the goal.
+\subsubsection{Strengths}
+% greedy approach can lead to quick solutions and does not require optimization tuning 
+% multi object manipulation
+% dynamic interaction point -- no concern about which point on the robot an object touches, means the planner can make both sweeping actions across multiple object simultaneously and delicately control a single object
+One of the key advantages of the planner is its efficient nature, thanks to a greedy approach that prioritizes quick solutions without the need for extensive optimization tuning. This quality expedites the planning process and simplifies the implementation of complex tasks. Furthermore, the planner excels in multi-object manipulation scenarios, where it can seamlessly coordinate the robot arm's movements to interact with multiple objects simultaneously. Its ability to manage dynamic interaction areas, irrespective of which part of the robot touches an object, allows for sweeping actions across multiple objects and delicate, precise control when dealing with a single object. This flexibility and adaptability make the task and motion planner a valuable tool for a wide range of robotic applications, where speed, versatility, and precision are paramount.
+
+\subsubsection{Weaknesses}
+% Greedy approach can lead to suboptimal actions and long plans
+% scoring method for edge selection is too simple, can not remember what makes a 'good' action so repeatability is bad
+% Sim to real can be very wrong
+% sim in loop can increase planning times
+% imperfect dynamics model for edge generation leads to even more error between simulation actions and real actions
+One notable limitation is the use of a greedy approach, which, in certain scenarios, may result in suboptimal actions and lead to longer less efficient plans. Additionally, the planner relies on a relatively simple scoring method for edge selection, which lacks the ability to remember what constitutes a `good' action, resulting in poor repeatability. The challenge of sim-to-real transition can also pose difficulties, as the planner may struggle to accurately replicate real-world actions from simulations, leading to discrepancies and errors. Moreover, incorporating simulation-in-loop can increase planning times, potentially affecting real-time applications negatively. Lastly, the imperfect dynamics model used for edge generation can further exacerbate the gap between simulated actions and real-world outcomes. Despite these weaknesses, the planner's advantages make it a valuable tool for various robotic tasks when used judiciously and with consideration of these limitations.
+
+These experiments show that \textbf{our approach successfully utilizes the kinodynamic map and the increased reachability of the robot arm to complete manipulation tasks in the face of LMJ through the use of non-prehensile movements, supporting H.2.}
+

@@ -1,0 +1,1278 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{CensusSurveyRobotic2022}{online}{}
+      \name{author}{1}{}{%
+        {{hash=fb461c0c6976b357452502c0cb338c70}{%
+           family={{US Census Bureau}},
+           familyi={U\bibinitperiod}}}%
+      }
+      \strng{namehash}{fb461c0c6976b357452502c0cb338c70}
+      \strng{fullhash}{fb461c0c6976b357452502c0cb338c70}
+      \strng{bibnamehash}{fb461c0c6976b357452502c0cb338c70}
+      \strng{authorbibnamehash}{fb461c0c6976b357452502c0cb338c70}
+      \strng{authornamehash}{fb461c0c6976b357452502c0cb338c70}
+      \strng{authorfullhash}{fb461c0c6976b357452502c0cb338c70}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{Experimental data on the presence of robots, workers exposed to robots, capital expenditures for industrial robotic equipment, and plant size distributional statistics from the 2019 Annual Survey of Manufactures ({ASM}) with revisions to the 2018 experimental data product.}
+      \field{shorttitle}{Annual Survey of Manufactures Industrial Robotic Equipment}
+      \field{title}{Annual Survey of Manufactures Industrial Robotic Equipment: 2018 and 2019}
+      \field{urlday}{19}
+      \field{urlmonth}{1}
+      \field{urlyear}{2024}
+      \field{volume}{1}
+      \field{year}{2022}
+      \field{urldateera}{ce}
+    \endentry
+    \entry{Kyrarini2021}{article}{}
+      \name{author}{9}{}{%
+        {{hash=28eb8ad8941e41c45fb1f2dab0fbbb5c}{%
+           family={Kyrarini},
+           familyi={K\bibinitperiod},
+           given={Maria},
+           giveni={M\bibinitperiod}}}%
+        {{hash=eab336b10d0edfaae93258b0675c2c07}{%
+           family={Lygerakis},
+           familyi={L\bibinitperiod},
+           given={Fotios},
+           giveni={F\bibinitperiod}}}%
+        {{hash=2967f9a72abf490264bb3e6675c03625}{%
+           family={Rajavenkatanarayanan},
+           familyi={R\bibinitperiod},
+           given={Akilesh},
+           giveni={A\bibinitperiod}}}%
+        {{hash=b3da253f0071d7b17c9d30231295606f}{%
+           family={Sevastopoulos},
+           familyi={S\bibinitperiod},
+           given={Christos},
+           giveni={C\bibinitperiod}}}%
+        {{hash=82c4572ee820fd290451e78dacc4836b}{%
+           family={Nambiappan},
+           familyi={N\bibinitperiod},
+           given={Harish\bibnamedelima Ram},
+           giveni={H\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=5d10e5e08ed193bd819806856bd65d59}{%
+           family={Chaitanya},
+           familyi={C\bibinitperiod},
+           given={Kodur\bibnamedelima Krishna},
+           giveni={K\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=836566fc1bf104c950a869df24964e3e}{%
+           family={Babu},
+           familyi={B\bibinitperiod},
+           given={Ashwin\bibnamedelima Ramesh},
+           giveni={A\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=d3e012992fc9d55c2f249090c8e163fc}{%
+           family={Mathew},
+           familyi={M\bibinitperiod},
+           given={Joanne},
+           giveni={J\bibinitperiod}}}%
+        {{hash=de254dfde1af42d577f871cd6b140fd5}{%
+           family={Makedon},
+           familyi={M\bibinitperiod},
+           given={Fillia},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{bb675e5324cc2b4b92f3540f6fa28050}
+      \strng{fullhash}{f5b93f014d003730236c6d333e5a068f}
+      \strng{bibnamehash}{f5b93f014d003730236c6d333e5a068f}
+      \strng{authorbibnamehash}{f5b93f014d003730236c6d333e5a068f}
+      \strng{authornamehash}{bb675e5324cc2b4b92f3540f6fa28050}
+      \strng{authorfullhash}{f5b93f014d003730236c6d333e5a068f}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In recent years, with the current advancements in Robotics and Artificial Intelligence (AI), robots have the potential to support the field of healthcare. Robotic systems are often introduced in the care of the elderly, children, and persons with disabilities, in hospitals, in rehabilitation and walking assistance, and other healthcare situations. In this survey paper, the recent advances in robotic technology applied in the healthcare domain are discussed. The paper provides detailed information about state-of-the-art research in care, hospital, assistive, rehabilitation, and walking assisting robots. The paper also discusses the open challenges healthcare robots face to be integrated into our society.}
+      \field{journaltitle}{Technologies}
+      \field{number}{1}
+      \field{title}{A Survey of Robots in Healthcare}
+      \field{volume}{9}
+      \field{year}{2021}
+    \endentry
+    \entry{papadopoulos2021robotic}{article}{}
+      \name{author}{4}{}{%
+        {{hash=3b6fcf805bd89b2aa479bfe43d8d190a}{%
+           family={Papadopoulos},
+           familyi={P\bibinitperiod},
+           given={Evangelos},
+           giveni={E\bibinitperiod}}}%
+        {{hash=5f3fed1c548ed71d48b189779dd89ef6}{%
+           family={Aghili},
+           familyi={A\bibinitperiod},
+           given={Farhad},
+           giveni={F\bibinitperiod}}}%
+        {{hash=d891d71959c065793434b27a8dd1d0e8}{%
+           family={Ma},
+           familyi={M\bibinitperiod},
+           given={Ou},
+           giveni={O\bibinitperiod}}}%
+        {{hash=73bae1bcc4c879cf42a729f05a8064d1}{%
+           family={Lampariello},
+           familyi={L\bibinitperiod},
+           given={Roberto},
+           giveni={R\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Frontiers}%
+      }
+      \strng{namehash}{52e9ddb7127b33b62e87df5955914861}
+      \strng{fullhash}{dcdaf3aeca80d556b927b7e7b0c9b27b}
+      \strng{bibnamehash}{dcdaf3aeca80d556b927b7e7b0c9b27b}
+      \strng{authorbibnamehash}{dcdaf3aeca80d556b927b7e7b0c9b27b}
+      \strng{authornamehash}{52e9ddb7127b33b62e87df5955914861}
+      \strng{authorfullhash}{dcdaf3aeca80d556b927b7e7b0c9b27b}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Frontiers in Robotics and AI}
+      \field{title}{Robotic manipulation and capture in space: A survey}
+      \field{year}{2021}
+      \field{pages}{228}
+      \range{pages}{1}
+    \endentry
+    \entry{austin2020robotic}{article}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{10}{}{%
+        {{hash=4a12a767506c2e11f411749b51154f17}{%
+           family={Austin},
+           familyi={A\bibinitperiod},
+           given={Alex},
+           giveni={A\bibinitperiod}}}%
+        {{hash=f1759ed5da25fc2b746df375e30e0c3b}{%
+           family={Sherwood},
+           familyi={S\bibinitperiod},
+           given={Brent},
+           giveni={B\bibinitperiod}}}%
+        {{hash=5f54ca8fc5d83e0b4cfe101ab4203296}{%
+           family={Elliott},
+           familyi={E\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod}}}%
+        {{hash=2bdca0949a6e138842c363aed10b19f7}{%
+           family={Colaprete},
+           familyi={C\bibinitperiod},
+           given={Anthony},
+           giveni={A\bibinitperiod}}}%
+        {{hash=b1617e280d3e24898af0244479ee14dd}{%
+           family={Zacny},
+           familyi={Z\bibinitperiod},
+           given={Kris},
+           giveni={K\bibinitperiod}}}%
+        {{hash=304a416ba1469d8e9798493b964f490d}{%
+           family={Metzger},
+           familyi={M\bibinitperiod},
+           given={Philip},
+           giveni={P\bibinitperiod}}}%
+        {{hash=0756450328b3e8e2db7a776f7e7c12a6}{%
+           family={Sims},
+           familyi={S\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+        {{hash=4c33aa74007663ad808c211a79557bc0}{%
+           family={Schmitt},
+           familyi={S\bibinitperiod},
+           given={Harrison},
+           giveni={H\bibinitperiod}}}%
+        {{hash=f63c20194d1e19944a945d03ecb9b634}{%
+           family={Magnus},
+           familyi={M\bibinitperiod},
+           given={Sandra},
+           giveni={S\bibinitperiod}}}%
+        {{hash=9b9648b71eac8f971691519aeb4a0617}{%
+           family={Fong},
+           familyi={F\bibinitperiod},
+           given={Terry},
+           giveni={T\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{78759b567031e09c4acc5267e0670c84}
+      \strng{fullhash}{58cab87c2646cb97241fea031a6f0d19}
+      \strng{bibnamehash}{58cab87c2646cb97241fea031a6f0d19}
+      \strng{authorbibnamehash}{58cab87c2646cb97241fea031a6f0d19}
+      \strng{authornamehash}{78759b567031e09c4acc5267e0670c84}
+      \strng{authorfullhash}{58cab87c2646cb97241fea031a6f0d19}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Acta Astronautica}
+      \field{title}{Robotic lunar surface operations 2}
+      \field{volume}{176}
+      \field{year}{2020}
+      \field{pages}{424\bibrangedash 437}
+      \range{pages}{14}
+    \endentry
+    \entry{She2016}{article}{}
+      \name{author}{5}{}{%
+        {{hash=51d5632ae953d05f6572e06b902ef9dc}{%
+           family={She},
+           familyi={S\bibinitperiod},
+           given={Yu},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=08763955ff37744036af1d9cbb2b2a6d}{%
+           family={Xu},
+           familyi={X\bibinitperiod},
+           given={Wenfu},
+           giveni={W\bibinitperiod}}}%
+        {{hash=b0e80a90ad926a67d844aa76fcb8d9ea}{%
+           family={Su},
+           familyi={S\bibinitperiod},
+           given={Haijun},
+           giveni={H\bibinitperiod}}}%
+        {{hash=b8c614392e8a78a44ca4763ed2f70c6a}{%
+           family={Liang},
+           familyi={L\bibinitperiod},
+           given={Bin},
+           giveni={B\bibinitperiod}}}%
+        {{hash=3c5555e8c4bb4bba0a9c32392c85792e}{%
+           family={Shi},
+           familyi={S\bibinitperiod},
+           given={Hongliang},
+           giveni={H\bibinitperiod}}}%
+      }
+      \strng{namehash}{33d894d20b4b0ce59b51ac5b594321fb}
+      \strng{fullhash}{519939bcc89eb8623864c50279dec35c}
+      \strng{bibnamehash}{519939bcc89eb8623864c50279dec35c}
+      \strng{authorbibnamehash}{519939bcc89eb8623864c50279dec35c}
+      \strng{authornamehash}{33d894d20b4b0ce59b51ac5b594321fb}
+      \strng{authorfullhash}{519939bcc89eb8623864c50279dec35c}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Several space manipulators, whose configurations are similar to that of the Space Station Remote Manipulator System (SSRMS, also called Canadarm2), are playing important roles in the construction and maintenance of the International Space Station. Working in the harsh orbital environment, they are at high risk of single-joint failure. Fault-tolerant capability is critical for those manipulators to complete their on-orbital tasks. In this paper, we analysed and compared the manipulation capability of SSRMS-type manipulators with joints locked at arbitrary positions, and proposed efficient path planning via a fault-tolerant control method. First, a unified kinematic model of this type of manipulators was established. Second, the manipulation capability of the original 7-DOF (degrees of freedom) redundant manipulator was analysed and compared with its degraded 6-DOF counterparts formed by different joint locking configurations. Then, we identified those joints with large sensitivity to fault tolerance performance. The influences of different positions of all joints were also determined by numerical computation. Based on the analysis, the relatively safe and dangerous regions for each joint failure were identified. Finally, we proposed a path planning strategy and realized by a H∞ controller which enables the failure joint locked in the safe region, and simulations were carried on a degraded 3-DOF planar redundant manipulator to verify the planning strategy and control approach. This paper provided important analysis results and efficient methods to address the possible problems of SSRMS-type manipulators caused by single-joint failure that can be extended to other types of manipulators. Moreover, the proposed method is useful for designing the optimal configuration of a redundant manipulator.}
+      \field{journaltitle}{Acta Astronautica}
+      \field{title}{Fault-tolerant analysis and control of SSRMS-type manipulators with single-joint failure}
+      \field{volume}{120}
+      \field{year}{2016}
+      \field{pages}{270\bibrangedash 286}
+      \range{pages}{17}
+      \keyw{Space robot,Space manipulator,On-orbit servicing,Redundant manipulator,Single-joint failure,Fault-tolerance}
+    \endentry
+    \entry{muirhead2012coalescing}{article}{}
+      \name{author}{2}{}{%
+        {{hash=0ef36dfc4ca36eb2d028fca72d3b3e14}{%
+           family={Muirhead},
+           familyi={M\bibinitperiod},
+           given={Brian\bibnamedelima K},
+           giveni={B\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=bba86d129e3605913e936500b945f9f6}{%
+           family={Fesq},
+           familyi={F\bibinitperiod},
+           given={Lorraine},
+           giveni={L\bibinitperiod}}}%
+      }
+      \list{publisher}{2}{%
+        {Pasadena, CA: Jet Propulsion Laboratory, National Aeronautics}%
+        {Space~…}%
+      }
+      \strng{namehash}{a68e659d335ecd4486a725ff20c87193}
+      \strng{fullhash}{a68e659d335ecd4486a725ff20c87193}
+      \strng{bibnamehash}{a68e659d335ecd4486a725ff20c87193}
+      \strng{authorbibnamehash}{a68e659d335ecd4486a725ff20c87193}
+      \strng{authornamehash}{a68e659d335ecd4486a725ff20c87193}
+      \strng{authorfullhash}{a68e659d335ecd4486a725ff20c87193}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Coalescing NASA’s views of fault and health management}
+      \field{year}{2012}
+    \endentry
+    \entry{kingston2018sampling}{article}{}
+      \name{author}{3}{}{%
+        {{hash=fa759a385f7c02216ff5058413d1106c}{%
+           family={Kingston},
+           familyi={K\bibinitperiod},
+           given={Zachary},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=1083ee0c7fe17d1d6ed04f2481a027fe}{%
+           family={Moll},
+           familyi={M\bibinitperiod},
+           given={Mark},
+           giveni={M\bibinitperiod}}}%
+        {{hash=53dd08518536edbe0ea582bab1515461}{%
+           family={Kavraki},
+           familyi={K\bibinitperiod},
+           given={Lydia\bibnamedelima E},
+           giveni={L\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Annual Reviews}%
+      }
+      \strng{namehash}{c8e147150af5853d5d5ab75f8bbf8909}
+      \strng{fullhash}{c8e147150af5853d5d5ab75f8bbf8909}
+      \strng{bibnamehash}{c8e147150af5853d5d5ab75f8bbf8909}
+      \strng{authorbibnamehash}{c8e147150af5853d5d5ab75f8bbf8909}
+      \strng{authornamehash}{c8e147150af5853d5d5ab75f8bbf8909}
+      \strng{authorfullhash}{c8e147150af5853d5d5ab75f8bbf8909}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Annual review of control, robotics, and autonomous systems}
+      \field{title}{Sampling-based methods for motion planning with constraints}
+      \field{volume}{1}
+      \field{year}{2018}
+      \field{pages}{159\bibrangedash 185}
+      \range{pages}{27}
+    \endentry
+    \entry{Bloch_Krishnaprasad_Murray_2016}{book}{}
+      \name{author}{3}{}{%
+        {{hash=9213263a9b8b1e6f03824dc13fd4f5ee}{%
+           family={Bloch},
+           familyi={B\bibinitperiod},
+           given={A.\bibnamedelimi M.},
+           giveni={A\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=3552d086cdc3ff0685b7504ece2a1004}{%
+           family={Krishnaprasad},
+           familyi={K\bibinitperiod},
+           given={P.\bibnamedelimi S.},
+           giveni={P\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=3fa6b96b5d3506325be293be5131cdde}{%
+           family={Murray},
+           familyi={M\bibinitperiod},
+           given={R.\bibnamedelimi M.},
+           giveni={R\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{b48d570d829425513a3a7b158fb30758}
+      \strng{fullhash}{b48d570d829425513a3a7b158fb30758}
+      \strng{bibnamehash}{b48d570d829425513a3a7b158fb30758}
+      \strng{authorbibnamehash}{b48d570d829425513a3a7b158fb30758}
+      \strng{authornamehash}{b48d570d829425513a3a7b158fb30758}
+      \strng{authorfullhash}{b48d570d829425513a3a7b158fb30758}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Nonholonomic Mechanics and Control}
+      \field{year}{2016}
+    \endentry
+    \entry{atreya_steering}{article}{}
+      \name{author}{2}{}{%
+        {{hash=f70a324f7d9be484f74feacc5823119c}{%
+           family={Atreya},
+           familyi={A\bibinitperiod},
+           given={Pranav},
+           giveni={P\bibinitperiod}}}%
+        {{hash=7e660c53d11d5db0e883c5abad7222ee}{%
+           family={Biswas},
+           familyi={B\bibinitperiod},
+           given={Joydeep},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{de1494dd25090667b80a2d4853f0c3dd}
+      \strng{fullhash}{de1494dd25090667b80a2d4853f0c3dd}
+      \strng{bibnamehash}{de1494dd25090667b80a2d4853f0c3dd}
+      \strng{authorbibnamehash}{de1494dd25090667b80a2d4853f0c3dd}
+      \strng{authornamehash}{de1494dd25090667b80a2d4853f0c3dd}
+      \strng{authorfullhash}{de1494dd25090667b80a2d4853f0c3dd}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{AAMAS '22: Proceedings of the 21st International Conference on Autonomous Agents and Multiagent Systems}
+      \field{title}{State Supervised Steering Function for Sampling-based Kinodynamic Planning}
+    \endentry
+    \entry{shome2021asymptotically}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=458c121eb3dc788d2d2329f907ff786e}{%
+           family={Shome},
+           familyi={S\bibinitperiod},
+           given={Rahul},
+           giveni={R\bibinitperiod}}}%
+        {{hash=53dd08518536edbe0ea582bab1515461}{%
+           family={Kavraki},
+           familyi={K\bibinitperiod},
+           given={Lydia\bibnamedelima E},
+           giveni={L\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \strng{namehash}{ca6e3339cd0a064373fe8e06165e1fce}
+      \strng{fullhash}{ca6e3339cd0a064373fe8e06165e1fce}
+      \strng{bibnamehash}{ca6e3339cd0a064373fe8e06165e1fce}
+      \strng{authorbibnamehash}{ca6e3339cd0a064373fe8e06165e1fce}
+      \strng{authornamehash}{ca6e3339cd0a064373fe8e06165e1fce}
+      \strng{authorfullhash}{ca6e3339cd0a064373fe8e06165e1fce}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 2021 International Conference on Robotics and Automation (ICRA), Xian, China}
+      \field{title}{Asymptotically Optimal Kinodynamic Planning Using Bundles of Edges}
+      \field{volume}{30}
+      \field{year}{2021}
+    \endentry
+    \entry{lewis1997fault}{article}{}
+      \name{author}{2}{}{%
+        {{hash=252ee431c4bc5094a4bedaabc741f023}{%
+           family={Lewis},
+           familyi={L\bibinitperiod},
+           given={Christopher\bibnamedelima L},
+           giveni={C\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+        {{hash=abc9b6419402509c6efcbbced2827bca}{%
+           family={Maciejewski},
+           familyi={M\bibinitperiod},
+           given={Anthony\bibnamedelima A},
+           giveni={A\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{06dcd272a4c67243aea4d2a0bdd37a7f}
+      \strng{fullhash}{06dcd272a4c67243aea4d2a0bdd37a7f}
+      \strng{bibnamehash}{06dcd272a4c67243aea4d2a0bdd37a7f}
+      \strng{authorbibnamehash}{06dcd272a4c67243aea4d2a0bdd37a7f}
+      \strng{authornamehash}{06dcd272a4c67243aea4d2a0bdd37a7f}
+      \strng{authorfullhash}{06dcd272a4c67243aea4d2a0bdd37a7f}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Robotics and Automation}
+      \field{number}{4}
+      \field{title}{Fault tolerant operation of kinematically redundant manipulators for locked joint failures}
+      \field{volume}{13}
+      \field{year}{1997}
+      \field{pages}{622\bibrangedash 629}
+      \range{pages}{8}
+    \endentry
+    \entry{xie2021maximizing}{article}{}
+      \name{author}{2}{}{%
+        {{hash=b17897afdd69e5b3bf5347f420b9be8f}{%
+           family={Xie},
+           familyi={X\bibinitperiod},
+           given={Biyun},
+           giveni={B\bibinitperiod}}}%
+        {{hash=abc9b6419402509c6efcbbced2827bca}{%
+           family={Maciejewski},
+           familyi={M\bibinitperiod},
+           given={Anthony\bibnamedelima A},
+           giveni={A\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{f749ea5e4acb74691de34175edfa27a7}
+      \strng{fullhash}{f749ea5e4acb74691de34175edfa27a7}
+      \strng{bibnamehash}{f749ea5e4acb74691de34175edfa27a7}
+      \strng{authorbibnamehash}{f749ea5e4acb74691de34175edfa27a7}
+      \strng{authornamehash}{f749ea5e4acb74691de34175edfa27a7}
+      \strng{authorfullhash}{f749ea5e4acb74691de34175edfa27a7}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Robotics}
+      \field{number}{1}
+      \field{title}{Maximizing the probability of task completion for redundant robots experiencing locked joint failures}
+      \field{volume}{38}
+      \field{year}{2021}
+      \field{pages}{616\bibrangedash 625}
+      \range{pages}{10}
+    \endentry
+    \entry{visinsky1991fault}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=5ed090290cd9b60849336804f1d215b3}{%
+           family={Visinsky},
+           familyi={V\bibinitperiod},
+           given={Monica\bibnamedelima L},
+           giveni={M\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+        {{hash=b88a12e4c31802749ed2035460b0f15e}{%
+           family={Walker},
+           familyi={W\bibinitperiod},
+           given={Ian\bibnamedelima D},
+           giveni={I\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=1395bf96d2f936131c2875e250824906}{%
+           family={Cavallaro},
+           familyi={C\bibinitperiod},
+           given={Joseph\bibnamedelima R},
+           giveni={J\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+      }
+      \strng{namehash}{753ae9cc6ed600ef1795b6fb1ec63687}
+      \strng{fullhash}{753ae9cc6ed600ef1795b6fb1ec63687}
+      \strng{bibnamehash}{753ae9cc6ed600ef1795b6fb1ec63687}
+      \strng{authorbibnamehash}{753ae9cc6ed600ef1795b6fb1ec63687}
+      \strng{authornamehash}{753ae9cc6ed600ef1795b6fb1ec63687}
+      \strng{authorfullhash}{753ae9cc6ed600ef1795b6fb1ec63687}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{1991 NASA Space Operations, Applications, and Research Symposium}
+      \field{title}{Fault detection and fault tolerance in robotics}
+      \field{year}{1991}
+      \field{pages}{262\bibrangedash 271}
+      \range{pages}{10}
+    \endentry
+    \entry{honig2018understanding}{article}{}
+      \name{author}{2}{}{%
+        {{hash=cd8029f5facbcb2f76f1125cd55aa33a}{%
+           family={Honig},
+           familyi={H\bibinitperiod},
+           given={Shanee},
+           giveni={S\bibinitperiod}}}%
+        {{hash=938addd7c6a351c8ecaaae18cf7bfd77}{%
+           family={Oron-Gilad},
+           familyi={O\bibinithyphendelim G\bibinitperiod},
+           given={Tal},
+           giveni={T\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Frontiers Media SA}%
+      }
+      \strng{namehash}{8784b5bd99a1febe219fe64fa1155e42}
+      \strng{fullhash}{8784b5bd99a1febe219fe64fa1155e42}
+      \strng{bibnamehash}{8784b5bd99a1febe219fe64fa1155e42}
+      \strng{authorbibnamehash}{8784b5bd99a1febe219fe64fa1155e42}
+      \strng{authornamehash}{8784b5bd99a1febe219fe64fa1155e42}
+      \strng{authorfullhash}{8784b5bd99a1febe219fe64fa1155e42}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Frontiers in psychology}
+      \field{title}{Understanding and resolving failures in human-robot interaction: Literature review and model development}
+      \field{volume}{9}
+      \field{year}{2018}
+      \field{pages}{861}
+      \range{pages}{1}
+    \endentry
+    \entry{Billard2019}{article}{}
+      \name{author}{2}{}{%
+        {{hash=3cd4f444d840eee2580ddf886f20b1c8}{%
+           family={Billard},
+           familyi={B\bibinitperiod},
+           given={Aude},
+           giveni={A\bibinitperiod}}}%
+        {{hash=d8a72b3bd29e9244932e7c10628e6b03}{%
+           family={Kragic},
+           familyi={K\bibinitperiod},
+           given={Danica},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{17a114522a9a892d516c37aaa1200bfa}
+      \strng{fullhash}{17a114522a9a892d516c37aaa1200bfa}
+      \strng{bibnamehash}{17a114522a9a892d516c37aaa1200bfa}
+      \strng{authorbibnamehash}{17a114522a9a892d516c37aaa1200bfa}
+      \strng{authornamehash}{17a114522a9a892d516c37aaa1200bfa}
+      \strng{authorfullhash}{17a114522a9a892d516c37aaa1200bfa}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Science}
+      \field{number}{6446}
+      \field{title}{Trends and challenges in robot manipulation}
+      \field{volume}{364}
+      \field{year}{2019}
+    \endentry
+    \entry{SUOMALAINEN2022104224}{article}{}
+      \name{author}{3}{}{%
+        {{hash=32c000eb5fe62f340ee8a37e957cfbdb}{%
+           family={Suomalainen},
+           familyi={S\bibinitperiod},
+           given={Markku},
+           giveni={M\bibinitperiod}}}%
+        {{hash=6b2880590059982a98f8de1680833665}{%
+           family={Karayiannidis},
+           familyi={K\bibinitperiod},
+           given={Yiannis},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=4d5a9080538af7c2eeea5b457fd44d6c}{%
+           family={Kyrki},
+           familyi={K\bibinitperiod},
+           given={Ville},
+           giveni={V\bibinitperiod}}}%
+      }
+      \strng{namehash}{11b7497fe3083a8391627aa971f4a1a8}
+      \strng{fullhash}{11b7497fe3083a8391627aa971f4a1a8}
+      \strng{bibnamehash}{11b7497fe3083a8391627aa971f4a1a8}
+      \strng{authorbibnamehash}{11b7497fe3083a8391627aa971f4a1a8}
+      \strng{authornamehash}{11b7497fe3083a8391627aa971f4a1a8}
+      \strng{authorfullhash}{11b7497fe3083a8391627aa971f4a1a8}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Robotics and Autonomous Systems}
+      \field{title}{A survey of robot manipulation in contact}
+      \field{volume}{156}
+      \field{year}{2022}
+      \field{pages}{104224}
+      \range{pages}{1}
+    \endentry
+    \entry{ruggiero2018nonprehensile}{article}{}
+      \name{author}{3}{}{%
+        {{hash=3e38694ed4fd8193b8eb883c855825cf}{%
+           family={Ruggiero},
+           familyi={R\bibinitperiod},
+           given={Fabio},
+           giveni={F\bibinitperiod}}}%
+        {{hash=e15cd618b6c63388a1615b1d5de28005}{%
+           family={Lippiello},
+           familyi={L\bibinitperiod},
+           given={Vincenzo},
+           giveni={V\bibinitperiod}}}%
+        {{hash=38f7a70abf2d86e432d63826f560ab93}{%
+           family={Siciliano},
+           familyi={S\bibinitperiod},
+           given={Bruno},
+           giveni={B\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{945de5aad11c5929718aa39e89c900b0}
+      \strng{fullhash}{945de5aad11c5929718aa39e89c900b0}
+      \strng{bibnamehash}{945de5aad11c5929718aa39e89c900b0}
+      \strng{authorbibnamehash}{945de5aad11c5929718aa39e89c900b0}
+      \strng{authornamehash}{945de5aad11c5929718aa39e89c900b0}
+      \strng{authorfullhash}{945de5aad11c5929718aa39e89c900b0}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Robotics and Automation Letters}
+      \field{number}{3}
+      \field{title}{Nonprehensile dynamic manipulation: A survey}
+      \field{volume}{3}
+      \field{year}{2018}
+      \field{pages}{1711\bibrangedash 1718}
+      \range{pages}{8}
+    \endentry
+    \entry{shafaei2022dust}{article}{}
+      \name{author}{2}{}{%
+        {{hash=24048fa61d39b7c31b2ec3c4e624ac40}{%
+           family={Shafaei},
+           familyi={S\bibinitperiod},
+           given={Seyed\bibnamedelima Mojtaba},
+           giveni={S\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=e824e52aa2a3a8bff5ea2902854bf63d}{%
+           family={Mousazadeh},
+           familyi={M\bibinitperiod},
+           given={Hossein},
+           giveni={H\bibinitperiod}}}%
+      }
+      \strng{namehash}{fd65c8b3b23a18b708397a13d1721f08}
+      \strng{fullhash}{fd65c8b3b23a18b708397a13d1721f08}
+      \strng{bibnamehash}{fd65c8b3b23a18b708397a13d1721f08}
+      \strng{authorbibnamehash}{fd65c8b3b23a18b708397a13d1721f08}
+      \strng{authornamehash}{fd65c8b3b23a18b708397a13d1721f08}
+      \strng{authorfullhash}{fd65c8b3b23a18b708397a13d1721f08}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Abstract Safe mechanical evacuation of hazardous bulk materials in industrial confined spaces with improper conditions (poor light for vision, dust or vapor, high temperature, and toxic fume) and potential of combustion and explosion is high-risk mission for human. This study deals with development and performance assessments of a robot for this purpose. The robot comprised four major units including control, electro-hydraulic actuator, communication, and monitoring unit. Detailed descriptions of the units and their main components are beyond the scope of current report. Meanwhile, the robot has movable and stationary parts. The movable part is a wheeled mobile robot which guides suction tube in the confined space. Robotic evacuation operations are accomplished by supervisory remote control at base station with feedback from camera video of the mobile robot. Simulation results showed accurate performance of defined objectives for the units and their main components through designed hydraulic and electronic circuits. Stationary assessments for forward speed (0–30 m/min) and drawbar pull (-0-755.6 N) of the mobile robot yielded acceptable results in case of robot mobility. Operational assessments of the robot in two chemical reactors comprised depreciated catalyst and ceramic balls practically approved efficient, safe, feasible, and easily implementable of robotic evacuation operations. Overall, the robot proposed in this study eliminates employment of a human in highly risky conditions of industrial confined spaces.}
+      \field{journaltitle}{Journal of Field Robotics}
+      \field{number}{3}
+      \field{title}{Development of a mobile robot for safe mechanical evacuation of hazardous bulk materials in industrial confined spaces}
+      \field{volume}{39}
+      \field{year}{2022}
+      \field{pages}{218\bibrangedash 231}
+      \range{pages}{14}
+      \keyw{drawbar pull,mobile robot,off-road robot,wheel slippage,wheeled robot}
+    \endentry
+    \entry{porges2021planning}{article}{}
+      \name{author}{3}{}{%
+        {{hash=83f40fe663d444a522d6f72e241771f5}{%
+           family={Porges},
+           familyi={P\bibinitperiod},
+           given={Oliver},
+           giveni={O\bibinitperiod}}}%
+        {{hash=8c03ebf07697860da86ad8a00511be45}{%
+           family={Leidner},
+           familyi={L\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod}}}%
+        {{hash=fa850eb6153b89264f3f3b989d5fb1ac}{%
+           family={Roa},
+           familyi={R\bibinitperiod},
+           given={Máximo\bibnamedelima A},
+           giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Frontiers}%
+      }
+      \strng{namehash}{1b18db3b2fd5a535b1613a33d85d2dba}
+      \strng{fullhash}{1b18db3b2fd5a535b1613a33d85d2dba}
+      \strng{bibnamehash}{1b18db3b2fd5a535b1613a33d85d2dba}
+      \strng{authorbibnamehash}{1b18db3b2fd5a535b1613a33d85d2dba}
+      \strng{authornamehash}{1b18db3b2fd5a535b1613a33d85d2dba}
+      \strng{authorfullhash}{1b18db3b2fd5a535b1613a33d85d2dba}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Frontiers in Robotics and AI}
+      \field{title}{Planning Fail-Safe Trajectories for Space Robotic Arms}
+      \field{year}{2021}
+      \field{pages}{319}
+      \range{pages}{1}
+    \endentry
+    \entry{du2017fault}{article}{}
+      \name{author}{2}{}{%
+        {{hash=ecb879430019ae288e9d47ab2ed4988c}{%
+           family={Du},
+           familyi={D\bibinitperiod},
+           given={Hui},
+           giveni={H\bibinitperiod}}}%
+        {{hash=c8c5bb9f8ba6ff0df0521ea75cae9bda}{%
+           family={Gao},
+           familyi={G\bibinitperiod},
+           given={Feng},
+           giveni={F\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{a013ababe9efff2501a00296baaf7571}
+      \strng{fullhash}{a013ababe9efff2501a00296baaf7571}
+      \strng{bibnamehash}{a013ababe9efff2501a00296baaf7571}
+      \strng{authorbibnamehash}{a013ababe9efff2501a00296baaf7571}
+      \strng{authornamehash}{a013ababe9efff2501a00296baaf7571}
+      \strng{authorfullhash}{a013ababe9efff2501a00296baaf7571}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Robotica}
+      \field{number}{6}
+      \field{title}{Fault tolerance properties and motion planning of a six-legged robot with multiple faults}
+      \field{volume}{35}
+      \field{year}{2017}
+      \field{pages}{1397\bibrangedash 1414}
+      \range{pages}{18}
+    \endentry
+    \entry{mu2016kinematic}{article}{}
+      \name{author}{5}{}{%
+        {{hash=88e2e045b024630a82d0fba1091de770}{%
+           family={Mu},
+           familyi={M\bibinitperiod},
+           given={Zonggao},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=5a26e49e5ce0e1403f60225dcc5c6ac1}{%
+           family={Han},
+           familyi={H\bibinitperiod},
+           given={Liang},
+           giveni={L\bibinitperiod}}}%
+        {{hash=08763955ff37744036af1d9cbb2b2a6d}{%
+           family={Xu},
+           familyi={X\bibinitperiod},
+           given={Wenfu},
+           giveni={W\bibinitperiod}}}%
+        {{hash=5eb4c3e75d14d3af4ceb7f957e07f41c}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Bing},
+           giveni={B\bibinitperiod}}}%
+        {{hash=b8c614392e8a78a44ca4763ed2f70c6a}{%
+           family={Liang},
+           familyi={L\bibinitperiod},
+           given={Bin},
+           giveni={B\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{d7b8e068d4196c09890c5984aae91965}
+      \strng{fullhash}{08cfaca07fe95150f4c6496a5d5d6e86}
+      \strng{bibnamehash}{08cfaca07fe95150f4c6496a5d5d6e86}
+      \strng{authorbibnamehash}{08cfaca07fe95150f4c6496a5d5d6e86}
+      \strng{authornamehash}{d7b8e068d4196c09890c5984aae91965}
+      \strng{authorfullhash}{08cfaca07fe95150f4c6496a5d5d6e86}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Robotics and biomimetics}
+      \field{title}{Kinematic analysis and fault-tolerant trajectory planning of space manipulator under a single joint failure}
+      \field{volume}{3}
+      \field{year}{2016}
+      \field{pages}{1\bibrangedash 10}
+      \range{pages}{10}
+    \endentry
+    \entry{mason2018toward}{article}{}
+      \name{author}{1}{}{%
+        {{hash=d2d18e2fcced9a8a704459f6362bb2f4}{%
+           family={Mason},
+           familyi={M\bibinitperiod},
+           given={Matthew\bibnamedelima T},
+           giveni={M\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Annual Reviews}%
+      }
+      \strng{namehash}{d2d18e2fcced9a8a704459f6362bb2f4}
+      \strng{fullhash}{d2d18e2fcced9a8a704459f6362bb2f4}
+      \strng{bibnamehash}{d2d18e2fcced9a8a704459f6362bb2f4}
+      \strng{authorbibnamehash}{d2d18e2fcced9a8a704459f6362bb2f4}
+      \strng{authornamehash}{d2d18e2fcced9a8a704459f6362bb2f4}
+      \strng{authorfullhash}{d2d18e2fcced9a8a704459f6362bb2f4}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Annual Review of Control, Robotics, and Autonomous Systems}
+      \field{title}{Toward robotic manipulation}
+      \field{volume}{1}
+      \field{year}{2018}
+      \field{pages}{1\bibrangedash 28}
+      \range{pages}{28}
+    \endentry
+    \entry{zeng2020tossingbot}{article}{}
+      \name{author}{5}{}{%
+        {{hash=5ea39ed379a3240bc8279fa2fae958ab}{%
+           family={Zeng},
+           familyi={Z\bibinitperiod},
+           given={Andy},
+           giveni={A\bibinitperiod}}}%
+        {{hash=5abaf8ffacdb02cbfe12fca8f3d327cb}{%
+           family={Song},
+           familyi={S\bibinitperiod},
+           given={Shuran},
+           giveni={S\bibinitperiod}}}%
+        {{hash=c0726ea9ef182d9b21e75528ae7938cd}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Johnny},
+           giveni={J\bibinitperiod}}}%
+        {{hash=51675f0d612799bd99aab6d0b9a38088}{%
+           family={Rodriguez},
+           familyi={R\bibinitperiod},
+           given={Alberto},
+           giveni={A\bibinitperiod}}}%
+        {{hash=d5f84e30e5cf00a362dfcbcca460dd64}{%
+           family={Funkhouser},
+           familyi={F\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{b6838e2ea43b227984566ab66c700c4f}
+      \strng{fullhash}{666e6e993b73a9514ca522fbdab2032e}
+      \strng{bibnamehash}{666e6e993b73a9514ca522fbdab2032e}
+      \strng{authorbibnamehash}{666e6e993b73a9514ca522fbdab2032e}
+      \strng{authornamehash}{b6838e2ea43b227984566ab66c700c4f}
+      \strng{authorfullhash}{666e6e993b73a9514ca522fbdab2032e}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Robotics}
+      \field{number}{4}
+      \field{title}{Tossingbot: Learning to throw arbitrary objects with residual physics}
+      \field{volume}{36}
+      \field{year}{2020}
+      \field{pages}{1307\bibrangedash 1319}
+      \range{pages}{13}
+    \endentry
+    \entry{stuber2020let}{article}{}
+      \name{author}{3}{}{%
+        {{hash=c54b965207de066f9cbfdb63bcdeb1bd}{%
+           family={Stüber},
+           familyi={S\bibinitperiod},
+           given={Jochen},
+           giveni={J\bibinitperiod}}}%
+        {{hash=7c84c213eab5b0635aaf63d670672ae9}{%
+           family={Zito},
+           familyi={Z\bibinitperiod},
+           given={Claudio},
+           giveni={C\bibinitperiod}}}%
+        {{hash=cddc931ec851331b41ae01b788d1da93}{%
+           family={Stolkin},
+           familyi={S\bibinitperiod},
+           given={Rustam},
+           giveni={R\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Frontiers Media SA}%
+      }
+      \strng{namehash}{886c69a73e3a2098ea126ed36b216e43}
+      \strng{fullhash}{886c69a73e3a2098ea126ed36b216e43}
+      \strng{bibnamehash}{886c69a73e3a2098ea126ed36b216e43}
+      \strng{authorbibnamehash}{886c69a73e3a2098ea126ed36b216e43}
+      \strng{authornamehash}{886c69a73e3a2098ea126ed36b216e43}
+      \strng{authorfullhash}{886c69a73e3a2098ea126ed36b216e43}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Frontiers in Robotics and AI}
+      \field{title}{Let's push things forward: A survey on robot pushing}
+      \field{volume}{7}
+      \field{year}{2020}
+      \field{pages}{8}
+      \range{pages}{1}
+    \endentry
+    \entry{pasricha2022pokerrt}{article}{}
+      \name{author}{4}{}{%
+        {{hash=8ecbee7536b9afe229713094f11bc8be}{%
+           family={Pasricha},
+           familyi={P\bibinitperiod},
+           given={Anuj},
+           giveni={A\bibinitperiod}}}%
+        {{hash=b83ab58655bd7de8f7698ef23adf1e25}{%
+           family={Tung},
+           familyi={T\bibinitperiod},
+           given={Yi-Shiuan},
+           giveni={Y\bibinithyphendelim S\bibinitperiod}}}%
+        {{hash=253c6b99245dee7d86cebca381ff3b7d}{%
+           family={Hayes},
+           familyi={H\bibinitperiod},
+           given={Bradley},
+           giveni={B\bibinitperiod}}}%
+        {{hash=be3eaa574f827d40c2a9fbad51585b81}{%
+           family={Roncone},
+           familyi={R\bibinitperiod},
+           given={Alessandro},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{ab357ea09e30af601a063c96dc118787}
+      \strng{fullhash}{6461eb4ec92ce86b14f957117bb4fc62}
+      \strng{bibnamehash}{6461eb4ec92ce86b14f957117bb4fc62}
+      \strng{authorbibnamehash}{6461eb4ec92ce86b14f957117bb4fc62}
+      \strng{authornamehash}{ab357ea09e30af601a063c96dc118787}
+      \strng{authorfullhash}{6461eb4ec92ce86b14f957117bb4fc62}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Robotics and Automation Letters}
+      \field{number}{2}
+      \field{title}{PokeRRT: Poking as a Skill and Failure Recovery Tactic for Planar Non-Prehensile Manipulation}
+      \field{volume}{7}
+      \field{year}{2022}
+      \field{pages}{4480\bibrangedash 4487}
+      \range{pages}{8}
+      \keyw{Robots;Planning;Analytical models;Grasping;End effectors;Collision avoidance;Mathematical models;Dexterous manipulation;manipulation planning;motion and path planning;nonprehensile manipulation;kinodynamic planning}
+    \endentry
+    \entry{kim2014catching}{article}{}
+      \name{author}{3}{}{%
+        {{hash=ad2dc4c51ca25dfaca5272a5c65d934e}{%
+           family={Kim},
+           familyi={K\bibinitperiod},
+           given={Seungsu},
+           giveni={S\bibinitperiod}}}%
+        {{hash=39510adfcc889510337c7405184b4ebd}{%
+           family={Shukla},
+           familyi={S\bibinitperiod},
+           given={Ashwini},
+           giveni={A\bibinitperiod}}}%
+        {{hash=3cd4f444d840eee2580ddf886f20b1c8}{%
+           family={Billard},
+           familyi={B\bibinitperiod},
+           given={Aude},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{a9331529f02cbec837f7fae1d42cd99d}
+      \strng{fullhash}{a9331529f02cbec837f7fae1d42cd99d}
+      \strng{bibnamehash}{a9331529f02cbec837f7fae1d42cd99d}
+      \strng{authorbibnamehash}{a9331529f02cbec837f7fae1d42cd99d}
+      \strng{authornamehash}{a9331529f02cbec837f7fae1d42cd99d}
+      \strng{authorfullhash}{a9331529f02cbec837f7fae1d42cd99d}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Robotics}
+      \field{number}{5}
+      \field{title}{Catching objects in flight}
+      \field{volume}{30}
+      \field{year}{2014}
+      \field{pages}{1049\bibrangedash 1065}
+      \range{pages}{17}
+    \endentry
+    \entry{lynch1999dynamic}{article}{}
+      \name{author}{2}{}{%
+        {{hash=ab9086b1452a1a9813fc6765151b4f61}{%
+           family={Lynch},
+           familyi={L\bibinitperiod},
+           given={Kevin\bibnamedelima M},
+           giveni={K\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=d2d18e2fcced9a8a704459f6362bb2f4}{%
+           family={Mason},
+           familyi={M\bibinitperiod},
+           given={Matthew\bibnamedelima T},
+           giveni={M\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {SAGE Publications}%
+      }
+      \strng{namehash}{0575fc431acdc412ce5f0dda7bfe0484}
+      \strng{fullhash}{0575fc431acdc412ce5f0dda7bfe0484}
+      \strng{bibnamehash}{0575fc431acdc412ce5f0dda7bfe0484}
+      \strng{authorbibnamehash}{0575fc431acdc412ce5f0dda7bfe0484}
+      \strng{authornamehash}{0575fc431acdc412ce5f0dda7bfe0484}
+      \strng{authorfullhash}{0575fc431acdc412ce5f0dda7bfe0484}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The International Journal of Robotics Research}
+      \field{number}{1}
+      \field{title}{Dynamic nonprehensile manipulation: Controllability, planning, and experiments}
+      \field{volume}{18}
+      \field{year}{1999}
+      \field{pages}{64\bibrangedash 92}
+      \range{pages}{29}
+    \endentry
+    \entry{westbrook2020anytime}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=0690ef181a3f3fe42bc8c6e276b90460}{%
+           family={Westbrook},
+           familyi={W\bibinitperiod},
+           given={Matthew\bibnamedelima G},
+           giveni={M\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
+        {{hash=ada2bd2ed73aaf93e3abd6ba1c9ee47f}{%
+           family={Ruml},
+           familyi={R\bibinitperiod},
+           given={Wheeler},
+           giveni={W\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{ca40a0a615fe718cae03c3885b3f50c4}
+      \strng{fullhash}{ca40a0a615fe718cae03c3885b3f50c4}
+      \strng{bibnamehash}{ca40a0a615fe718cae03c3885b3f50c4}
+      \strng{authorbibnamehash}{ca40a0a615fe718cae03c3885b3f50c4}
+      \strng{authornamehash}{ca40a0a615fe718cae03c3885b3f50c4}
+      \strng{authorfullhash}{ca40a0a615fe718cae03c3885b3f50c4}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2020 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)}
+      \field{title}{Anytime Kinodynamic Motion Planning using Region-Guided Search}
+      \field{year}{2020}
+      \field{pages}{6789\bibrangedash 6796}
+      \range{pages}{8}
+    \endentry
+    \entry{chamzas2019using}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=0ec5b99b3e23bb69adde88fdaf85d5e1}{%
+           family={Chamzas},
+           familyi={C\bibinitperiod},
+           given={Constantinos},
+           giveni={C\bibinitperiod}}}%
+        {{hash=7013a70f3db2bf5e550611638cfbab8d}{%
+           family={Shrivastava},
+           familyi={S\bibinitperiod},
+           given={Anshumali},
+           giveni={A\bibinitperiod}}}%
+        {{hash=53dd08518536edbe0ea582bab1515461}{%
+           family={Kavraki},
+           familyi={K\bibinitperiod},
+           given={Lydia\bibnamedelima E},
+           giveni={L\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{6878ee84e0d87a28da4438774d606469}
+      \strng{fullhash}{6878ee84e0d87a28da4438774d606469}
+      \strng{bibnamehash}{6878ee84e0d87a28da4438774d606469}
+      \strng{authorbibnamehash}{6878ee84e0d87a28da4438774d606469}
+      \strng{authornamehash}{6878ee84e0d87a28da4438774d606469}
+      \strng{authorfullhash}{6878ee84e0d87a28da4438774d606469}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2019 International Conference on Robotics and Automation (ICRA)}
+      \field{title}{Using local experiences for global motion planning}
+      \field{year}{2019}
+      \field{pages}{8606\bibrangedash 8612}
+      \range{pages}{7}
+    \endentry
+    \entry{li2015sparse}{incollection}{}
+      \name{author}{3}{}{%
+        {{hash=8cc716dcf3c9a762117f23720a06faba}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Yanbo},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=15f54bb003e8c8111b5860393068e6cf}{%
+           family={Littlefield},
+           familyi={L\bibinitperiod},
+           given={Zakary},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=06adc0d309c70cea8e8c2620ed6e0c4a}{%
+           family={Bekris},
+           familyi={B\bibinitperiod},
+           given={Kostas\bibnamedelima E},
+           giveni={K\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{08d783ab3e0ed32b6d1ec77ed975d052}
+      \strng{fullhash}{08d783ab3e0ed32b6d1ec77ed975d052}
+      \strng{bibnamehash}{08d783ab3e0ed32b6d1ec77ed975d052}
+      \strng{authorbibnamehash}{08d783ab3e0ed32b6d1ec77ed975d052}
+      \strng{authornamehash}{08d783ab3e0ed32b6d1ec77ed975d052}
+      \strng{authorfullhash}{08d783ab3e0ed32b6d1ec77ed975d052}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Algorithmic foundations of robotics XI}
+      \field{title}{Sparse methods for efficient asymptotically optimal kinodynamic planning}
+      \field{year}{2015}
+      \field{pages}{263\bibrangedash 282}
+      \range{pages}{20}
+    \endentry
+    \entry{kleinbort2018probabilistic}{article}{}
+      \name{author}{5}{}{%
+        {{hash=19f2abb5832feaac8703b13c9669bbfc}{%
+           family={Kleinbort},
+           familyi={K\bibinitperiod},
+           given={Michal},
+           giveni={M\bibinitperiod}}}%
+        {{hash=57cb0709a3258cddbbbed22f90ae60fb}{%
+           family={Solovey},
+           familyi={S\bibinitperiod},
+           given={Kiril},
+           giveni={K\bibinitperiod}}}%
+        {{hash=15f54bb003e8c8111b5860393068e6cf}{%
+           family={Littlefield},
+           familyi={L\bibinitperiod},
+           given={Zakary},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=06adc0d309c70cea8e8c2620ed6e0c4a}{%
+           family={Bekris},
+           familyi={B\bibinitperiod},
+           given={Kostas\bibnamedelima E},
+           giveni={K\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=fd73c7aee7759f4b337e8af7a25fb315}{%
+           family={Halperin},
+           familyi={H\bibinitperiod},
+           given={Dan},
+           giveni={D\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{d5817611b81e2fd2aa9867936e8b25ac}
+      \strng{fullhash}{c319fea181384c74a1b13a9975b240df}
+      \strng{bibnamehash}{c319fea181384c74a1b13a9975b240df}
+      \strng{authorbibnamehash}{c319fea181384c74a1b13a9975b240df}
+      \strng{authornamehash}{d5817611b81e2fd2aa9867936e8b25ac}
+      \strng{authorfullhash}{c319fea181384c74a1b13a9975b240df}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Robotics and Automation Letters}
+      \field{number}{2}
+      \field{title}{Probabilistic completeness of RRT for geometric and kinodynamic planning with forward propagation}
+      \field{volume}{4}
+      \field{year}{2018}
+      \field{pages}{x\bibrangedash xvi}
+      \range{pages}{7}
+    \endentry
+    \entry{ALBERTINI2021104242}{article}{}
+      \name{author}{4}{}{%
+        {{hash=2bce60db4d8f9d242f64a9d7cb2b4a71}{%
+           family={Albertini},
+           familyi={A\bibinitperiod},
+           given={Gabriele},
+           giveni={G\bibinitperiod}}}%
+        {{hash=a6e6da8c48b325938880dee700581e97}{%
+           family={Karrer},
+           familyi={K\bibinitperiod},
+           given={Simon},
+           giveni={S\bibinitperiod}}}%
+        {{hash=9d21939e5a4593f5d4796e4e4f3179b6}{%
+           family={Grigoriu},
+           familyi={G\bibinitperiod},
+           given={Mircea\bibnamedelima D.},
+           giveni={M\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=2d43ff178c87b2ec577eb3f6f27f9793}{%
+           family={Kammer},
+           familyi={K\bibinitperiod},
+           given={David\bibnamedelima S.},
+           giveni={D\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+      }
+      \strng{namehash}{c53a460cb1fe202a8858d29b42e3ccb9}
+      \strng{fullhash}{2da84b5ce2f41fa7dedddd2bcafecb9f}
+      \strng{bibnamehash}{2da84b5ce2f41fa7dedddd2bcafecb9f}
+      \strng{authorbibnamehash}{2da84b5ce2f41fa7dedddd2bcafecb9f}
+      \strng{authornamehash}{c53a460cb1fe202a8858d29b42e3ccb9}
+      \strng{authorfullhash}{2da84b5ce2f41fa7dedddd2bcafecb9f}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of the Mechanics and Physics of Solids}
+      \field{title}{Stochastic properties of static friction}
+      \field{volume}{147}
+      \field{year}{2021}
+      \field{pages}{104242}
+      \range{pages}{1}
+    \endentry
+    \entry{coumans2021}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=cb5d8e1abc8f025ae375181f1fa6aa94}{%
+           family={Coumans},
+           familyi={C\bibinitperiod},
+           given={Erwin},
+           giveni={E\bibinitperiod}}}%
+        {{hash=4e894fab619f8dd9d682b92cc981bf43}{%
+           family={Bai},
+           familyi={B\bibinitperiod},
+           given={Yunfei},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \strng{namehash}{0906d7c6225b74c0d4b0cc1970130529}
+      \strng{fullhash}{0906d7c6225b74c0d4b0cc1970130529}
+      \strng{bibnamehash}{0906d7c6225b74c0d4b0cc1970130529}
+      \strng{authorbibnamehash}{0906d7c6225b74c0d4b0cc1970130529}
+      \strng{authornamehash}{0906d7c6225b74c0d4b0cc1970130529}
+      \strng{authorfullhash}{0906d7c6225b74c0d4b0cc1970130529}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{http://pybullet.org}}
+      \field{title}{PyBullet, a Python module for physics simulation for games, robotics and machine learning}
+      \field{year}{2016--2021}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

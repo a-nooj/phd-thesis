@@ -1,0 +1,119 @@
+\documentclass[letterpaper, 10 pt, journal, twoside]{IEEEtran}  % Comment this line out if you need a4paper
+
+\IEEEoverridecommandlockouts                              % This command is only needed if 
+                                                          % you want to use the \thanks command
+
+% \overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+% See https://tex.stackexchange.com/questions/247104/hyperref-doesnt-link-cite-command
+\makeatletter
+\let\NAT@parse\undefined
+\makeatother
+
+\newcommand\copyrighttext{%
+  \footnotesize \textcopyright 2021 IEEE. Personal use of this material is permitted.
+  Permission from IEEE must be obtained for all other uses, in any current or future
+  media, including reprinting/republishing this material for advertising or promotional
+  purposes, creating new collective works, for resale or redistribution to servers or
+  lists, or reuse of any copyrighted component of this work in other works.}
+\newcommand\copyrightnotice{%
+\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=south,yshift=2pt] at (current page.south) {\fbox{\parbox{\dimexpr\textwidth-\fboxsep-\fboxrule\relax}{\copyrighttext}}};
+\end{tikzpicture}%
+}
+
+% \usepackage{bm}
+\usepackage[usenames, dvipsnames, table]{xcolor}
+\let\labelindent\relax
+\usepackage{enumitem}
+\usepackage[ruled,linesnumbered,resetcount,vlined]{algorithm2e}
+\SetKwComment{Comment}{/* }{ */}
+\SetKwComment{SmallComment}{//}{}
+\SetKwFor{For}{for (}{)}{}
+\usepackage{graphicx} % for pdf, bitmapped graphics files
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+
+\let\comment=\relax
+\usepackage[markup=bfit, deletedmarkup=sout, authormarkup=superscript, commandnameprefix=ifneeded]{changes}
+\definechangesauthor[name={td}, color=      red] {TODO}
+\definechangesauthor[name={bh}, color= NavyBlue] {BH}
+\definechangesauthor[name={ar}, color=PineGreen] {AR}
+\definechangesauthor[name={ap}, color=Purple] {AP}
+\definechangesauthor[name={yt}, color=Orange] {YT}
+\definechangesauthor[name={jk}, color=RubineRed] {JK}
+\newcommand{\td}[1]{\added[id=TODO]{#1}}
+\newcommand{\bh}[1]{\added[id=  BH]{#1}}
+\newcommand{\ar}[1]{\added[id=  AR]{#1}}
+\newcommand{\ap}[1]{\added[id=  AP]{#1}}
+\newcommand{\apsout}[1]{\deleted[id=  AP]{#1}}
+\newcommand{\yt}[1]{\added[id=  YT]{#1}}
+\newcommand{\ytsout}[1]{\deleted[id=  YT]{#1}}
+\newcommand{\jk}[1]{\added[id=  JK]{#1}}
+
+
+\newcommand{\centered}[1]{\begin{tabular}{c} #1 \end{tabular}}
+
+\usepackage{subcaption}
+\usepackage[]{hyperref}
+\colorlet{mylinkcolor}{black}
+\colorlet{mycitecolor}{black}
+\colorlet{myurlcolor}{black}
+
+\hypersetup{
+  linkcolor  = mylinkcolor,
+  citecolor  = mycitecolor,
+  urlcolor   = myurlcolor,
+  colorlinks = true,
+}
+
+\usepackage[capitalize,noabbrev]{cleveref}
+
+\captionsetup{font=small}
+
+\begin{document}
+
+\title{PokeRRT: Poking as a Skill and Failure Recovery Tactic for Planar Non-Prehensile Manipulation}
+
+\author{Anuj Pasricha$^{*}$, Yi-Shiuan Tung, Bradley Hayes, and Alessandro Roncone%
+\thanks{Manuscript received: September 9, 2021; Revised: December 11, 2021; Accepted: January 14, 2022.}
+\thanks{This paper was recommended for publication by Editor Stephen J. Guy upon evaluation of the Associate Editor and Reviewers' comments.}
+\thanks{The authors are with the Department of Computer Science,
+	     University of Colorado Boulder, 1111 Engineering Drive, Boulder, CO USA
+        {\tt\footnotesize firstname.lastname@colorado.edu}}%
+\thanks{$*$ Corresponding author.}%
+\thanks{Digital Object Identifier (DOI): see top of this page.}
+}
+
+\markboth{IEEE Robotics and Automation Letters. Preprint Version. Accepted January, 2022}
+{Pasricha \MakeLowercase{\textit{et al.}}: P\MakeLowercase{oke}RRT: Poking as a Skill and Failure Recovery Tactic for Planar Non-Prehensile Manipulation}
+
+\maketitle
+\copyrightnotice
+
+\begin{abstract}
+% \jk{Y'all are all from the same place, so no need for the '1' superscript in the author list. }
+In this work, we introduce \textsl{PokeRRT}, a novel motion planning algorithm that demonstrates poking as an effective non-prehensile manipulation skill to enable fast manipulation of objects and increase the size of a robot's reachable workspace. We showcase poking as a failure recovery tactic used synergistically with pick-and-place for resiliency in cases where pick-and-place initially fails or is unachievable. Our experiments demonstrate the efficiency of the proposed framework in planning object trajectories using poking manipulation in uncluttered and cluttered environments. In addition to quantitatively and qualitatively demonstrating the adaptability of \textsl{PokeRRT} to different scenarios in both simulation and real-world settings, our results show the advantages of poking over pushing and grasping in terms of success rate and task time.%
+\end{abstract}
+\begin{IEEEkeywords}
+Manipulation planning, motion and path planning, dexterous manipulation, nonprehensile manipulation, kinodynamic planning.
+\end{IEEEkeywords}
+
+\input{1.introduction}
+\input{2.background}
+\input{3.methods}
+\input{4.evaluation}
+\input{5.conclusion}
+
+\bibliographystyle{IEEEtran}
+\bibliography{icra2022}
+
+
+\end{document}

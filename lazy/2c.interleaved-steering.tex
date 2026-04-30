@@ -1,0 +1,8 @@
+In contrast to sequential approaches, interleaved methods cast motion planning as a search problem, alternating between state space sampling and control propagation to find a valid trajectory.
+These methods often employ steering functions, or inverse models, to delineate a set of controls connecting two arbitrary points in the state space. 
+For instance, DIMT-RRT utilizes a quadratic steering function to account for joint acceleration limits and non-zero initial and goal velocities \cite{kunz2014probabilistically}.
+AVP computes the range of reachable velocities at the end of a path, given reachable velocities at the start of it \cite{pham2013kinodynamic,johnson2012optimal}.
+LQR-RRT* uses a quadratic cost function and linearized dynamics in conjunction with a linear-quadratic regulator (LQR) to connect consecutive states in an RRT* tree \cite{perez2012lqr,caldwell2018fast}.
+Notably, the optimization techniques discussed in sequential methods can also be used as steering functions in interleaved approaches.
+In all, these techniques enable precise goal state attainment, allow to perform backward searches, and facilitate exact tree connections in bidirectional searches, thus expediting the planning process \cite{lavalle2006planning}.
+However, they come with a set of challenges. Steering functions may not exist or could be difficult to design for a given dynamical system. Furthermore, exact state connections may not be reliable in real-world settings due to uncertainties and the use of optimization as steering may cause planning to get stuck in local minima \cite{littlefield2020efficient}.

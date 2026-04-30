@@ -1,0 +1,44 @@
+\begin{algorithm}\footnotesize
+\caption{LazyBoE}\label{algo:lazyboe}
+  \KwIn{Start State $q_0$, Goal Region $\mathcal{Q}_{goal}$, Edge Bundle $\mathcal{E}$, Neighborhood Radius $\theta$}
+  \KwOut{Path $\pi$}
+  $\pi \leftarrow \emptyset$\\
+  $\mathcal{V} \leftarrow \{q_0\}$\\
+  \While{$\mathcal{V} \neq \emptyset$} {
+    \tcp{equivalent to SELECT(.) in \cite{shome2021asymptotically}}
+    $v \leftarrow \text{PICK\_NODE}(\mathcal{V})$\\
+    \tcp{update $\pi$ to lower cost path}
+    \If{$v \in \mathcal{Q}_{goal}$ \textbf{and} $!\text{IS\_LAZY}(\text{EDGE\_TO}(v))$} {
+        \If{cost$(\pi) > $ cost$(\text{PATH\_TO}(v))$} {
+            $\pi \leftarrow \text{PATH\_TO}(v)$
+        }
+    }
+    \If{IS\_LAZY(EDGE\_TO(v))} {
+        $\mathcal{E}_{\text{neighbor}} \leftarrow \text{RADIAL\_NN}(v, \theta / 2, \mathcal{E})$
+    }
+    \Else {
+        $\mathcal{E}_{\text{neighbor}} \leftarrow \text{RADIAL\_NN}(v, \theta, \mathcal{E})$
+    }
+    %\\
+    $\mathcal{V}_{\text{next}} \leftarrow \emptyset$\\
+    \ForEach{$e \in \mathcal{E}_{\text{neighbor}}$} {
+        $P_{\text{select}} \leftarrow (1 - e.P_{\text{collision}}) * e.P_{\text{lazy\_prop}}$\\
+        $\text{apply\_lazy\_prop} \leftarrow rand() < P_{\text{select}}$\\
+        \If{apply\_lazy\_prop} {
+            $\mathcal{V}_{\text{next}} \leftarrow \mathcal{V}_{\text{next}} \cup e.q_f$\\
+        }
+        \ElseIf{!apply\_lazy\_prop \textbf{or} $\text{!IS\_LAZY(EDGE\_TO(v))}$ \textbf{or} (IS\_LAZY(EDGE\_TO(v)) \textbf{and} SHOULD\_TERMINATE\_LAZY())} {
+            \tcp{simulate}
+            $e_{new} \leftarrow f(v, e.u, e.\Delta t)$\\
+            \If{$\text{COLLISION\_FREE}(e_{new})$ \\
+   \textbf{and} $\text{WITHIN\_LIMITS}(e_{new})$ \\
+   \textbf{and} $\text{IS\_CONTINUOUS}(e_{new})$} {
+                $\mathcal{V}_{\text{next}} \leftarrow \mathcal{V}_{\text{next}} \cup e_{new}.q_f$
+            }
+        }
+    }
+    $\mathcal{V} \leftarrow \mathcal{V} \cup \mathcal{V}_{\text{next}}$
+
+  }
+  \textbf{return} $\pi$ 
+\end{algorithm}

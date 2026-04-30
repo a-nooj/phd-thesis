@@ -1,0 +1,24 @@
+\input{figs/algo}
+
+\subsection{Edge Perturbation for Lazy Propagation and Collision-Checking}\label{sec:methods-perturbation}
+
+The task of generating an edge bundle that uniformly samples the state and control spaces of a robot is a computationally intensive process, particularly in the case of a high-DoF robot and increased environment complexity.
+A substantial part of this computational workload is incurred again during the planning stage, where edges emerging from $\theta$-regions around planning tree nodes undergo simulation and collision checks \cite{shome2021asymptotically}. This $\theta$ is dependent on state-space dimensions and denotes the maximum level of similarity in the state space, thereby bounding the set of valid controls.
+Additionally, the greedy, heuristic-biased search strategy used by the BoE planner has the potential to get stuck in local minima, thereby necessitating a method for quickly evaluating these greedy paths without simulating them entirely. This motivates the need for lazy approaches to simulation and collision-checking in the kinodynamic setting.
+More specifically, we need to address the following two questions for each edge $e_i \in \mathcal{E}$:
+\begin{enumerate}
+    \item Can $e_i$ be lazily propagated instead of undergoing a full simulation?
+    \item What is the probability that a lazily propagated edge will result in a collision?
+\end{enumerate}
+
+We approach the answers to these questions empirically by conducting a perturbation analysis on each edge in the bundle. A disturbance $\Delta q$ in the range $(0, \theta]$ is added to the start state for each edge. The resultant end state for an $e_i$ is computed as $\hat{q}_f^i = f(q_0^i + \Delta q, \boldsymbol{\dot{q}}^i)$. In the limit that the number of perturbations for each edge ($p$) approaches infinity, we are able to accurately estimate both the maximum error in the end state, $\Delta q_f^i = \text{max}(\|e.\boldsymbol{q}_f - \hat{\boldsymbol{q}}_f)\|_2$), and the potential collision likelihood.
+To address the first question, an edge viable for lazy propagation is characterized as one that confines the end-state error within the region radius $\theta$, so that viable edges for the next level of propagations can be picked from this fixed $\theta$-neighborhood.
+However, this criterion is subjected to a more stringent requirement, as depicted in \cref{fig:theta_over_2}, i.e., the end-state error for $e_i$ must be confined to $\theta / 2$ if $e_i$ undergoes lazy propagation to ensure the worst-case error between its real simulation and the following connection to the lazy edge is $\theta$.
+Put differently, the probability that an edge can be lazily propagated $P_{\text{lazy\_prop}}^i = Pr(\Delta q_f^i < \theta / 2)$ is the ratio of the number of valid (collision-free and dynamically-feasible) perturbations for which the maximum end state error is $\theta / 2$ to the total number of valid perturbations, $p_{valid}$ (\cref{fig:pert_analysis}a).
+Similarly, in response to the second question, we can quantify the probability that an edge will collide when lazily propagated, i.e., $P_{\text{collision}}^i = Pr(e_i \text{ collides})$, as the ratio of the number of edges that collide to the total number of perturbations $p$ (\cref{fig:pert_analysis}b). This is in contrast to prior work which only considers lazy collision checking in the geometric planning domain and takes a deterministic approach, iteratively discarding edges that are not collision-free \cite{kavraki2000path,hauser2015lazy}. The neighborhood-based control propagation in our work allows for a more nuanced and stochastic approach to lazy collision checking by allowing edges to be re-explored, potentially uncovering paths that would be prematurely eliminated by deterministic methods. In this work, we primarily deal with self-collisions and environmental collisions between the robot and its surrounding environment.
+These two probability values for each edge extend the definition of an edge bundle $\mathcal{E}$ to the following:
+\begin{center}
+$\mathcal{E} = \{(q_0, \boldsymbol{\dot{q}}, \Delta t, q_f, P_{\text{lazy\_prop}}, P_{\text{collision}}) \mid q_0, q_f \in \mathcal{Q}, \hspace{3pt} \boldsymbol{\dot{q}} \in \mathcal{U}\}$
+\end{center}
+
+These two metrics, associated with each edge, are used to guide the planner by deciding when to apply lazy methods for faster planning times.

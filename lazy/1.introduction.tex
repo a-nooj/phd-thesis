@@ -1,0 +1,26 @@
+\section{Introduction}\label{sec:introduction}
+
+Robotic manipulation in complex operational environments necessitates the integration of constraints at various levels of abstraction (i.e., kinematics, statics, quasi-statics, and dynamics) in order to effectively govern the interaction between the robot and its surrounding environment \cite{ruggiero2018nonprehensile,mason2018toward}.
+Importantly, dynamics extends the foundational principles of kinematics, statics, and quasi-statics by incorporating the analysis of forces and torques in robot and object motion in real-world tasks such as liquid transport \cite{ichnowski2022gomp}, deformable object manipulation \cite{salhotra2022learning}, and nonprehensile maneuvers \cite{pasricha2022pokerrt,jia2019batting} (\cref{fig:first-page}).
+
+The complexities (and opportunities) introduced by dynamic-based analysis of motion planning set the stage for kinodynamic planning, a class of methods that incorporate these dynamic constraints into planning, consequently extending classical kinematic or geometric planning methods beyond the robot's state space to its control space \cite{schmerling2019kinodynamic,lavalle2001randomized}.
+Within this scope, 
+kinodynamic planning frameworks can be broadly classified into two paradigms:
+\textsl{sequential} and \textsl{interleaved}. 
+Sequential approaches engage first in geometric path planning and then in time parameterization, a sequence that may result in dynamically-infeasible trajectories and long planning times \cite{pham2014general, kuntz2019fast}. 
+In contrast, interleaved methods present a more integrated solution by enabling simultaneous exploration of state and control spaces, thereby ensuring dynamically-valid trajectories, if they exist \cite{littlefield2020efficient, li2016asymptotically}.
+It is worth noting that a majority of methods in the interleaved domain are \textsl{single-query} methods.
+In a single-query context, each new planning problem necessitates the reconstruction of the planning tree, thereby limiting computational efficiency. 
+This issue becomes of particular importance in kinodynamic planning due to the higher dimensional space involved. 
+To this end, our work introduces a multi-query approach in the interleaved planning domain, aimed at reducing computation times across multiple planning queries. This contribution obviates the need to re-explore the state and control spaces and their corresponding search trees for each new task, offering a more efficient solution.
+
+\input{figs/first-page.tex}
+
+More specifically, our planner is conceptually aligned with the bundle of edges (BoE) framework, which adapts the probabilistic roadmap method from a kinematic setting to the kinodynamic domain \cite{kavraki1996probabilistic}. 
+The BoE planner % searches for a dynamically-constrainted trajectory through a set
+employs a forward search through disconnected, randomized rollouts of a dynamics model \cite{shome2021asymptotically}. This process is computationally demanding due to a large branching factor and is contingent upon both accurate simulation models and reliable collision checkers---assumptions that may not hold in complex, real-world conditions.
+Crucially, it is these very processes---forward propagation and collision checking---that contribute significantly to the computational burden of the planner. This underscores the need for `\textsl{lazy}' strategies that postpone these operations until absolutely required, thus achieving a trade-off between efficiency and accuracy.  
+Toward this goal, in this work we introduce the concepts of lazy forward propagation and lazy collision checking in the context of kinodynamic motion planning for BoE, which we refer to as \textsl{LazyBoE}. 
+By applying rollouts from the edge bundle to the planning tree directly without resimulating them, these techniques not only significantly reduce planning time but also enable the application of this approach to higher-dimensional systems commonly encountered in real-world applications without compromising the asymptotic optimality guarantees previously established in \cite{shome2021asymptotically}.
+
+In this work, we delineate three key contributions: i) a novel method for the efficient generation of state and control space rollouts from the forward dynamics model of a robot using varying control sequences instead of traditional piecewise-constant controls, aimed at reducing planning times across multiple queries; ii) the introduction of `lazy' forward propagation and `lazy' collision checking strategies that employ bounded end-state perturbations and prioritize forward simulations by their likelihood of collision, thereby mitigating the computational load associated with physics-based simulations; iii) the \textsl{LazyBoE} kinodynamic motion planner, a robust framework that capitalizes on the aforementioned strategies to rapidly and reliably compute dynamically valid trajectories for complex tasks. We validate our approach on a 7DoF robot arm, and demonstrate how it enables a broad class of real-world tasks.

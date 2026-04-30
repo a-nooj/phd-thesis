@@ -1,0 +1,236 @@
+\begin{thebibliography}{45}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Orthey et~al.(2023)Orthey, Chamzas, and Kavraki]{orthey2023sampling}
+A.~Orthey, C.~Chamzas, and L.~E. Kavraki.
+\newblock Sampling-based motion planning: A comparative review.
+\newblock \emph{Annual Review of Control, Robotics, and Autonomous Systems}, 7, 2023.
+
+\bibitem[Berscheid and Kr{\"o}ger(2021)]{berscheid2021jerk}
+L.~Berscheid and T.~Kr{\"o}ger.
+\newblock Jerk-limited real-time trajectory generation with arbitrary target states.
+\newblock \emph{Robotics: Science and Systems XVII}, 2021.
+
+\bibitem[Shome and Kavraki(2021)]{shome2021asymptotically}
+R.~Shome and L.~E. Kavraki.
+\newblock Asymptotically optimal kinodynamic planning using bundles of edges.
+\newblock In \emph{2021 IEEE International Conference on Robotics and Automation (ICRA)}, pages 9988--9994. IEEE, 2021.
+
+\bibitem[Ichnowski et~al.(2022)Ichnowski, Avigal, Liu, and Goldberg]{ichnowski2022gomp}
+J.~Ichnowski, Y.~Avigal, Y.~Liu, and K.~Goldberg.
+\newblock Gomp-fit: Grasp-optimized motion planning for fast inertial transport.
+\newblock In \emph{2022 international conference on robotics and automation (ICRA)}, pages 5255--5261. IEEE, 2022.
+
+\bibitem[Arrizabalaga et~al.(2024)Arrizabalaga, Pries, Laha, Li, Haddadin, and Ryll]{arrizabalaga2024slosh}
+J.~Arrizabalaga, L.~Pries, R.~Laha, R.~Li, S.~Haddadin, and M.~Ryll.
+\newblock Geometric slosh-free tracking for robotic manipulators.
+\newblock In \emph{2024 IEEE International Conference on Robotics and Automation (ICRA)}, pages 1226--1232, 2024.
+\newblock \doi{10.1109/ICRA57147.2024.10610813}.
+
+\bibitem[Chi et~al.(2023)Chi, Feng, Du, Xu, Cousineau, Burchfiel, and Song]{chi2023diffusionpolicy}
+C.~Chi, S.~Feng, Y.~Du, Z.~Xu, E.~Cousineau, B.~Burchfiel, and S.~Song.
+\newblock Diffusion policy: Visuomotor policy learning via action diffusion.
+\newblock In \emph{Proceedings of Robotics: Science and Systems (RSS)}, 2023.
+
+\bibitem[Sridhar et~al.(2024)Sridhar, Shah, Glossop, and Levine]{sridhar2024nomad}
+A.~Sridhar, D.~Shah, C.~Glossop, and S.~Levine.
+\newblock Nomad: Goal masked diffusion policies for navigation and exploration.
+\newblock In \emph{2024 IEEE International Conference on Robotics and Automation (ICRA)}, pages 63--70. IEEE, 2024.
+
+\bibitem[Carvalho et~al.(2023)Carvalho, Le, Baierl, Koert, and Peters]{carvalho2023motion}
+J.~Carvalho, A.~T. Le, M.~Baierl, D.~Koert, and J.~Peters.
+\newblock Motion planning diffusion: Learning and planning of robot motions with diffusion models.
+\newblock In \emph{2023 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)}, pages 1916--1923. IEEE, 2023.
+
+\bibitem[Saha et~al.(2024)Saha, Mandadi, Reddy, Srikanth, Agarwal, Sen, Singh, and Krishna]{saha2024edmp}
+K.~Saha, V.~Mandadi, J.~Reddy, A.~Srikanth, A.~Agarwal, B.~Sen, A.~Singh, and M.~Krishna.
+\newblock Edmp: Ensemble-of-costs-guided diffusion for motion planning.
+\newblock In \emph{2024 IEEE International Conference on Robotics and Automation (ICRA)}, pages 10351--10358. IEEE, 2024.
+
+\bibitem[Coleman et~al.(2014)Coleman, Sucan, Chitta, and Correll]{coleman2014reducing}
+D.~Coleman, I.~Sucan, S.~Chitta, and N.~Correll.
+\newblock Reducing the barrier to entry of complex robotic software: a moveit! case study.
+\newblock \emph{arXiv preprint arXiv:1404.3785}, 2014.
+
+\bibitem[O’Neill et~al.(2024)O’Neill, Rehman, Maddukuri, Gupta, Padalkar, Lee, Pooley, Gupta, Mandlekar, Jain, et~al.]{o2024open}
+A.~O’Neill, A.~Rehman, A.~Maddukuri, A.~Gupta, A.~Padalkar, A.~Lee, A.~Pooley, A.~Gupta, A.~Mandlekar, A.~Jain, et~al.
+\newblock Open x-embodiment: Robotic learning datasets and rt-x models: Open x-embodiment collaboration 0.
+\newblock In \emph{2024 IEEE International Conference on Robotics and Automation (ICRA)}, pages 6892--6903. IEEE, 2024.
+
+\bibitem[Team et~al.(2024)Team, Ghosh, Walke, Pertsch, Black, Mees, Dasari, Hejna, Kreiman, Xu, et~al.]{team2024octo}
+O.~M. Team, D.~Ghosh, H.~Walke, K.~Pertsch, K.~Black, O.~Mees, S.~Dasari, J.~Hejna, T.~Kreiman, C.~Xu, et~al.
+\newblock Octo: An open-source generalist robot policy.
+\newblock \emph{arXiv preprint arXiv:2405.12213}, 2024.
+
+\bibitem[Zitkovich et~al.(2023)Zitkovich, Yu, Xu, Xu, Xiao, Xia, Wu, Wohlhart, Welker, Wahid, et~al.]{zitkovich2023rt}
+B.~Zitkovich, T.~Yu, S.~Xu, P.~Xu, T.~Xiao, F.~Xia, J.~Wu, P.~Wohlhart, S.~Welker, A.~Wahid, et~al.
+\newblock Rt-2: Vision-language-action models transfer web knowledge to robotic control.
+\newblock In \emph{Conference on Robot Learning}, pages 2165--2183. PMLR, 2023.
+
+\bibitem[Abderezaei et~al.(2024)Abderezaei, Pasricha, Klausenstock, and Roncone]{abderezaei2024clutter}
+A.~Abderezaei, A.~Pasricha, A.~Klausenstock, and A.~Roncone.
+\newblock Clutter-aware spill-free liquid transport via learned dynamics.
+\newblock In \emph{2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)}, pages 9908--9915. IEEE, 2024.
+
+\bibitem[Kuntz et~al.(2019)Kuntz, Bowen, and Alterovitz]{kuntz2019fast}
+A.~Kuntz, C.~Bowen, and R.~Alterovitz.
+\newblock Fast anytime motion planning in point clouds by interleaving sampling and interior point optimization.
+\newblock In \emph{Robotics Research: The 18th International Symposium ISRR}, pages 929--945. Springer, 2019.
+
+\bibitem[Li et~al.(2015)Li, Littlefield, and Bekris]{li2015sparse}
+Y.~Li, Z.~Littlefield, and K.~E. Bekris.
+\newblock Sparse methods for efficient asymptotically optimal kinodynamic planning.
+\newblock In \emph{Algorithmic Foundations of Robotics XI: Selected Contributions of the Eleventh International Workshop on the Algorithmic Foundations of Robotics}, pages 263--282. Springer, 2015.
+
+\bibitem[Nayak and Otte(2022)]{nayak2022bidirectional}
+S.~Nayak and M.~W. Otte.
+\newblock Bidirectional sampling-based motion planning without two-point boundary value solution.
+\newblock \emph{IEEE Transactions on Robotics}, 38\penalty0 (6):\penalty0 3636--3654, 2022.
+
+\bibitem[Pasricha and Roncone(2024)]{pasricha2024virtues}
+A.~Pasricha and A.~Roncone.
+\newblock The virtues of laziness: Multi-query kinodynamic motion planning with lazy methods.
+\newblock In \emph{2024 IEEE International Conference on Robotics and Automation (ICRA)}, pages 14286--14292. IEEE, 2024.
+
+\bibitem[Kingston et~al.(2018)Kingston, Moll, and Kavraki]{kingston2018sampling}
+Z.~Kingston, M.~Moll, and L.~E. Kavraki.
+\newblock Sampling-based methods for motion planning with constraints.
+\newblock \emph{Annual review of control, robotics, and autonomous systems}, 1\penalty0 (1):\penalty0 159--185, 2018.
+
+\bibitem[Ichnowski et~al.(2020)Ichnowski, Avigal, Satish, and Goldberg]{ichnowski2020deep}
+J.~Ichnowski, Y.~Avigal, V.~Satish, and K.~Goldberg.
+\newblock Deep learning can accelerate grasp-optimized motion planning.
+\newblock \emph{Science Robotics}, 5\penalty0 (48):\penalty0 eabd7710, 2020.
+
+\bibitem[Yan et~al.(2024)Yan, Stouraitis, Moura, Xu, Gienger, and Vijayakumar]{yan2024impact}
+L.~Yan, T.~Stouraitis, J.~Moura, W.~Xu, M.~Gienger, and S.~Vijayakumar.
+\newblock Impact-aware bimanual catching of large-momentum objects.
+\newblock \emph{IEEE Transactions on Robotics}, 2024.
+
+\bibitem[Kim et~al.(2014)Kim, Shukla, and Billard]{kim2014catching}
+S.~Kim, A.~Shukla, and A.~Billard.
+\newblock Catching objects in flight.
+\newblock \emph{IEEE Transactions on Robotics}, 30\penalty0 (5):\penalty0 1049--1065, 2014.
+
+\bibitem[Dogar and Srinivasa(2011)]{dogar2011framework}
+M.~R. Dogar and S.~S. Srinivasa.
+\newblock A framework for push-grasping in clutter.
+\newblock In \emph{Robotics: Science and systems}, volume~2, 2011.
+
+\bibitem[Pasricha et~al.(2022)Pasricha, Tung, Hayes, and Roncone]{pasricha2022pokerrt}
+A.~Pasricha, Y.-S. Tung, B.~Hayes, and A.~Roncone.
+\newblock Pokerrt: Poking as a skill and failure recovery tactic for planar non-prehensile manipulation.
+\newblock \emph{IEEE Robotics and Automation Letters}, 7\penalty0 (2):\penalty0 4480--4487, 2022.
+
+\bibitem[Ruggiero et~al.(2018)Ruggiero, Lippiello, and Siciliano]{ruggiero2018nonprehensile}
+F.~Ruggiero, V.~Lippiello, and B.~Siciliano.
+\newblock Nonprehensile dynamic manipulation: A survey.
+\newblock \emph{IEEE Robotics and Automation Letters}, 3\penalty0 (3):\penalty0 1711--1718, 2018.
+
+\bibitem[Yu et~al.(2016)Yu, Bauza, Fazeli, and Rodriguez]{yu2016more}
+K.-T. Yu, M.~Bauza, N.~Fazeli, and A.~Rodriguez.
+\newblock More than a million ways to be pushed. a high-fidelity experimental dataset of planar pushing.
+\newblock In \emph{2016 IEEE/RSJ international conference on intelligent robots and systems (IROS)}, pages 30--37. IEEE, 2016.
+
+\bibitem[Zeng et~al.(2020)Zeng, Song, Lee, Rodriguez, and Funkhouser]{zeng2020tossingbot}
+A.~Zeng, S.~Song, J.~Lee, A.~Rodriguez, and T.~Funkhouser.
+\newblock Tossingbot: Learning to throw arbitrary objects with residual physics.
+\newblock \emph{IEEE Transactions on Robotics}, 36\penalty0 (4):\penalty0 1307--1319, 2020.
+
+\bibitem[Muchacho et~al.(2022)Muchacho, Laha, Figueredo, and Haddadin]{muchacho2022solution}
+R.~I.~C. Muchacho, R.~Laha, L.~F. Figueredo, and S.~Haddadin.
+\newblock A solution to slosh-free robot trajectory optimization.
+\newblock In \emph{2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)}, pages 223--230. IEEE, 2022.
+
+\bibitem[Avigal et~al.(2022)Avigal, Ichnowski, Cao, and Goldberg]{avigal2022gomp}
+Y.~Avigal, J.~Ichnowski, M.~Y. Cao, and K.~Goldberg.
+\newblock Gomp-st: Grasp optimized motion planning for suction transport.
+\newblock In \emph{International Workshop on the Algorithmic Foundations of Robotics}, pages 488--505. Springer, 2022.
+
+\bibitem[Wang et~al.(2001)Wang, Timoszyk, and Bobrow]{wang2001payload}
+C.-Y. Wang, W.~K. Timoszyk, and J.~E. Bobrow.
+\newblock Payload maximization for open chained manipulators: finding weightlifting motions for a puma 762 robot.
+\newblock \emph{IEEE Transactions on Robotics and Automation}, 17\penalty0 (2):\penalty0 218--224, 2001.
+
+\bibitem[Korayem and Nikoobin(2008)]{korayem2008maximum}
+M.~Korayem and A.~Nikoobin.
+\newblock Maximum payload for flexible joint manipulators in point-to-point task using optimal control approach.
+\newblock \emph{The International Journal of Advanced Manufacturing Technology}, 38:\penalty0 1045--1060, 2008.
+
+\bibitem[Nho and Meckl(2003)]{nho2003intelligent}
+H.~C. Nho and P.~Meckl.
+\newblock Intelligent feedforward control and payload estimation for a two-link robotic manipulator.
+\newblock \emph{IEEE/ASME transactions on mechatronics}, 8\penalty0 (2):\penalty0 277--282, 2003.
+
+\bibitem[Kim et~al.(2021)Kim, Balakirsky, Ahlin, Marcum, and Mazumdar]{kim2021enhancing}
+R.~Kim, S.~Balakirsky, K.~Ahlin, M.~Marcum, and A.~Mazumdar.
+\newblock Enhancing payload capacity with dual-arm manipulation and adaptable mechanical intelligence.
+\newblock \emph{Journal of Mechanisms and Robotics}, 13\penalty0 (2):\penalty0 021012, 2021.
+
+\bibitem[Yan et~al.(2016)Yan, Mu, Xu, and Yang]{yan2016coordinated}
+L.~Yan, Z.~Mu, W.~Xu, and B.~Yang.
+\newblock Coordinated compliance control of dual-arm robot for payload manipulation: Master-slave and shared force control.
+\newblock In \emph{2016 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)}, pages 2697--2702. IEEE, 2016.
+
+\bibitem[Fishman et~al.(2023)Fishman, Murali, Eppner, Peele, Boots, and Fox]{fishman2023motion}
+A.~Fishman, A.~Murali, C.~Eppner, B.~Peele, B.~Boots, and D.~Fox.
+\newblock Motion policy networks.
+\newblock In \emph{Conference on Robot Learning}, pages 967--977. PMLR, 2023.
+
+\bibitem[Qureshi et~al.(2020)Qureshi, Miao, Simeonov, and Yip]{qureshi2020motion}
+A.~H. Qureshi, Y.~Miao, A.~Simeonov, and M.~C. Yip.
+\newblock Motion planning networks: Bridging the gap between learning-based and classical motion planners.
+\newblock \emph{IEEE Transactions on Robotics}, 37\penalty0 (1):\penalty0 48--66, 2020.
+
+\bibitem[Ajay et~al.(2023)Ajay, Du, Gupta, Tenenbaum, Jaakkola, and Agrawal]{ajay2023is}
+A.~Ajay, Y.~Du, A.~Gupta, J.~B. Tenenbaum, T.~S. Jaakkola, and P.~Agrawal.
+\newblock Is conditional generative modeling all you need for decision making?
+\newblock In \emph{The Eleventh International Conference on Learning Representations}, 2023.
+\newblock URL \url{https://openreview.net/forum?id=sP1fo2K9DFG}.
+
+\bibitem[Ho et~al.(2020)Ho, Jain, and Abbeel]{ho2020denoising}
+J.~Ho, A.~Jain, and P.~Abbeel.
+\newblock Denoising diffusion probabilistic models.
+\newblock \emph{Advances in neural information processing systems}, 33:\penalty0 6840--6851, 2020.
+
+\bibitem[Sundaralingam et~al.(2023)Sundaralingam, Hari, Fishman, Garrett, Van~Wyk, Blukis, Millane, Oleynikova, Handa, Ramos, et~al.]{sundaralingam2023curobo}
+B.~Sundaralingam, S.~K.~S. Hari, A.~Fishman, C.~Garrett, K.~Van~Wyk, V.~Blukis, A.~Millane, H.~Oleynikova, A.~Handa, F.~Ramos, et~al.
+\newblock Curobo: Parallelized collision-free robot motion generation.
+\newblock In \emph{2023 IEEE International Conference on Robotics and Automation (ICRA)}, pages 8112--8119. IEEE, 2023.
+
+\bibitem[Gaz et~al.(2019)Gaz, Cognetti, Oliva, Giordano, and De~Luca]{gaz2019dynamic}
+C.~Gaz, M.~Cognetti, A.~Oliva, P.~R. Giordano, and A.~De~Luca.
+\newblock Dynamic identification of the franka emika panda robot with retrieval of feasible parameters using penalty-based optimization.
+\newblock \emph{IEEE Robotics and Automation Letters}, 4\penalty0 (4):\penalty0 4147--4154, 2019.
+
+\bibitem[Perez et~al.(2018)Perez, Strub, De~Vries, Dumoulin, and Courville]{perez2018film}
+E.~Perez, F.~Strub, H.~De~Vries, V.~Dumoulin, and A.~Courville.
+\newblock Film: Visual reasoning with a general conditioning layer.
+\newblock In \emph{Proceedings of the AAAI conference on artificial intelligence}, volume~32, 2018.
+
+\bibitem[Song et~al.(2021)Song, Meng, and Ermon]{song2021denoising}
+J.~Song, C.~Meng, and S.~Ermon.
+\newblock Denoising diffusion implicit models.
+\newblock In \emph{International Conference on Learning Representations}, 2021.
+\newblock URL \url{https://openreview.net/forum?id=St1giarCHLP}.
+
+\bibitem[Thomason et~al.(2024)Thomason, Kingston, and Kavraki]{thomason2024motions}
+W.~Thomason, Z.~Kingston, and L.~E. Kavraki.
+\newblock Motions in microseconds via vectorized sampling-based planning.
+\newblock In \emph{2024 IEEE International Conference on Robotics and Automation (ICRA)}, pages 8749--8756. IEEE, 2024.
+
+\bibitem[LaValle and Kuffner~Jr(2001)]{lavalle2001randomized}
+S.~M. LaValle and J.~J. Kuffner~Jr.
+\newblock Randomized kinodynamic planning.
+\newblock \emph{The international journal of robotics research}, 20\penalty0 (5):\penalty0 378--400, 2001.
+
+\bibitem[Huang et~al.(2024)Huang, Sundaralingam, Mousavian, Murali, Goldberg, and Fox]{huang2024diffusionseeder}
+H.~Huang, B.~Sundaralingam, A.~Mousavian, A.~Murali, K.~Goldberg, and D.~Fox.
+\newblock Diffusionseeder: Seeding motion optimization with diffusion for rapid motion planning.
+\newblock \emph{arXiv preprint arXiv:2410.16727}, 2024.
+
+\end{thebibliography}

@@ -1,0 +1,828 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{technologies9010008}{article}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=28eb8ad8941e41c45fb1f2dab0fbbb5c}{%
+           family={Kyrarini},
+           familyi={K\bibinitperiod},
+           given={Maria},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{decc86eba5e168408ed41bff4910b2bc}
+      \strng{fullhash}{decc86eba5e168408ed41bff4910b2bc}
+      \strng{bibnamehash}{decc86eba5e168408ed41bff4910b2bc}
+      \strng{authorbibnamehash}{decc86eba5e168408ed41bff4910b2bc}
+      \strng{authornamehash}{decc86eba5e168408ed41bff4910b2bc}
+      \strng{authorfullhash}{decc86eba5e168408ed41bff4910b2bc}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{2227-7080}
+      \field{journaltitle}{Technologies}
+      \field{number}{1}
+      \field{title}{A Survey of Robots in Healthcare}
+      \field{volume}{9}
+      \field{year}{2021}
+    \endentry
+    \entry{doi:10.1146/annurev-control-060117-104848}{article}{}
+      \name{author}{1}{}{%
+        {{hash=d2d18e2fcced9a8a704459f6362bb2f4}{%
+           family={Mason},
+           familyi={M\bibinitperiod},
+           given={Matthew\bibnamedelima T.},
+           giveni={M\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+      }
+      \strng{namehash}{d2d18e2fcced9a8a704459f6362bb2f4}
+      \strng{fullhash}{d2d18e2fcced9a8a704459f6362bb2f4}
+      \strng{bibnamehash}{d2d18e2fcced9a8a704459f6362bb2f4}
+      \strng{authorbibnamehash}{d2d18e2fcced9a8a704459f6362bb2f4}
+      \strng{authornamehash}{d2d18e2fcced9a8a704459f6362bb2f4}
+      \strng{authorfullhash}{d2d18e2fcced9a8a704459f6362bb2f4}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Annual Review of Control, Robotics, and Autonomous Systems}
+      \field{number}{1}
+      \field{title}{Toward Robotic Manipulation}
+      \field{volume}{1}
+      \field{year}{2018}
+      \field{pages}{1\bibrangedash 28}
+      \range{pages}{28}
+    \endentry
+    \entry{pendulum}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=c9bdb176c4083f1c6f6fa072af19cd4f}{%
+           family={Muchacho},
+           familyi={M\bibinitperiod},
+           given={Rafael\bibnamedelimb I.\bibnamedelimi Cabral},
+           giveni={R\bibinitperiod\bibinitdelim I\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=f0314d8c36e3d12d26f43a46a308c161}{%
+           family={Laha},
+           familyi={L\bibinitperiod},
+           given={Riddhiman},
+           giveni={R\bibinitperiod}}}%
+        {{hash=0755140f072d0ef25aecc023444f1d5c}{%
+           family={Figueredo},
+           familyi={F\bibinitperiod},
+           given={Luis\bibnamedelima F.C.},
+           giveni={L\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+        {{hash=1eeed5190ecef27eb5b83d595cd48d5f}{%
+           family={Haddadin},
+           familyi={H\bibinitperiod},
+           given={Sami},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{550fc1e956767c4ae9ea5e39c62c4a74}
+      \strng{fullhash}{ce6bfc127a79d7a52e28da1af5bd6390}
+      \strng{bibnamehash}{ce6bfc127a79d7a52e28da1af5bd6390}
+      \strng{authorbibnamehash}{ce6bfc127a79d7a52e28da1af5bd6390}
+      \strng{authornamehash}{550fc1e956767c4ae9ea5e39c62c4a74}
+      \strng{authorfullhash}{ce6bfc127a79d7a52e28da1af5bd6390}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)}
+      \field{title}{A Solution to Slosh-free Robot Trajectory Optimization}
+      \field{year}{2022}
+      \field{pages}{223\bibrangedash 230}
+      \range{pages}{8}
+    \endentry
+    \entry{pendulum2019}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=eecd5741236105624196af06cf5d94d6}{%
+           family={Reinhold},
+           familyi={R\bibinitperiod},
+           given={Jan},
+           giveni={J\bibinitperiod}}}%
+        {{hash=6780c03e2341c7bf3f3f922bfbf95948}{%
+           family={Amersdorfer},
+           familyi={A\bibinitperiod},
+           given={Manuel},
+           giveni={M\bibinitperiod}}}%
+        {{hash=72502bd9b4f374156ebc5f5c897905ed}{%
+           family={Meurer},
+           familyi={M\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{7c12fee802ebfa2126d3efafadeae786}
+      \strng{fullhash}{7c12fee802ebfa2126d3efafadeae786}
+      \strng{bibnamehash}{7c12fee802ebfa2126d3efafadeae786}
+      \strng{authorbibnamehash}{7c12fee802ebfa2126d3efafadeae786}
+      \strng{authornamehash}{7c12fee802ebfa2126d3efafadeae786}
+      \strng{authorfullhash}{7c12fee802ebfa2126d3efafadeae786}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2019 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)}
+      \field{title}{A Dynamic Optimization Approach for Sloshing Free Transport of Liquid Filled Containers using an Industrial Robot}
+      \field{year}{2019}
+      \field{pages}{2336\bibrangedash 2341}
+      \range{pages}{6}
+    \endentry
+    \entry{springdamper2021}{inproceedings}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=b86dcafdff0c6217bf719d42fa2a8088}{%
+           family={Di\bibnamedelima Leva},
+           familyi={D\bibinitperiod\bibinitdelim L\bibinitperiod},
+           given={Roberto},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{77b501b0dc6e884ddfbdffb50b1c7487}
+      \strng{fullhash}{77b501b0dc6e884ddfbdffb50b1c7487}
+      \strng{bibnamehash}{77b501b0dc6e884ddfbdffb50b1c7487}
+      \strng{authorbibnamehash}{77b501b0dc6e884ddfbdffb50b1c7487}
+      \strng{authornamehash}{77b501b0dc6e884ddfbdffb50b1c7487}
+      \strng{authorfullhash}{77b501b0dc6e884ddfbdffb50b1c7487}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2021 20th International Conference on Advanced Robotics (ICAR)}
+      \field{title}{Time-Optimal Trajectory Planning for Anti-Sloshing 2-Dimensional Motions of an Industrial Robot}
+      \field{year}{2021}
+      \field{pages}{32\bibrangedash 37}
+      \range{pages}{6}
+    \endentry
+    \entry{systemstudy1}{article}{}
+      \name{author}{4}{}{%
+        {{hash=fe0f3da80e1964ff4b67bdb24ff03fca}{%
+           family={Lan},
+           familyi={L\bibinitperiod},
+           given={Yong-Hong},
+           giveni={Y\bibinithyphendelim H\bibinitperiod}}}%
+        {{hash=9e5a02c6c2cd40b7090c4dd06f6200c4}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={Bin},
+           giveni={B\bibinitperiod}}}%
+        {{hash=f39344256c9affb553ed76cc370f5cf9}{%
+           family={Shi},
+           familyi={S\bibinitperiod},
+           given={Yue-Xiang},
+           giveni={Y\bibinithyphendelim X\bibinitperiod}}}%
+        {{hash=2e151b0250b60de1eaafaa01aaee64df}{%
+           family={Luo},
+           familyi={L\bibinitperiod},
+           given={Yi-Ping},
+           giveni={Y\bibinithyphendelim P\bibinitperiod}}}%
+      }
+      \strng{namehash}{7ad7d5cc98e96d410c317ef7f24fe6e8}
+      \strng{fullhash}{9b4ae0b4032f003d972116d7cd4570fe}
+      \strng{bibnamehash}{9b4ae0b4032f003d972116d7cd4570fe}
+      \strng{authorbibnamehash}{9b4ae0b4032f003d972116d7cd4570fe}
+      \strng{authornamehash}{7ad7d5cc98e96d410c317ef7f24fe6e8}
+      \strng{authorfullhash}{9b4ae0b4032f003d972116d7cd4570fe}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0925-2312}
+      \field{journaltitle}{Neurocomputing}
+      \field{title}{Iterative learning based consensus control for distributed parameter multi-agent systems with time-delay}
+      \field{volume}{357}
+      \field{year}{2019}
+      \field{pages}{77\bibrangedash 85}
+      \range{pages}{9}
+    \endentry
+    \entry{systemstudy2}{article}{}
+      \name{author}{2}{}{%
+        {{hash=9e6d22979b78b813287acf65e1a7ce8e}{%
+           family={Ge},
+           familyi={G\bibinitperiod},
+           given={Zhaoqiang},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=48aeb4e0033f3410c1bb21801c1bcfb8}{%
+           family={Ge},
+           familyi={G\bibinitperiod},
+           given={Xiaochi},
+           giveni={X\bibinitperiod}}}%
+      }
+      \strng{namehash}{174afb9e4eee4e8cb71ba1217fb7c0d2}
+      \strng{fullhash}{174afb9e4eee4e8cb71ba1217fb7c0d2}
+      \strng{bibnamehash}{174afb9e4eee4e8cb71ba1217fb7c0d2}
+      \strng{authorbibnamehash}{174afb9e4eee4e8cb71ba1217fb7c0d2}
+      \strng{authornamehash}{174afb9e4eee4e8cb71ba1217fb7c0d2}
+      \strng{authorfullhash}{174afb9e4eee4e8cb71ba1217fb7c0d2}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1559-7067}
+      \field{journaltitle}{Journal of Systems Science and Complexity}
+      \field{month}{10}
+      \field{number}{5}
+      \field{title}{Controllability of Singular Distributed Parameter Systems in the Sense of Mild Solution}
+      \field{volume}{33}
+      \field{year}{2020}
+      \field{pages}{1485\bibrangedash 1496}
+      \range{pages}{12}
+    \endentry
+    \entry{pendulum2}{article}{}
+      \name{author}{1}{}{%
+        {{hash=f22de4805e91f015a16a95cd6d2159e2}{%
+           family={Han},
+           familyi={H\bibinitperiod},
+           given={Jiwon},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{f22de4805e91f015a16a95cd6d2159e2}
+      \strng{fullhash}{f22de4805e91f015a16a95cd6d2159e2}
+      \strng{bibnamehash}{f22de4805e91f015a16a95cd6d2159e2}
+      \strng{authorbibnamehash}{f22de4805e91f015a16a95cd6d2159e2}
+      \strng{authornamehash}{f22de4805e91f015a16a95cd6d2159e2}
+      \strng{authorfullhash}{f22de4805e91f015a16a95cd6d2159e2}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{2078-1520}
+      \field{journaltitle}{Achievements in the Life Sciences}
+      \field{number}{1}
+      \field{title}{A Study on the Coffee Spilling Phenomena in the Low Impulse Regime}
+      \field{volume}{10}
+      \field{year}{2016}
+      \field{pages}{87\bibrangedash 101}
+      \range{pages}{15}
+    \endentry
+    \entry{pendulum2018}{article}{}
+      \name{author}{4}{}{%
+        {{hash=5925c410fc1da010bf45b8c1ed25efc5}{%
+           family={Moriello},
+           familyi={M\bibinitperiod},
+           given={Lorenzo},
+           giveni={L\bibinitperiod}}}%
+        {{hash=19f06cd7f0aa050f4be4280dcc9b8c8c}{%
+           family={Biagiotti},
+           familyi={B\bibinitperiod},
+           given={Luigi},
+           giveni={L\bibinitperiod}}}%
+        {{hash=580ae604502d9ceaecb55ba8183987e0}{%
+           family={Melchiorri},
+           familyi={M\bibinitperiod},
+           given={Claudio},
+           giveni={C\bibinitperiod}}}%
+        {{hash=1e91280beb0d87e4bdbccd8d2c4fecc7}{%
+           family={Paoli},
+           familyi={P\bibinitperiod},
+           given={Andrea},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{8114a8d510808536f9c5edcbec787ad3}
+      \strng{fullhash}{7cb9fd8c6eb84ae14978a09645118bef}
+      \strng{bibnamehash}{7cb9fd8c6eb84ae14978a09645118bef}
+      \strng{authorbibnamehash}{7cb9fd8c6eb84ae14978a09645118bef}
+      \strng{authornamehash}{8114a8d510808536f9c5edcbec787ad3}
+      \strng{authorfullhash}{7cb9fd8c6eb84ae14978a09645118bef}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0967-0661}
+      \field{journaltitle}{Control Engineering Practice}
+      \field{title}{Manipulating liquids with robots: A sloshing-free solution}
+      \field{volume}{78}
+      \field{year}{2018}
+      \field{pages}{129\bibrangedash 141}
+      \range{pages}{13}
+      \keyw{Liquid handling robotic systems,Sloshing dynamics,Online trajectory generation,Vibration suppression,Robotic manipulators,Food and beverage manufacturing}
+    \endentry
+    \entry{springdamper2022}{article}{}
+      \name{author}{4}{}{%
+        {{hash=b86dcafdff0c6217bf719d42fa2a8088}{%
+           family={Di\bibnamedelima Leva},
+           familyi={D\bibinitperiod\bibinitdelim L\bibinitperiod},
+           given={Roberto},
+           giveni={R\bibinitperiod}}}%
+        {{hash=5e96083dbd39ffa4f3e3d680d2324ef6}{%
+           family={Carricato},
+           familyi={C\bibinitperiod},
+           given={Marco},
+           giveni={M\bibinitperiod}}}%
+        {{hash=1f72fb7098ec14120894cb67f6c3bd0a}{%
+           family={Gattringer},
+           familyi={G\bibinitperiod},
+           given={Hubert},
+           giveni={H\bibinitperiod}}}%
+        {{hash=8a6c9c0890b96766b8cc7c152d7b86a8}{%
+           family={Mueller},
+           familyi={M\bibinitperiod},
+           given={Andreas},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{920ef891635251136eee36e3f5ed9e87}
+      \strng{fullhash}{954a5e31e486428b03d3e9a884a3a3af}
+      \strng{bibnamehash}{954a5e31e486428b03d3e9a884a3a3af}
+      \strng{authorbibnamehash}{954a5e31e486428b03d3e9a884a3a3af}
+      \strng{authornamehash}{920ef891635251136eee36e3f5ed9e87}
+      \strng{authorfullhash}{954a5e31e486428b03d3e9a884a3a3af}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Multibody System Dynamics}
+      \field{month}{08}
+      \field{title}{Sloshing dynamics estimation for liquid-filled containers performing 3-dimensional motions: modeling and experimental validation}
+      \field{volume}{56}
+      \field{year}{2022}
+    \endentry
+    \entry{spill1}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=d20165ad11e618a7eb139f77cc94d50c}{%
+           family={Maderna},
+           familyi={M\bibinitperiod},
+           given={Riccardo},
+           giveni={R\bibinitperiod}}}%
+        {{hash=1c9646de5d20550e05024390418a0a98}{%
+           family={Casalino},
+           familyi={C\bibinitperiod},
+           given={Andrea},
+           giveni={A\bibinitperiod}}}%
+        {{hash=cedd4a44c93ca699d2da0812138f4fa7}{%
+           family={Zanchettin},
+           familyi={Z\bibinitperiod},
+           given={Andrea\bibnamedelima Maria},
+           giveni={A\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=ec6cde3c776ad73f8169810efa5d824d}{%
+           family={Rocco},
+           familyi={R\bibinitperiod},
+           given={Paolo},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{deb2fa6f07177477f56d9a3f913c9a9c}
+      \strng{fullhash}{923c01021bb640996600b1b78ce01c2f}
+      \strng{bibnamehash}{923c01021bb640996600b1b78ce01c2f}
+      \strng{authorbibnamehash}{923c01021bb640996600b1b78ce01c2f}
+      \strng{authornamehash}{deb2fa6f07177477f56d9a3f913c9a9c}
+      \strng{authorfullhash}{923c01021bb640996600b1b78ce01c2f}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2018 IEEE International Conference on Robotics and Automation (ICRA)}
+      \field{title}{Robotic Handling of Liquids with Spilling Avoidance: A Constraint-Based Control Approach}
+      \field{year}{2018}
+      \field{pages}{7414\bibrangedash 7420}
+      \range{pages}{7}
+    \endentry
+    \entry{montazeri2013chemical}{article}{}
+      \name{author}{5}{}{%
+        {{hash=ff3ac78dd881225c2cfc7c30ece2f1fe}{%
+           family={Montazeri},
+           familyi={M\bibinitperiod},
+           given={Naim},
+           giveni={N\bibinitperiod}}}%
+        {{hash=abdc674ecf745fd23aa5abd70d349ac6}{%
+           family={Oliveira},
+           familyi={O\bibinitperiod},
+           given={Alexandra\bibnamedelima CM},
+           giveni={A\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=582c37fa0c1b582ea853e97c84558c3a}{%
+           family={Himelbloom},
+           familyi={H\bibinitperiod},
+           given={Brian\bibnamedelima H},
+           giveni={B\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=720bba0c1b751d388244f390aae7618f}{%
+           family={Leigh},
+           familyi={L\bibinitperiod},
+           given={Mary\bibnamedelima Beth},
+           giveni={M\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=8ecebc5881ca0c5d19f9b628a5ec4fd3}{%
+           family={Crapo},
+           familyi={C\bibinitperiod},
+           given={Charles\bibnamedelima A},
+           giveni={C\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley Online Library}%
+      }
+      \strng{namehash}{8b390528442f80254014c2435365e832}
+      \strng{fullhash}{5632c84d8c1206ba718a58ba226fd230}
+      \strng{bibnamehash}{5632c84d8c1206ba718a58ba226fd230}
+      \strng{authorbibnamehash}{5632c84d8c1206ba718a58ba226fd230}
+      \strng{authornamehash}{8b390528442f80254014c2435365e832}
+      \strng{authorfullhash}{5632c84d8c1206ba718a58ba226fd230}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Food science \& nutrition}
+      \field{number}{1}
+      \field{title}{Chemical characterization of commercial liquid smoke products}
+      \field{volume}{1}
+      \field{year}{2013}
+      \field{pages}{102\bibrangedash 115}
+      \range{pages}{14}
+    \endentry
+    \entry{cfdbook1}{book}{}
+      \name{author}{1}{}{%
+        {{hash=206016711f7515933edfdf2f575bf82c}{%
+           family={Ferziger},
+           familyi={F\bibinitperiod},
+           given={Joel\bibnamedelima H.},
+           giveni={J\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{206016711f7515933edfdf2f575bf82c}
+      \strng{fullhash}{206016711f7515933edfdf2f575bf82c}
+      \strng{bibnamehash}{206016711f7515933edfdf2f575bf82c}
+      \strng{authorbibnamehash}{206016711f7515933edfdf2f575bf82c}
+      \strng{authornamehash}{206016711f7515933edfdf2f575bf82c}
+      \strng{authorfullhash}{206016711f7515933edfdf2f575bf82c}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{2nd}
+      \field{title}{Computational Methods for Fluid Dynamics}
+      \field{year}{2002}
+    \endentry
+    \entry{cfdbook2}{book}{}
+      \name{author}{1}{}{%
+        {{hash=64c854ac2b93b86948928da13eae0277}{%
+           family={Anderson},
+           familyi={A\bibinitperiod},
+           given={John\bibnamedelima D.},
+           giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {McGraw-Hill Education}%
+      }
+      \strng{namehash}{64c854ac2b93b86948928da13eae0277}
+      \strng{fullhash}{64c854ac2b93b86948928da13eae0277}
+      \strng{bibnamehash}{64c854ac2b93b86948928da13eae0277}
+      \strng{authorbibnamehash}{64c854ac2b93b86948928da13eae0277}
+      \strng{authornamehash}{64c854ac2b93b86948928da13eae0277}
+      \strng{authorfullhash}{64c854ac2b93b86948928da13eae0277}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{7th}
+      \field{title}{Fundamentals of Aerodynamics}
+      \field{year}{2015}
+    \endentry
+    \entry{cfd1}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=81a3feeb579a36f8ed14c22d7264cf2c}{%
+           family={Müller},
+           familyi={M\bibinitperiod},
+           given={Matthias},
+           giveni={M\bibinitperiod}}}%
+        {{hash=23cb6e60d6319d91c77cc4220912bfbe}{%
+           family={Charypar},
+           familyi={C\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=89835485884945e38712de8162277435}{%
+           family={Gross},
+           familyi={G\bibinitperiod},
+           given={Markus},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{2e2eb4a11f4f6b0e255e694dd01638a1}
+      \strng{fullhash}{2e2eb4a11f4f6b0e255e694dd01638a1}
+      \strng{bibnamehash}{2e2eb4a11f4f6b0e255e694dd01638a1}
+      \strng{authorbibnamehash}{2e2eb4a11f4f6b0e255e694dd01638a1}
+      \strng{authornamehash}{2e2eb4a11f4f6b0e255e694dd01638a1}
+      \strng{authorfullhash}{2e2eb4a11f4f6b0e255e694dd01638a1}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{1581136595}
+      \field{journaltitle}{Fluid Dynamics}
+      \field{month}{07}
+      \field{title}{Particle-Based Fluid Simulation for Interactive Applications}
+      \field{volume}{2003}
+      \field{year}{2003}
+      \field{pages}{154\bibrangedash 159}
+      \range{pages}{6}
+    \endentry
+    \entry{cfd2}{inproceedings}{}
+      \name{author}{1}{}{%
+        {{hash=8bcdbc60d92b99b5d7287c118f343916}{%
+           family={M.H.\bibnamedelimi Djavareshkian},
+           familyi={M\bibinitperiod\bibinitdelim D\bibinitperiod},
+           given={M.\bibnamedelimi Khalili},
+           giveni={M\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+      }
+      \strng{namehash}{8bcdbc60d92b99b5d7287c118f343916}
+      \strng{fullhash}{8bcdbc60d92b99b5d7287c118f343916}
+      \strng{bibnamehash}{8bcdbc60d92b99b5d7287c118f343916}
+      \strng{authorbibnamehash}{8bcdbc60d92b99b5d7287c118f343916}
+      \strng{authornamehash}{8bcdbc60d92b99b5d7287c118f343916}
+      \strng{authorfullhash}{8bcdbc60d92b99b5d7287c118f343916}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1555-2578}
+      \field{journaltitle}{Fluid Dynamics \& Materials Processing}
+      \field{number}{4}
+      \field{title}{Simulation of Sloshing with the Volume of Fluid Method}
+      \field{volume}{2}
+      \field{year}{2006}
+      \field{pages}{299\bibrangedash 308}
+      \range{pages}{10}
+    \endentry
+    \entry{meal1}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=816da2b9a61fd36334729ec8cebc2587}{%
+           family={Kuriyama},
+           familyi={K\bibinitperiod},
+           given={Yoshifumi},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=38a61f7386a9f10ee231cc388f8d101c}{%
+           family={Yano},
+           familyi={Y\bibinitperiod},
+           given={Ken'ichi},
+           giveni={K\bibinitperiod}}}%
+        {{hash=8154da81ee0df919c188b3f483704687}{%
+           family={Hamaguchi},
+           familyi={H\bibinitperiod},
+           given={Masafumi},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{cd3f5c2cfd9db3fc4a2951ce518d7396}
+      \strng{fullhash}{cd3f5c2cfd9db3fc4a2951ce518d7396}
+      \strng{bibnamehash}{cd3f5c2cfd9db3fc4a2951ce518d7396}
+      \strng{authorbibnamehash}{cd3f5c2cfd9db3fc4a2951ce518d7396}
+      \strng{authornamehash}{cd3f5c2cfd9db3fc4a2951ce518d7396}
+      \strng{authorfullhash}{cd3f5c2cfd9db3fc4a2951ce518d7396}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2008 IEEE International Conference on Control Applications}
+      \field{title}{Trajectory planning for meal assist robot considering spilling avoidance}
+      \field{year}{2008}
+      \field{pages}{1220\bibrangedash 1225}
+      \range{pages}{6}
+    \endentry
+    \entry{gompfit}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=b643fb72b201d8554ac4a91eabb57911}{%
+           family={Ichnowski},
+           familyi={I\bibinitperiod},
+           given={Jeffrey},
+           giveni={J\bibinitperiod}}}%
+        {{hash=326ff98c730a9d518addd15bf32f8a1f}{%
+           family={Avigal},
+           familyi={A\bibinitperiod},
+           given={Yahav},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=c4d8c39e3a63acab6d94c490b6d45028}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Yi},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=1776deb0a86da5a75d0800ae967f4bd6}{%
+           family={Goldberg},
+           familyi={G\bibinitperiod},
+           given={Ken},
+           giveni={K\bibinitperiod}}}%
+      }
+      \strng{namehash}{40a6444da3f2d3b6e6e2fda2e7735029}
+      \strng{fullhash}{a351f248011fb5bd72709bae84e4da39}
+      \strng{bibnamehash}{a351f248011fb5bd72709bae84e4da39}
+      \strng{authorbibnamehash}{a351f248011fb5bd72709bae84e4da39}
+      \strng{authornamehash}{40a6444da3f2d3b6e6e2fda2e7735029}
+      \strng{authorfullhash}{a351f248011fb5bd72709bae84e4da39}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2022 International Conference on Robotics and Automation (ICRA)}
+      \field{title}{GOMP-FIT: Grasp-Optimized Motion Planning for Fast Inertial Transport}
+      \field{year}{2022}
+      \field{pages}{5255\bibrangedash 5261}
+      \range{pages}{7}
+    \endentry
+    \entry{sloshbydata}{article}{}
+      \name{author}{5}{}{%
+        {{hash=a0ba9f1618d702dd6a653aebfba0f438}{%
+           family={Moya},
+           familyi={M\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod}}}%
+        {{hash=bebcaf54c2302d60cb0065659a493239}{%
+           family={Gonzalez},
+           familyi={G\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod}}}%
+        {{hash=53defece1b6af7175aed39aaa1362c66}{%
+           family={Alfaro},
+           familyi={A\bibinitperiod},
+           given={I.},
+           giveni={I\bibinitperiod}}}%
+        {{hash=f50bc497fe0fba6ffc9d3ff03c36c4be}{%
+           family={Chinesta},
+           familyi={C\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod}}}%
+        {{hash=802426bb351d6f111f180a362299717c}{%
+           family={Cueto},
+           familyi={C\bibinitperiod},
+           given={E.},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{2f125d5258e9c678d83d7c8b9700566f}
+      \strng{fullhash}{2b23be4cdd5eb0c9ca166c99ab61f122}
+      \strng{bibnamehash}{2b23be4cdd5eb0c9ca166c99ab61f122}
+      \strng{authorbibnamehash}{2b23be4cdd5eb0c9ca166c99ab61f122}
+      \strng{authornamehash}{2f125d5258e9c678d83d7c8b9700566f}
+      \strng{authorfullhash}{2b23be4cdd5eb0c9ca166c99ab61f122}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1432-0924}
+      \field{journaltitle}{Computational Mechanics}
+      \field{month}{8}
+      \field{number}{2}
+      \field{title}{Learning slosh dynamics by means of data}
+      \field{volume}{64}
+      \field{year}{2019}
+      \field{pages}{511\bibrangedash 523}
+      \range{pages}{13}
+    \endentry
+    \entry{zach}{article}{}
+      \name{author}{3}{}{%
+        {{hash=fa759a385f7c02216ff5058413d1106c}{%
+           family={Kingston},
+           familyi={K\bibinitperiod},
+           given={Zachary},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=1083ee0c7fe17d1d6ed04f2481a027fe}{%
+           family={Moll},
+           familyi={M\bibinitperiod},
+           given={Mark},
+           giveni={M\bibinitperiod}}}%
+        {{hash=53dd08518536edbe0ea582bab1515461}{%
+           family={Kavraki},
+           familyi={K\bibinitperiod},
+           given={Lydia\bibnamedelima E.},
+           giveni={L\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \strng{namehash}{c8e147150af5853d5d5ab75f8bbf8909}
+      \strng{fullhash}{c8e147150af5853d5d5ab75f8bbf8909}
+      \strng{bibnamehash}{c8e147150af5853d5d5ab75f8bbf8909}
+      \strng{authorbibnamehash}{c8e147150af5853d5d5ab75f8bbf8909}
+      \strng{authornamehash}{c8e147150af5853d5d5ab75f8bbf8909}
+      \strng{authorfullhash}{c8e147150af5853d5d5ab75f8bbf8909}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Annual Review of Control, Robotics, and Autonomous Systems}
+      \field{number}{1}
+      \field{title}{Sampling-Based Methods for Motion Planning with Constraints}
+      \field{volume}{1}
+      \field{year}{2018}
+      \field{pages}{159\bibrangedash 185}
+      \range{pages}{27}
+    \endentry
+    \entry{rrt*}{article}{}
+      \name{author}{2}{}{%
+        {{hash=ca50b61c6d4e6ff567664ac59d4d3837}{%
+           family={Karaman},
+           familyi={K\bibinitperiod},
+           given={Sertac},
+           giveni={S\bibinitperiod}}}%
+        {{hash=7fe896e8ed8d5f30af73e472ebedcec9}{%
+           family={Frazzoli},
+           familyi={F\bibinitperiod},
+           given={Emilio},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{d4a72d6cf8ff555b86aea50a797e568f}
+      \strng{fullhash}{d4a72d6cf8ff555b86aea50a797e568f}
+      \strng{bibnamehash}{d4a72d6cf8ff555b86aea50a797e568f}
+      \strng{authorbibnamehash}{d4a72d6cf8ff555b86aea50a797e568f}
+      \strng{authornamehash}{d4a72d6cf8ff555b86aea50a797e568f}
+      \strng{authorfullhash}{d4a72d6cf8ff555b86aea50a797e568f}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprinttype}{arXiv}
+      \field{journaltitle}{CoRR}
+      \field{title}{Sampling-based Algorithms for Optimal Motion Planning}
+      \field{volume}{abs/1105.1186}
+      \field{year}{2011}
+    \endentry
+    \entry{huggingfacetransformers}{article}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=c34c67badfd5b3624027e9c8c77a69f6}{%
+           family={Wolf},
+           familyi={W\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{255f44073360cf5497333775e34f00d6}
+      \strng{fullhash}{255f44073360cf5497333775e34f00d6}
+      \strng{bibnamehash}{255f44073360cf5497333775e34f00d6}
+      \strng{authorbibnamehash}{255f44073360cf5497333775e34f00d6}
+      \strng{authornamehash}{255f44073360cf5497333775e34f00d6}
+      \strng{authorfullhash}{255f44073360cf5497333775e34f00d6}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{ArXiv}
+      \field{title}{HuggingFace's Transformers: State-of-the-art Natural Language Processing}
+      \field{volume}{abs/1910.03771}
+      \field{year}{2019}
+    \endentry
+    \entry{ruckig}{article}{}
+      \name{author}{2}{}{%
+        {{hash=3fd0f73db5fab63d656274c18cf0010e}{%
+           family={Berscheid},
+           familyi={B\bibinitperiod},
+           given={Lars},
+           giveni={L\bibinitperiod}}}%
+        {{hash=a614a6c6ae6d216c0989179e39072cea}{%
+           family={Kröger},
+           familyi={K\bibinitperiod},
+           given={Torsten},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{e89241a491022f3e1d959dc7de0dd6ae}
+      \strng{fullhash}{e89241a491022f3e1d959dc7de0dd6ae}
+      \strng{bibnamehash}{e89241a491022f3e1d959dc7de0dd6ae}
+      \strng{authorbibnamehash}{e89241a491022f3e1d959dc7de0dd6ae}
+      \strng{authornamehash}{e89241a491022f3e1d959dc7de0dd6ae}
+      \strng{authorfullhash}{e89241a491022f3e1d959dc7de0dd6ae}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprinttype}{arXiv}
+      \field{journaltitle}{CoRR}
+      \field{title}{Jerk-limited Real-time Trajectory Generation with Arbitrary Target States}
+      \field{volume}{abs/2105.04830}
+      \field{year}{2021}
+    \endentry
+    \entry{panda}{online}{}
+      \name{author}{1}{}{%
+        {{hash=472a09e43e282d9020fa53775c91a243}{%
+           family={Emika},
+           familyi={E\bibinitperiod},
+           given={Franka},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{472a09e43e282d9020fa53775c91a243}
+      \strng{fullhash}{472a09e43e282d9020fa53775c91a243}
+      \strng{bibnamehash}{472a09e43e282d9020fa53775c91a243}
+      \strng{authorbibnamehash}{472a09e43e282d9020fa53775c91a243}
+      \strng{authornamehash}{472a09e43e282d9020fa53775c91a243}
+      \strng{authorfullhash}{472a09e43e282d9020fa53775c91a243}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Control Parameters - Franka Emika Documentation}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://frankaemika.github.io/docs/control_parameters.html
+      \endverb
+      \verb{url}
+      \verb https://frankaemika.github.io/docs/control_parameters.html
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
