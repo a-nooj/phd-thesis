@@ -1,0 +1,91 @@
+\chapter{From Sampling to Generation: Planning as Conditional Sampling}
+\label{ch:generation}
+
+% TODO: Pivot the thesis from sampling-based methods to generative ones.
+% This chapter is the methodological spine connecting Chapters
+% \ref{ch:multiquery} and \ref{ch:payload}-\ref{ch:seeding}.
+
+\section{Reframing Planning}
+\label{sec:generation:reframing}
+
+% TODO: Recast planning as sampling from a learned conditional distribution
+% over trajectories: a constant-time, near-admissible first guess
+% conditioned on problem constraints.
+
+% TODO: Discuss why multi-modality matters for downstream optimization
+% and execution.
+
+\section{Why Diffusion}
+\label{sec:generation:diffusion}
+
+% TODO: Iterative refinement at inference time.
+
+% TODO: Parallel sampling.
+
+% TODO: Natural support for inference-time guidance --- not native to
+% most alternatives.
+
+\section{Background on Diffusion}
+\label{sec:generation:background}
+
+% TODO: Forward and reverse processes; notation that downstream chapters
+% will reuse.
+
+\section{Two Roles of Diffusion in Robotics}
+\label{sec:generation:roles}
+
+\subsection{Behavior Cloning and Imitation}
+\label{sec:generation:bc}
+
+% TODO: Diffusion as an imitation learning objective.
+
+\subsection{Trajectory-Level Planning}
+\label{sec:generation:planning}
+
+% TODO: Diffusion as a trajectory-level planner --- the line of work the
+% remainder of this thesis follows.
+
+\section{The Standard Trajectory-Diffusion Pipeline}
+\label{sec:generation:pipeline}
+
+% TODO: Gaussian noise -> iterative denoising -> executable trajectory.
+
+% TODO: Soft constraint compliance as the fundamental ceiling of the
+% standard pipeline.
+
+\section{Levers for Tightening Constraint Compliance}
+\label{sec:generation:levers}
+
+\subsection{Problem-Specific Conditioning}
+\label{sec:generation:conditioning}
+
+% TODO: How conditioning inputs encode constraint information.
+
+\subsection{Training Data Composition}
+\label{sec:generation:data}
+
+% TODO: How dataset construction shapes the support of the learned
+% distribution.
+
+\subsection{Loss Design}
+\label{sec:generation:loss}
+
+% TODO: Loss-level mechanisms for encouraging constraint compliance.
+
+\subsection{Inference-Time Cost Guidance}
+\label{sec:generation:guidance}
+
+% TODO: Cost-based guidance at sampling time.
+
+\subsection{Inpainting}
+\label{sec:generation:inpainting}
+
+% TODO: Inpainting as a way to enforce hard endpoint or waypoint
+% constraints.
+
+\section{What the Literature Emphasizes and What It Underexplores}
+\label{sec:generation:gap}
+
+% TODO: The literature largely emphasizes collision constraints; dynamics
+% and other non-geometric constraints remain underexplored. This sets up
+% Chapters~\ref{ch:payload} through~\ref{ch:seeding}.

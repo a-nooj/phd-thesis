@@ -1,0 +1,81 @@
+% Based on: multi-query kinodynamic planning paper.
+
+\chapter{Multi-Query Kinodynamic Planning via Lazy Edge Bundles}
+\label{ch:multiquery}
+
+% TODO: Open with the bottleneck that motivates a multi-query approach to
+% kinodynamic planning.
+
+\section{The Bottleneck}
+\label{sec:multiquery:bottleneck}
+
+% TODO: Kinodynamic planning is slow in high dimensions; single-query
+% approaches rebuild the search tree per query; simulation and collision
+% checking are expensive (pre-VAMP, pre-cuRobo).
+
+\section{Method: Edge Bundles over Discretized State and Control Spaces}
+\label{sec:multiquery:method}
+
+\subsection{Edges as Sampled Velocity Sequences}
+\label{sec:multiquery:edges}
+
+% TODO: Define an edge as (start config, goal config, sampled velocity
+% sequence, simulation duration).
+
+\subsection{Disconnected Bundles, Not Connected Roadmaps}
+\label{sec:multiquery:bundles}
+
+% TODO: Contrast the disconnected bundle structure with PRM-style
+% connected graphs.
+
+\subsection{Probabilistic and Asymptotic Completeness}
+\label{sec:multiquery:completeness}
+
+% TODO: Establish completeness via random duration sampling.
+
+\section{Lazy Evaluation via Neighborhood Structure}
+\label{sec:multiquery:lazy}
+
+\subsection{Lazy Propagation Probability}
+\label{sec:multiquery:propagation}
+
+% TODO: Derive the lazy propagation probability from theta-neighborhood
+% edge counts.
+
+\subsection{Lazy Collision Probability}
+\label{sec:multiquery:collision}
+
+% TODO: Analogous formulation for lazy collision checking.
+
+\section{The Planner}
+\label{sec:multiquery:planner}
+
+% TODO: RRT-style or F-score node selection, with a lazy-then-actual
+% propagation strategy.
+
+\section{Results and Trade-Offs}
+\label{sec:multiquery:results}
+
+\subsection{Amortization with Known Dynamics and Collision Geometry}
+\label{sec:multiquery:amortization}
+
+% TODO: Quantify how far amortization goes when dynamics and collision
+% geometry are known up front.
+
+\subsection{Pre-Processing Cost and Re-Bundling}
+\label{sec:multiquery:preprocess}
+
+% TODO: Pre-processing cost, and the re-bundling required when dynamics
+% change.
+
+\subsection{Path Quality vs.\ Storage and Lookup Costs}
+\label{sec:multiquery:quality}
+
+% TODO: How path quality scales against storage and lookup cost as
+% sampling density grows.
+
+\section{The Opening This Leaves}
+\label{sec:multiquery:opening}
+
+% TODO: Pose the question that bridges to Chapter~\ref{ch:generation}:
+% can pre-computation scale further via learning?

@@ -1,0 +1,59 @@
+% Based on: Poke-RRT paper.
+
+\chapter{Poking: Dynamic Primitives for Sampling-Based Planning}
+\label{ch:poking}
+
+% TODO: Introduce poking as the entry point into dynamics-constrained
+% manipulation.
+
+\section{Motivating Scenario}
+\label{sec:poking:motivation}
+
+% TODO: Two arms with non-overlapping workspaces --- a setting that is
+% unsolvable by pushing or pick-and-place alone.
+
+\section{Poking as a Complementary Primitive}
+\label{sec:poking:primitive}
+
+\subsection{Two-Stage Mechanics}
+\label{sec:poking:mechanics}
+
+% TODO: Formalize the impulsive strike followed by free sliding under
+% Coulomb friction.
+
+\subsection{Position Relative to Quasi-Static Manipulation}
+\label{sec:poking:context}
+
+% TODO: Situate poking within the broader space of quasi-static
+% manipulation paradigms.
+
+\section{The Poke-RRT Algorithm}
+\label{sec:poking:algorithm}
+
+\subsection{Heuristic Strike-Point Selection}
+\label{sec:poking:strikepoint}
+
+% TODO: Describe the heuristic used to select strike points on the object.
+
+\subsection{End-Effector Action Computation}
+\label{sec:poking:action}
+
+% TODO: Joint-space conversion and feasibility checks for the chosen
+% strike action.
+
+\subsection{Forward Propagation in a Kinodynamic RRT Tree}
+\label{sec:poking:rrt}
+
+% TODO: Use simulation as forward propagation within the kinodynamic RRT.
+
+\section{Results}
+\label{sec:poking:results}
+
+% TODO: Approximately 3x faster than pushing, ~2x fewer actions, and
+% higher success rates than push and grasp baselines.
+
+\section{Reflection on the Four Design Axes}
+\label{sec:poking:reflection}
+
+% TODO: Evaluate Poke-RRT against the modeling burden, dimensionality,
+% integration, and usability axes from Chapter~\ref{ch:framework}.

@@ -6,43 +6,40 @@
 
 %%%%%%%%%%%%   All the preamble material:   %%%%%%%%%%%%
 
-\title{This is the Name of my Thesis}
+\title{Expanding Robot Manipulation Capability Through Dynamics-Constrained Motion Generation}
 
-\author{I.~B.}{Scriptor}
+% TODO: Personalize the front matter below.
+\author{First}{Last}
 
-\otherdegrees{B.A., North Dakota State University, 2005 \\
-	      M.S., University of Reno, 2007}
+\otherdegrees{B.S., University, Year \\
+	      M.S., University, Year}
 
 \degree{Doctor of Philosophy}		%  #1 {long descr.}
-	{Ph.D., Rocket Science}		%  #2 {short descr.}
+	{Ph.D., Robotics}		%  #2 {short descr.}
 
 \dept{Department of}			%  #1 {designation}
-	{Rocket Science}		%  #2 {name}
+	{Computer Science}		%  #2 {name}
 
 \advisor{Prof.}				%  #1 {title}
-	{Ed Visor}			%  #2 {name}
+	{Advisor Name}			%  #2 {name}
 
-\reader{Rachel Goddard}		%  2nd person to sign thesis
-\readerThree{Thora Nea}		%  3rd person to sign thesis
+\reader{Reader Two}		%  2nd person to sign thesis
+\readerThree{Reader Three}	%  3rd person to sign thesis
 
-\abstract{  \OnePageChapter	% because it is very short
+\abstract{  \OnePageChapter	% remove \OnePageChapter once the abstract grows past a page.
 
-	Often the abstract will be long enough to require
-	more than one page, in which case the macro
-	``$\backslash$OnePageChapter'' should {\it not}
-	be used.
-
-	But this one isn't, so it should.
+	% TODO: Write the thesis abstract. Summarize the progression from
+	% sampling-based to generative methods for dynamics-constrained
+	% motion generation, the contributions across the application
+	% domains, and the headline results.
 	}
 
 \dedication[Dedication]{	% NEVER use \OnePageChapter here.
-	To all of the fluffy kitties.
+	% TODO: Dedication.
 	}
 
 \acknowledgements{	\OnePageChapter	% *MUST* BE ONLY ONE PAGE!
-	Here's where you acknowledge folks who helped.
-	But keep it short, i.e., no more than one page,
-	as required by the Grad School Specifications.
+	% TODO: Acknowledgements (one page max per Grad School spec).
 	}
 
 % \IRBprotocol{E927F29.001X}	% optional!
@@ -64,6 +61,14 @@
 \input macros.tex
 \input chapter1.tex
 \input chapter2.tex
+\input chapter3.tex
+\input chapter4.tex
+\input chapter5.tex
+\input chapter6.tex
+\input chapter7.tex
+\input chapter8.tex
+\input chapter9.tex
+\input chapter10.tex
 
 %%%%%%%%%   then the Bibliography, if any   %%%%%%%%%
 \bibliographystyle{plain}	% or "siam", or "alpha", etc.
@@ -71,9 +76,8 @@
 \bibliography{refs}		% Bib database in "refs.bib"
 
 %%%%%%%%%   then the Appendices, if any   %%%%%%%%%
-\appendix
-\input appendixA.tex
-\input appendixB.tex
+% \appendix
+% \input appendixA.tex
 
 
 \end{document}

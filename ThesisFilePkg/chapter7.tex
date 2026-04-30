@@ -1,0 +1,56 @@
+% Based on: payload diffusion paper.
+
+\chapter{Diffusion for Payload-Induced Dynamic Constraints}
+\label{ch:payload}
+
+% TODO: First demonstration in the thesis that diffusion can encode and
+% respect non-geometric, dynamic constraints.
+
+\section{Problem}
+\label{sec:payload:problem}
+
+% TODO: Super-nominal payload manipulation under payload-induced torque
+% constraints.
+
+\section{Formulation}
+\label{sec:payload:formulation}
+
+\subsection{Denoising over Joint Configurations, Velocities, and Accelerations}
+\label{sec:payload:state}
+
+% TODO: 21-D state for a 7-DoF arm: joint configuration, velocity, and
+% acceleration jointly denoised.
+
+\subsection{Standard Denoising Loss}
+\label{sec:payload:loss}
+
+% TODO: Standard denoising loss formulation.
+
+\subsection{Inducing Dynamic Constraints via High-Level Object Properties}
+\label{sec:payload:conditioning}
+
+% TODO: Condition on high-level object properties such as payload mass to
+% induce dynamic constraints implicitly.
+
+\section{Joint Handling of Terminal, Collision, and Dynamic Constraints}
+\label{sec:payload:joint}
+
+% TODO: How terminal joint constraints, collision constraints, and
+% dynamic constraints are handled together within a single sampling pass.
+
+\section{Results}
+\label{sec:payload:results}
+
+% TODO: Millisecond, constant-time generation.
+
+% TODO: Higher success vs.\ kinodynamic RRT.
+
+% TODO: Up to 100x faster than torque-constrained optimization.
+
+% TODO: 67.6\% of workspace retained at 3x nominal payload.
+
+\section{What This Validates}
+\label{sec:payload:validation}
+
+% TODO: Reflect on what this result says about non-geometric
+% conditioning, foreshadowing the next two chapters.
