@@ -1,0 +1,54 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{times}
+
+\usepackage[numbers]{natbib}
+\usepackage{multicol}
+\usepackage[bookmarks=true]{hyperref}
+\usepackage{bm}
+\usepackage{pdfpages}
+\usepackage{amssymb}
+
+\usepackage{soul}
+
+
+\usepackage[capitalize,noabbrev]{cleveref}
+
+\usepackage[usenames, dvipsnames, table]{xcolor}
+
+\usepackage[markup=bfit, deletedmarkup=sout, authormarkup=superscript]{changes}
+\definechangesauthor[name={ar}, color=PineGreen] {AR}
+\definechangesauthor[name={ap}, color=Purple] {AP}
+\newcommand{\ar}[1]{\added[id=  AR]{#1}}
+\newcommand{\ap}[1]{\added[id=  AP]{#1}}
+
+\newcommand{\header}[1]{\noindent\textbf{#1.}}
+
+\definecolor{customred}{HTML}{D25A3C}
+\definecolor{customaqua}{HTML}{00A0A0}
+\definecolor{customblack}{HTML}{282828}
+\definecolor{customgreen}{HTML}{66A329}
+\definecolor{customyellow}{HTML}{FFC050}
+
+\begin{document}
+
+% \title{Enabling Robotic Manipulation beyond 
+% Nominal Operational Capacities through Dynamics-Aware Motion Generation}
+% \title{Expanding Robot Operational Boundaries through Dynamics-Constrained Motion Generation for Manipulation}
+\title{Expanding Robotic Manipulation Capability through Dynamics-Constrained Motion Generation}
+\author{Anuj Pasricha \textbar\ Thesis Proposal}
+
+\maketitle
+
+\IEEEpeerreviewmaketitle
+
+\input{1.introduction}
+\input{2.my-prior-work}
+\input{3.proposed-work}
+\input{4.risks-and-mitigation}
+\input{5.conclusion}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+\includepdf[pages=-]{misc/timeline-and-publications.pdf}
+
+\end{document}

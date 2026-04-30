@@ -1,0 +1,128 @@
+% DiffusionSeeder generates a seed trajectory (q waypoints) that cuRobo then time-optimizes.
+% It conditions the denoising network on an embedding of the depth data = "give me a good series of waypoints that mostly avoid collisions"
+% = fewer optimization loops for constraint enforcement.
+% Gets a pretty substantial speedup too
+
+% My proposed project extends this to problems with dynamic constraints. Liquid handling, payload transport.
+% Instead by biasing by scene geometry (which will still be possible in my framework but not the center piece), I bias trajectory diffusion by problem-specific samples of dq, ddq, tau.
+
+% 1. Generate a generic set of (q, dq, ddq, tau) samples using the robot dynamics model.
+% 2. Filter these samples by problem-specific constraints. Eg: check if robot equation for sample (q, dq, ddq) at payload x-kg produces valid torques -> add to valid sample set.
+% 3. Pass into embedding network.
+% 4. Pass into diffusion as conditioning.
+% 5. Denoise to get good q-space seed for optimizer to enforce constraints.
+
+% Start and goal states can be inpainted.
+ 
+% Broadly - represent inequality constraints on end-effector accelerations or joint torques etc with joint space samples for use with diffusion.
+
+% But this is all I propose to do. For payload and liquid.
+
+
+
+\begin{itemize}
+    \item show that generalization of payload diffusion fails, i.e., show that optimization is required
+    \item show that the number of trajopt iterations greatly reduces for multiple problems
+    \item show that conditioning helps
+    \item show that task-specific conditioning helps more (vs. using uniform sampling)
+    \item significantly different in behavior for different constraints and different values of same constraint (i.e. different homotopic classes of trajectories are enabled; diversity)
+    \item show difference in feasible sets for constraints
+    \item show that sample-based conditioning has a more significant effect on denoised trajectories than cost guidance (more constraint-compliant trajectories)
+    \item linear interpolation vs. random seed vs. VAMP geometric plan as seed vs. ours
+\end{itemize}
+
+
+
+
+Some tasks/optimization problems are more amenable to sample-based conditioning than others. Payload manipulation. Liquid handling.
+While poking and other forms of non-prehensile or even whole body manipulation can be expressed in this architecture, it is beyond the scope of my proposed work. Additional tasks that can be enabled for instance constraints imposed by language or other tasks that can be expressed as samples or that we have trajectories of (bordering on imitation learning) will not be handled. Task space geometric constraint handling will not be addressed etc.
+
+This can be extended to include problem-specific inverse dynamics models or RGB feature networks or language.
+Another network can be trained to generate end-effector velocities and contact points given an object target pose.
+We can get target joint angles and velocities from this which can fall right into the above pipeline through inpainting, with the denoising network conditioned on all valid joint samples that, for example, lie above the table for poking.
+Optionally, I can guide denoising with a dynamics gradient dTau/dq.
+
+This will additionally only consider two-point inpainting problems, not like rope manipulation.
+
+Involved the integration of multiple task encoders and dynamic functions, the design of which will not be studied in this work.
+
+
+
+\header{Design of constraint embedder}
+
+simplest approach - low dispersion sampling, binary vector; 
+dimensionality of state space can be addressed by creating submaps - vector to matrix - more rich representation; 
+pointnet encoder vs euclidean; 
+graph architecture?
+
+\header{Task complexity isn't sufficient}
+
+add collision objects
+
+\header{designing different optimization problems}
+
+\header{several evaluation axes}
+
+   \item \textbf{Evaluation complexity:} With multiple evaluation axes (optimization speedup, constraint satisfaction, trajectory diversity, etc.), there exists a risk of inconclusive or contradictory results. Our mitigation strategy involves establishing clear primary and secondary metrics, with trajectory optimization iteration reduction and constraint satisfaction serving as primary success criteria. We will also conduct sensitivity analyses to understand the relationship between different metrics and identify potential trade-offs.
+
+
+   \item \textbf{Computational scalability:} As constraint complexity increases, both sampling and diffusion processes may become computationally prohibitive. To address this, we will implement progressive sampling techniques that concentrate computational resources on promising regions of the state space, and investigate efficient approximations of the diffusion process that preserve solution quality while reducing computational overhead. Leveraging the much-studied sampling in classical methods.
+
+   \item \textbf{Generalization across constraint types:} Different dynamic constraints (torque limits, velocity constraints, etc.) may require fundamentally different handling. We will mitigate this risk by initially focusing on a limited set of constraint types before developing a unified framework, allowing us to validate our approach on well-understood problems before addressing more complex scenarios.
+
+
+By proactively addressing these risks through structured experimentation and incremental development, we aim to develop a robust framework for diffusion-based trajectory generation that effectively incorporates dynamic constraints while maintaining computational efficiency.
+
+
+
+% We propose a task-agnostic approach that generates high-quality trajectory seeds for optimization problems with dynamic constraints, particularly for challenging domains such as liquid handling and payload transport. 
+
+% This extends beyond existing work on geometric constraints and collision avoidance to encompass the full spectrum of constraints relevant to physical robot execution.
+
+% Previous work such as DiffusionSeeder generates seed trajectories (joint position waypoints) that optimization frameworks like cuRobo subsequently time-optimize. These methods condition the denoising network on depth data embeddings---effectively instructing the model to generate waypoints that primarily avoid collisions, thus reducing optimization loops for constraint enforcement and achieving substantial computational speedups.
+
+% We propose extending this paradigm to problems with dynamic constraints, particularly focusing on challenging domains such as liquid handling and payload transport. Rather than biasing trajectory diffusion solely by scene geometry (which remains possible within our framework), we condition the diffusion process using problem-specific samples of joint velocities, accelerations, and torques.
+
+
+
+
+% \section{Proposed Work}
+
+
+% Prior work is limited in task generalization and implicitly encodes the model of robot dynamics for the specific task for payload manipulation. Definitely scalable to the whole space of robot motions unlike prior work and captures dynamics such that trajectories can be executed directly on real hardware.
+% Can we take a more task-agnostic approach? i.e. can we train a model to generate good guesses for many different kinds of optimization problems that involve dynamic constraints, in order to expand the existing work on dealing with geometric constraints.
+
+
+% These methods display both practical benefits and disadvantages across four axes: ...
+% It is clear that some level of learning is required for modeling accuracy and generalization, however these modeling approach, especially in the form of inverse dynamics can be highly task specific, such as in the case of liquid handling. Embodiment-driven models are still useful to enable more wide use, but task-specific dynamics models see limited use. Problem dimensionality is also easily addressed by learning-based methods which can reason over high-dimensional state and action spaces faster and more efficiently (in terms of memory) that search-based methods. The interface to learning-based methods also defines the usability of such systems as manifested in the number of engineering hours needed to get a system up and running, at the risk of soft vs. hard constraint enforcement which means they have to be used in conjunction with existing methods that not to mention also come with theoretical guarantees.
+% Novelty of the integration mechanism and components used defines the system design problem which is far easier to address with learning-based methods but comes at the risk of explainability if used in isolation, and task generalization.
+% \header{The case for learning-based methods for planning} test
+
+
+% While diffusion for imitation learning has shown real-world behaviors through end-effector delta actions in physical environments , learning these policies requires thousands of manually demonstrated trajectories. This limitation combined with the primarily kinematic focus of these methods has made me look toward the seeding problem and enabling diffusion to obey both kinematic and dynamics constraints to imbue robotic manipulators with new capabilities.
+% my primary focus lies in utilizing diffusion as initialization for trajectory optimization methods subject to both kinematic and dynamic constraints.
+
+
+% The commonality across both these deficiencies has to do with the fact that existing approaches primarily deal with the geometry of motion (kinematics) followed by the notion of time optimality which considers constraints on high-order derivatives of joint configuration.
+% This decoupling of kinematics from the forces and accelerations involved (dynamics) is further compounded by the rigid attachment assumption which does away with considering any modeling or inertial constraints imposed by the target object on the robot's motion.
+% My work explores both these deficiencies across a number of different axes, highlighting model accuracy and generalizability, problem dimensionality, usability, and system scalability and integration towards the development of general-purpose robotic systems that can be deployed in the real-world.
+
+% \ap{something about foundational models, geometric focus, position control; somewhere; single task capabilities vs fundamental underlying method; BD not posctrl}
+
+
+
+% Second even within the realm of grasping itself, if we look beyond manipulating rigid objects assumed as rigidly attached to the robot's end-effector, things start to fail. Problem dimensionality increases, we don't have good models, existing pipelines requires many engineering hours making them less usable, and the overall integration of these components becomes challenging.
+
+
+
+% Plan-and-filter follows a pipelined approach that moves up the hierarchy of constraints from geometric to dynamic, from considering the actuation mechanism in isolation to incorporating environment dynamics. First a path is planned in the robot's configuration space to avoid collisions and stay within joint angle limits. Time parameterization is applied as bang-bang control or optimization or ... to minimize robot traversal time between problem start and goal and stay within higher-order joint limits. Next, the trajectory is verified against dynamic constraints imposed by the environment. This process is repeated until a successful trajectory that allows a dynamic interaction between the robot and the object.
+
+% Optimization-based methods naturally accommodate dynamics constraints but rely heavily on good initialization, leading to hybrid approaches that bootstrap the optimization process with learning or sampling-based solutions .
+% cast as a quadratic program
+% Optimization frames this as the minimization of an objective function, involving smoothness or time optimality etc subject to equality or inequality constraints that force collision-free paths within robot limits while obeying dynamic constraints.
+
+% Now there has been a lot of work in foundational models in robots as well as the great new wave of using generative models like diffusion to enable new forms of behavior, primarily learned from imitation, however all these works display a common thread of geometric focus and position control, often demonstrating trained policies for single task capabilities, operating well within conservative limits of joint angles, velocities, accelerations, and torques. Part of this has to do with the fact that the methods underlying these problems are still under development and as such no general class of approaches has been found, but there are certainly good leads.
+
+% The common thread underlying these deficiencies stems from conventional approaches that prioritize motion geometry (kinematics) followed by time-optimality considerations that account for constraints on higher-order derivatives of joint configurations. This systematic decoupling of kinematics from forces and accelerations (dynamics) is further exacerbated by the rigid attachment assumption, which neglects the modeling and inertial constraints imposed by the target object on the robot's motion.
+
+% \ul{By generating dynamically admissible trajectories from the coupled, task-constrained state space of the robot and its environment, my work expands the scope of robotic manipulation beyond geometric pick-and-place to include dynamic non-prehensile skills and motions governed by object inertial properties, impulsive contact, and motion-induced forces, thereby addressing challenges in problem dimensionality, dynamics modeling, usability, and system design for real-world deployment.}

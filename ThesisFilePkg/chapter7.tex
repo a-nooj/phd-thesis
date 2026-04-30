@@ -43,6 +43,7 @@ The inherent stochasticity in the denoising process enables the exploration of d
 However, existing diffusion-based approaches have been confined to position-controlled systems \cite{carvalho2023motion,saha2024edmp}, leaving the fundamental challenge of integrating both kinematic and dynamic constraints unaddressed.
 
 In this work, we propose a method that directly tackles this problem by jointly learning valid distributions of positions, velocities, and accelerations that satisfy both constraint types simultaneously---moving beyond prior work that only denoises in position space.
+Central to our approach is the use of payload mass---a high-level object property---as a conditioning signal that implicitly encodes the full complexity of payload-induced dynamics into the generative process, without requiring explicit constraint formulation at inference time.
 Through investigation of payload encoding strategies, we demonstrate that diffusion models effectively learn the complex relationships between joint states and payload-dependent dynamics, \underline{enabling constant-time generation ($\approx 10$ms) of feasible trajectories that preserve $67.6\%$ workspace accessibility at $3\times$ nominal payload capacity}---without explicit constraint checking at runtime. This demonstrates the importance of dynamics-informed generative models in expanding the operational boundaries of robotic systems.
 
 \section{Related Work}
@@ -253,3 +254,16 @@ Moreover, while our method demonstrates advantages in inference speed, tradition
 
 More rigorous evaluations comparing CPU versus GPU performance and Python versus C++ implementations would enable direct baseline comparisons but standardizing these benchmarks remains challenging. Our evaluation of baseline methods maintains industry-standard implementations of baselines without additional optimizations for deployment infrastructure.
 Several other under-explored areas of research remain: optimal training data selection for maximizing planner generalization, disambiguating data imbalance from model generalization to explain the high variance in torques for higher payloads, leveraging diffusion models' continual learning capabilities at industrial scale, and conditioning on real-world sensor modalities like point clouds for deployment.
+
+\section{What This Validates}
+\label{sec:payload:validation}
+
+This chapter establishes a principle that threads through the remainder of this thesis: \textit{dynamic constraints can be implicitly encoded into trajectory generation by conditioning on high-level object properties}.
+
+Rather than explicitly checking torque feasibility at planning time---as the kinodynamic planner in \cref{ch:multiquery} must do---the diffusion model here learns the relationship between payload mass and the resulting joint torque constraints directly from data, internalizing this knowledge into its generative distribution.
+A single scalar is sufficient to steer the denoising process toward trajectories that respect the full nonlinear complexity of the manipulator dynamics model across joint angle, velocity, and acceleration space simultaneously.
+The result is constant-time generation that outperforms kinodynamic planners in both planning speed and success rate, at the cost of requiring feasible training trajectories.
+
+This validates a broader generalization hypothesis: \textit{if a high-level object property governs the dynamic constraints a trajectory must satisfy, conditioning the generative model on that property is sufficient to implicitly respect those constraints.}
+Payload mass is the simplest instantiation of this idea---a scalar that determines the end-effector wrench, which in turn determines joint torque feasibility throughout the workspace.
+The following chapters extend this conditioning principle to richer object properties and more capable generative architectures, asking at each step how much more dynamic structure can be encoded through the conditioning signal alone.

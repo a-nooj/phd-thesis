@@ -1,0 +1,104 @@
+\section{Introduction}
+
+Humans engage naturally in multiple forms of dexterous manipulation that involve grasping, pushing, poking, rolling, and tossing objects \cite{bullock2011classifying}.
+This highlights a significant capability gap between human and robotic manipulation skills, as evidenced by the disproportionate research attention devoted to prehensile manipulation, or \textsl{grasping} \cite{billard2019trends}.
+% due to its fundamental role in object interaction and its applicability across diverse task domains \cite{billard2019trends}.
+% Consequently, the development of similar functionality in autonomous machines is an essential milestone for robotics and an area of active research 
+% with fundamental work needed ahead
+% \cite{billard2019trends}.
+% However, the human manipulation skill that has attracted the most attention from roboticists is prehensile manipulation, or \textsl{grasping}.
+Manipulation by grasping is computationally attractive primarily because, once an object is under form or force closure, it generally does not need to be tracked over time and uncertainty on its state is reduced.
+Despite these advantages, grasping is limited in capability by i) reachability constraints of the robot arm, ii) mechanical design limitations of the end-effector, iii) physical properties of the object being manipulated, and iv) accuracy of the perception system.
+Additionally, extending prehensile capability beyond objects assumed to be rigidly attached to the robot's end-effector introduces the challenge of dealing with coupled dynamics between robot and object motion \cite{yin2021modeling,ichnowski2022gomp}.
+This also begins to underscore the complexities associated with motions involving the consideration of both kinematic and dynamic constraints, as evidenced by research in non-prehensile manipulation \cite{ruggiero2018nonprehensile}.
+These complexities manifest in multiple ways: good models become scarce, problem dimensionality increases exponentially, component integration grows increasingly challenging, and existing pipelines demand substantial engineering effort, reducing practical utility.
+% This leads to exponential increases in problem dimensionality, scarcity of adequate models, engineering-intensive pipelines with reduced practical utility, and increasingly challenging component integration.
+
+% On the one
+
+% \ar{in here I would sell it as we said today : on the one hand, we have systems that successfully employ dynamics but only robot dynamics and control based approaches that don't scale, on the other hand, we have learned approaches that either don't incorporate dynamics or do so at a surface level (i.e. the robto is still controlled in position, the manip skill is still prehensile, and so on). But you have to mention both traditional and learned approaches explicitly otherwise one gets lost}
+
+% On the one hand, we have systems that successfully employ dynamics through analytical models and optimization but only robot dynamics and control-based approaches that do not scale beyond carefully engineered environments due to computational complexity and modeling requirements.
+% On the other hand, we have learned approaches that either do not incorporate dynamics or do so at a surface level, i.e., the robot is still controlled in position and the manipulation skills are still prehensile, etc.
+
+Recent advances in robotic manipulation present two divergent approaches with complementary limitations.
+On the one hand, traditional control-based methods successfully incorporate dynamics---and often, only robot dynamics---through analytical models and optimization, but struggle to scale beyond carefully engineered environments due to modeling complexity \cite{feng2014optimization,gamba2023springy}. On the other hand, learning-based approaches like foundational models have demonstrated impressive real-world behaviors through imitation, but typically operate at a surface level of dynamics integration---controlling robots primarily through position commands, focusing on prehensile manipulation, and operating within conservative joint limits \cite{chi2023diffusion,team2024octo}. This fundamental disconnect between dynamics-aware but brittle traditional approaches and generalizable but dynamics-limited learning methods represents a critical gap in advancing manipulation capabilities.
+
+% Recent advances in foundational robotic models and generative approaches like diffusion have enabled new forms of behavior learned primarily through imitation \ap{cite}. However, these works share a common limitation: they focus predominantly on geometric positioning and control, typically demonstrating single-task capabilities that operate within conservative limits of joint parameters. This limitation persists partly because the underlying methods are still evolving, with no general approach yet established despite promising directions.
+% The core deficiency in conventional approaches stems from their systematic decoupling of kinematics from dynamics—prioritizing motion geometry followed by time-optimality considerations that account for constraints on higher-order derivatives. This separation is further exacerbated by the rigid attachment assumption, which neglects the modeling and inertial constraints imposed by the target object on the robot's motion. Or accounts for it in an end-to-end way.
+
+By generating dynamically admissible trajectories from the coupled, task-constrained state spaces of the robot and its environment, my work expands the scope of robotic manipulation beyond geometric pick-and-place operations. This approach \ul{incorporates dynamic non-prehensile skills and motions governed by object inertial properties, impulsive contact, and motion-induced forces.} In doing so, it directly addresses fundamental challenges in dynamics modeling, problem dimensionality, system design, and usability for real-world deployment.
+This enables robots to perform a broader spectrum of manipulation tasks involving both kinematic and dynamic constraints across diverse settings, ultimately improving generalization capabilities while significantly reducing the engineering complexity typically associated with such systems.
+% This enables robots to perform a wider range of manipulation tasks involving both kinematic and dynamic constraints in broad variety of real-world environments, making generalization a key win while reducing overall engineering complexity.
+% \ar{this enables...}
+% This enables robots to perform a wider range of manipulation tasks involving both kinematic and dynamic constraints, such as payload handling beyond the robot's rated capacity \cite{pasricha2025payload}, liquid transport with minimal sloshing \cite{abderezaei2024clutter}, and impulsive actions for expanding the robot's reachable workspace especially under actuation failures \cite{pasricha2022pokerrt,briscoe2024exploring}.
+
+% including skillful handling of liquids, dynamic payload transport with minimal sloshing, and precise manipulation of objects with varying mass distributions—all while maintaining computational efficiency and task adaptability not possible with traditional optimization approaches.
+
+
+
+\section{Prior work in dynamics integration into planning}
+% \ar{if you did a good enough job at describing the main issues with SOTA in the intro (same as you havein the presentation, then here when referring to each domain you can explicitly mention the issues they have: e.g. Control theoretic methods have a usability and scalability and system issue....}
+% \ar{also, why dont' you add your slide as a picture? You have it, let's reuse it}
+% \ap{see ichnowski's papers}
+
+Higher-order constraints such as joint torques and end-effector accelerations can be addressed through several approaches that range from ``plan-and-filter'' methods which post-process geometric paths \cite{abderezaei2024clutter,kuntz2019fast} to kinodynamic planners that directly incorporate dynamics during planning \cite{li2016asymptotically,nayak2022bidirectional}.
+Broadly there are four different approaches (\cref{fig:other-prior-work}). The literature is vast so we focus our approaches on manipulation tasks which involve the consideration of environment or object dynamics in addition to robot dynamics.
+
+% \header{Planning as Search}
+
+
+% \header{Plan-and-Filter Methods}
+% The plan-and-filter methodology implements a hierarchical constraint-satisfaction framework that progressively addresses more complex requirements \ap{cite}. Initially, a configuration-space path is generated to satisfy geometric constraints including collision avoidance and joint limits. Subsequently, time parameterization is applied---through bang-bang control or optimization techniques---to minimize traversal time while respecting velocity and acceleration constraints. The resulting trajectory is then evaluated against environmental dynamic constraints. This sequential process iterates until identifying a trajectory that successfully enables the desired dynamic robot-object interaction.
+% \ar{pros and cons?}
+
+\input{figs/other-prior-work}
+
+\header{Planning as Search}
+At its very basic, this class of methods involves finding a configuration-space path is generated to satisfy geometric constraints including collision avoidance and joint limits \cite{orthey2023sampling}. Subsequently, time parameterization is applied---through bang-bang control or optimization techniques---to minimize traversal time while respecting velocity and acceleration constraints \cite{pham2018new,berscheid2021jerk}. The resulting trajectory is then evaluated against environmental dynamic constraints \cite{gaz2019dynamic}. This sequential process iterates until identifying a trajectory that successfully enables the desired dynamic robot-object interaction.
+Although modular in nature which allows for the tuning of each component, this sequential framework may yield sub-optimal solutions and be computationally inefficient due to iterative refinement cycles when trajectories fail to satisfy all constraints, particularly when environmental models are inaccurate or constraints are too restrictive.
+
+Kinodynamic planning simultaneously considers robot and object dynamics through interleaved state space exploration and control propagation. Many approaches employ steering functions (inverse models) to connect states. Examples include DIMT-RRT's quadratic steering function that obeys joint acceleration limits and non-zero initial and goal velocities \cite{kunz2014probabilistically}, AVP's computation of reachable velocities along a geometric path \cite{pham2013kinodynamic,johnson2012optimal}, and LQR-RRT*'s linearized dynamics with quadratic cost functions \cite{perez2012lqr,caldwell2018fast}. Alternatively, forward control propagation methods use random states and actions to construct dynamically feasible trees \cite{pasricha2022pokerrt}. SyCLoP and KPIECE guide exploration via state space discretization \cite{plaku2010motion,sucan2011sampling}, while SST optimizes paths through pruning and heuristic biasing \cite{li2016asymptotically}. GBRRT and GABRRT employ multiple propagation methods with bidirectional search \cite{nayak2022bidirectional}. Other techniques pre-map valid motions and search discretized state and control spaces \cite{shome2021asymptotically,bordalba2018randomized}. Despite theoretical completeness guarantees under certain conditions \cite{kleinbort2018probabilistic}, these methods face practical limitations in high-dimensional manipulation spaces and exhibit high variance in planning times, particularly when dealing with uncertainty and planning near operational limits \cite{kingston2018sampling}.
+
+\header{Optimization-Based Approaches}
+Optimization-based methods naturally integrate dynamics constraints by framing motion planning as the minimization of objective functions (e.g., smoothness, time optimality) subject to equality and inequality constraints that enforce collision avoidance, robot limitations, and dynamic feasibility \cite{kalakrishnan2011stomp,schulman2013finding,park2012itomp,ichnowski2020gomp}.
+Typically formulated as quadratic programs, these approaches guarantee constraint satisfaction but demonstrate high sensitivity to initialization quality. This dependency has prompted the development of hybrid methodologies that bootstrap the optimization process with sampling or learning-based initializations \cite{ichnowski2020deep,kuntz2019fast,yan2024impact}. These integrated approaches leverage the strengths of both paradigms: the exploration capabilities of sampling/learning methods for identifying promising trajectory seeds, and the precision of optimization for refining solutions to satisfy strict dynamic constraints.
+Optimal control formulations for dynamics-aware manipulation also exist \cite{arrizabalaga2024slosh,kim2014catching}. Despite their theoretical rigor, they face practical limitations in handling complex constraints and achieving reliable convergence for real-world manipulation problems.
+
+% \header{Control-Theoretic Methods} 
+% \ar{this one feels underdeveloped}
+% Control approaches specifically designed for the task at hand and provide more theoretical guarantees such as the stability of the system.
+
+\header{Learning-Based Approaches}
+Finally, learning-based approaches offer promising directions for both generalizability and efficient trajectory generation while respecting system dynamics. Autoregressive models implicitly encode dynamics through dataset design \cite{fishman2023motion,qureshi2020motion}, while recent diffusion-based approaches provide non-autoregressive alternatives with improved sampling diversity \cite{carvalho2023motion,saha2024edmp}. Task-level diffusion policies, conditioned on language and visual embeddings \cite{ajay2023is,chi2023diffusionpolicy}, demonstrate potential for generating diverse behaviors from high-level task specifications.
+While these approaches yield impressive real-world behaviors, provide continual improvement over deployment lifespan, and avoid explicit state space exploration for each new query, they typically focus on position-controlled tasks and grasping-based manipulation and incur significant training and data acquisition costs.
+% And finally a new wave of learning based methods involve training a neural architecture on task specific data with hopes of generalizability at inference time which is unrolled as an autoregressive approach or diffusion.
+% dynamics integration
+% position control
+% prehensile
+% conservative - joint limits
+% lack of guarantees
+% \ar{pros and cons?}
+
+\input{figs/my-work}
+
+\header{Hybrid Approaches}
+Hybrid approaches can also exist at each intersection of the aforementioned methods and leverage the benefits of each to create a more robust system.
+At the intersection of search-based and optimization-based methods, hybrid techniques typically begin with a seed path generated through sampling-based algorithms and subsequently fit controls to this solution \cite{kuntz2019fast}. This approach combines the exploratory advantages of search-based methods with the refinement capabilities of trajectory optimization.
+In search-based planning, neural networks generate task-biased state space samples \cite{mcmahon2022survey}, while in optimization contexts, they provide informed seeds for trajectory optimization \cite{ichnowski2020deep}. This integration addresses the initialization sensitivity of pure optimization approaches while maintaining their convergence properties.
+
+\ul{The confluence of all three paradigms---search, optimization, and inference---represents the frontier of motion planning research.}
+% Methods like MPiNets and Motion Planning Diffusion \cite{fishman2023motion} train neural networks to model the distribution of solution spaces, enabling direct inference of solutions for novel start/goal configurations. These approaches effectively learn from successful trajectories across multiple problem instances, capturing the underlying structure of valid solution spaces while avoiding explicit state space exploration for each new query.
+Significant challenges remain in developing unified approaches that can reliably handle complex robot-object dynamics while maintaining computational efficiency and generalizability across multiple tasks---a gap my work directly addresses to enable a broad range of new capabilities beyond geometric reasoning alone.
+% \ar{add final sentence(s) on where the state of the art is at.Which makes for a nice segue into what your prior work was and then the subseequent sections}
+
+% robot-obj dyns
+
+% my journey is from planning as search to planning as inference
+% going beyond the boring capabilities of the robots
+% methods
+% broader problem
+% taxonomy
+
+% methods and applications
+

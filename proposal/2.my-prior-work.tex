@@ -1,0 +1,162 @@
+\section{My Prior Work}
+
+My work broadly falls under kinodynamic and learned methods for planning with dynamic constraints. Specifically, it operates at the intersection of \textcolor{customaqua}{planning methods} (kinodynamic, plan-and-filter, diffusion) and \textcolor{customyellow}{modeling} (simulation, analytical, learned), applied to novel \textcolor{customred}{problem domains} (non-prehensile manipulation, payload transport, actuation failures, liquid handling) aimed at expanding the capability of existing robotic manipulators (\cref{fig:my-work}).
+
+\input{2a.npm}
+
+\input{2b.dyns}
+
+\section{The Big Four: Modeling Burden, Problem Dimensionality, System Design, and Usability}
+In line with the state of the art, my prior work reveals insights across four critical dimensions that govern robotic manipulation research. I also discuss the potential of learning-based approaches in addressing some of these challenges.
+
+\header{Modeling Burden} While embodiment-driven analytical models provide theoretical foundations, they often fall short when modeling complex interactions. The progression from simulation-in-the-loop approaches (PokeRRT \cite{pasricha2022pokerrt}) to transformer-based dynamics models \cite{reed2024transformer} illustrates that learning-based methods have the potential to model non-linear and stochastic phenomena across diverse real-world settings. However, the effectiveness of these models remains highly task-dependent, as evidenced by the specialized constraints needed for liquid handling \cite{abderezaei2024clutter} versus whole-body manipulation under joint failures \cite{briscoe2024exploring}. Additionally, model fidelity and speed inform planning success across the high-dimensional search space of robot-object interactions in the real-world.
+
+% \input{figs/big-four}
+
+\header{Problem Dimensionality}
+This search space involves the consideration of higher-order states like velocities, accelerations, and forces for dynamic motions, in addition to geometric constraints like positional limits and obstacle avoidance \cite{schmerling2019kinodynamic}. Finding good initial solutions that can then be optimized \cite{kuntz2019fast}, pre-computation in the combined robot and task space \cite{shome2021asymptotically,briscoe2024exploring}, and lazy approaches to dynamics propagation and collision checking \cite{pasricha2024virtues} can begin to address computational tractability issues especially as they arise from imperfect models in simple environments \cite{pasricha2022pokerrt,briscoe2024exploring,abderezaei2024clutter}.
+However, even with recent advances in parallel collision-checking and forward kinematics calculations \cite{sundaralingam2023curobo,thomason2024motions}, computational complexity and memory consumption remain prohibitive for high-dimensional problems due to the inherent difficulty of generating valid samples, approximating distances in non-Euclidean spaces, and connecting states with dynamically feasible trajectories.
+Learning-based approaches provide an alternative solution by implicitly compressing high-dimensional spaces through learned representations, which enables efficient and complex reasoning in state-action spaces \cite{qureshi2020motion}.
+
+% \ar{in this one you are falling into the trap of describing stuff rather than telling a story}
+% The scalability limitations of sampling-based planners became evident when addressing the combinatorial complexity of robot-environment interactions. Learning-based approaches consistently demonstrate advantages in reasoning over high-dimensional state and action spaces, requiring significantly less computational resources than exhaustive search-based methods. The multi-query kinodynamic planner with lazy evaluation techniques represents an intermediate solution that improves computation time but remains fundamentally limited compared to generative approaches.
+
+\header{System Design}
+While traditional robotic planning systems offer verifiable safety assurance, explainable components for debugging, and generalizability to different scenarios, they face significant integration challenges and require extensive engineering effort when combining multiple specialized components \cite{abderezaei2024clutter}. Each component requires careful tuning, creating complex error propagation through multiple components, resulting in brittleness at system boundaries. Moreover, system performance typically does not improve without manual intervention and overall processing speed is subject to high variance depending on component choice and tuning.
+Learning-based approaches offer advantages through end-to-end trainable architectures that naturally handle component interactions, improving scalability to new tasks without requiring extensive redesign as well as lending themselves to progressive improvement over the course of system deployment.
+% Novel integration mechanisms define successful system architectures. Learning-based components offer flexibility but risk reduced explainability when used in isolation. My research trajectory demonstrates that hybrid approaches—combining the interpretability of attention mechanisms with the theoretical foundations of kinodynamic planning—provide the most robust framework for generalizable manipulation skills across diverse tasks from non-prehensile manipulation to failure-constrained operation.
+
+% classical weaknesses:
+
+% extensive engineering effort
+% system performance won't improve without manual intervention
+% propagation of errors through multiple components
+
+% classical strengths:
+
+% varifiable safety assurance
+% explainable components for debugging
+% generalizability to different scenarios
+
+
+% , fixed performance cap, and potentially resulting in system processing and planning times with high variance. Debuggability.  My research demonstrates that hybrid approaches—combining neural components with model-based planning—balance flexibility and explainability while reducing engineering complexity. This approach enables faster inference with predictable variance and facilitates continual improvement through transfer learning techniques, yielding systems that adapt more efficiently to novel tasks than purely analytical methods.
+
+\header{Usability}
+% The practical deployment of robotic manipulation systems reveals tensions between theoretical guarantees and implementation complexity. While learning-based methods reduce engineering effort, they often provide soft constraint enforcement requiring integration with traditional methods for safety guarantees. This integration creates a critical balance between accessibility and reliability, particularly evident in the task-specific bias sampling for liquid handling that dramatically expanded the feasible solution space.
+% The practical deployment of robotic manipulation systems reveals a fundamental tension between theoretical guarantees and implementation complexity.
+Traditional approaches require substantial engineering hours for each novel task and resulting edge cases---developing task-specific sampling strategies \cite{abderezaei2024clutter}, designing appropriate cost functions \cite{pasricha2024virtues}, and determining which physical phenomena to model in multi-objective scenarios \cite{pasricha2022pokerrt}. While traditional methods provide safety, completeness, and optimality guarantees, their implementation complexity often restricts deployment to controlled environments with simplified dynamics.
+Learning-based methods significantly reduce this engineering burden by automatically extracting relevant patterns from demonstration or interaction data, where cost functions may be hard to specify.
+However, high-quality training data is hard to acquire and limited by human demonstrations (typically geometric in nature), restricting the class of behaviors that can be learned by existing approaches.
+% this improvement introduces new challenges in verifying system behavior and ensuring safety constraints remain satisfied during operation.
+% enabling rapid adaptation to novel tasks without extensive manual tuning. This advantage becomes particularly evident in complex scenarios where traditional approaches struggle to encode task constraints, such as in liquid manipulation tasks where learned bias sampling dramatically expanded the feasible solution space.
+
+% \section{The Case for Learning-Based Methods in Motion Generation}
+
+% Traditional kinodynamic planners face inherent challenges across these four dimensions that motivate the integration of learning-based methods as a natural progression in robotic motion planning.
+
+% Analytical and simulation-based dynamics models struggle with the complexity of real-world interactions involving impulsive contact \cite{pasricha2022pokerrt}, stochastic friction \cite{briscoe2024exploring}, and fluid dynamics \cite{abderezaei2024clutter}. While my simulation-in-the-loop approach in PokeRRT provided initial success, the reality gap in contact dynamics and computational demands limited practical application. Learning-based methods offer more accurate modeling of these complex phenomena, as demonstrated by our transformer architecture for diverse robotic platforms.
+% The combinatorial explosion of state-action spaces in kinodynamic planning fundamentally limits scalability. Despite improvements through lazy evaluation techniques and multi-query planning, the computational burden remains prohibitive for real-time applications in high-dimensional spaces. Learning-based approaches can effectively compress this dimensionality through implicit representations learned from data, enabling efficient reasoning in previously intractable spaces.
+% Engineering-heavy solutions requiring extensive parameter tuning and domain expertise create barriers to widespread adoption of sophisticated manipulation skills. Learning-based methods reduce this burden by abstracting complex dynamics into trainable models, though the integration with traditional planners remains essential to provide safety guarantees and constraint satisfaction.
+These four dimensions highlight the opportunity learning-based methods present over kinodynamic planning for advancing robotic manipulation beyond geometric pick-and-place operations. Specifically, the integration of generative models with optimization-based approaches represents a promising direction for creating motion planners that efficiently reason about complex dynamics through pretrained representations of sensory input while generating trajectories that satisfy kinematic and dynamics constraints.
+
+\section{Diffusion Models}
+
+Diffusion models have recently emerged as an effective generative modeling approach for producing high-quality, diverse samples from learned approximations to conditional or unconditional \textsl{multimodal} distributions, albeit at the cost of longer generation times \cite{sohl2015deep,ho2020denoising,rombach2022high,nichol2021glide}.
+% Their key strength lies in capturing multimodality---the ability to effectively model conditional or unconditional multimodal distributions of the underlying dataset \cite{chi2023diffusion,sridhar2024nomad}.
+
+\input{figs/diffusion}
+
+\header{Background}
+Diffusion operates as a two-step process: forward and reverse (also known as inference, sampling, planning, or denoising). In its simplest implementation, the training process consists of adding noise according to a scheduler to a training data sample, then training a neural architecture to predict the magnitude of added noise (epsilon prediction), and minimizing the MSE loss between the added noise and the predicted noise \cite{ho2020denoising}.
+During inference, random Gaussian noise of the same dimensionality as the target data is generated and iteratively denoised through the trained neural architecture over multiple steps to generate a valid sample.
+This class of generative methods has found application in robotics in two main areas: imitation learning \cite{chi2023diffusion,sridhar2024nomad} and seeding for trajectory optimization \cite{carvalho2023motion,huang2024diffusionseeder}, owing to its ability to represent multimodal distributions effectively and produce diverse and high-quality samples from the modeled data space.
+While existing applications have shown diverse real-world behaviors through end-effector delta actions, they primarily focus on kinematic constraints, require many human demonstrations, and necessitate training a new model for novel behaviors \cite{chi2023diffusion,ajay2023is,ha2023scaling,ze20243d}. These limitations direct my research toward the seeding problem for trajectory optimization---specifically, developing diffusion models that produce kinematically and dynamically admissible trajectories which can further be refined by standard trajectory optimization iterations.
+% that respect both kinematic and dynamic constraints, thereby enabling enhanced capabilities for robotic manipulation without extensive demonstration datasets.
+
+\header{Formalization}
+A joint space trajectory with $t$ waypoints at denoising step $k$ is defined as
+$\bm{\pi}^k = [ X_0^k, X_1^k, \dots, X_{t-1}^k ]^T$
+where $X_i = (q_i, \dot{q}_i, \ddot{q}_i) \in \mathbb{R}^n$ represents the complete state (joint angles, velocities, and accelerations) of an $n$-DoF robot arm at timestep $i$.
+The training process for the diffusion model approximates the conditional distribution $p(\bm{\pi}\ |\ \mathcal{C})$, where $\mathcal{C}$ is the target conditioning embedding (\textcolor{customred}{\Cref{fig:diffusion}}).
+It samples $\bm{\pi}$ from dataset $\mathcal{D}$, adds noise according to a schedule parameterized by $\alpha$, $\gamma$, and $\sigma$, and learns to predict the underlying sample. The noise prediction network $\epsilon_\theta$, where $\theta$ represents the parameters of the 1D U-Net architecture, is trained to minimize
+\begin{equation}
+    \mathcal{L}(\theta) = MSE(\epsilon^k, \epsilon_\theta(\mathcal{C}, \bm{\pi}^0 + \epsilon^k, k))
+\end{equation}
+
+Given a trained $\epsilon_\theta$, the $K$-step iterative denoising process
+\begin{equation}
+    \bm{\pi}^{k-1} = \alpha \cdot (\bm{\pi}^k - \gamma\epsilon_\theta(\mathcal{C}, \bm{\pi}^k, k) + \mathcal{N}(0, \sigma^2I))
+\end{equation}
+starts from $\bm{\pi}^K \sim \mathcal{N}(0, I)$ and generates a trajectory $\bm{\pi}^0$ that respects the conditioning information and obeys start, goal, joint limit, collision, and dynamic constraints.
+In practice, start and goal states are enforced via inpainting \cite{carvalho2023motion}, i.e., terminal states are ignored from the denoising process and set to problem constraints $\bm{\pi}_0^k = X_{start}$ and $\bm{\pi}_{t-1}^k = X_{goal}$ where $\dot{q}_{start} = \dot{q}_{goal} = \ddot{q}_{start} = \ddot{q}_{goal} = \bm{0}$.
+Collisions are avoided via inference-time gradient guidance $\bm{\pi}^{k-1} = \bm{\pi}^k - \beta\ \cdot \nabla J(\bm{\pi}; E)$ where $\beta$ is a tunable guidance weight, $J$ defines the collision cost function and $E$ represents the set of all obstacles in the environment \cite{saha2024edmp}.
+Additionally, joint limits are enforced via clamping during training and inference.
+
+% Specific to our work, $p(\bm{\pi}\ |\ \mathcal{C})$ models system dynamics through a conditioning mechanism that appends the target conditioning embedding $m$ to the diffusion timestep embedding in the noise prediction network architecture \cite{chi2023diffusionpolicy}. This global conditioning influences the entire trajectory, thereby ensuring dynamic feasibility.
+
+\header{Building Blocks}
+The diffusion-based trajectory generation system comprises four core components (\cref{fig:diffusion}):
+
+\begin{enumerate}
+    \item \textbf{\textcolor{customblack}{Unconditional Backbone}:} The foundational block is an unconditional diffusion model that generates samples from Gaussian noise. The denoising architecture can be selected based on task complexity and data characteristics. For instance, transformers may be preferable for high-rate actions, though CNN-based architectures remain effective for positioning tasks \cite{chi2023diffusion,seo2024presto,peebles2023scalable,carvalho2023motion,janner2022planning}. When trained on a diverse set robot trajectories, this backbone can generate approximate trajectories that serve as effective starting points for optimization-based methods. Improving these initial approximations can significantly reduce subsequent optimization iterations.
+    
+    \item \textbf{\textcolor{customgreen}{Data-Driven Refinement}:} This unconditional approximation can be enhanced to better capture the underlying distribution through high-quality, task-specific training data. The model can be also be guided toward on-manifold learning through task-specific loss function design, in addition to the standard noise prediction loss \cite{chi2023diffusion,saha2024edmp,carvalho2023motion}. Examples of loss functions include trajectory smoothness and collision distance \cite{seo2024presto}, and Cartesian space error and non-linearity-aware weighting \cite{huang2024diffusionseeder}. These design choices can be supplemented by the numerous methods available in machine learning literature to support generalization (e.g., regularization, data augmentation, cross-validation).
+    
+    \item \textbf{\textcolor{customaqua}{Inference-Time Cost Guidance}:} A distinctive advantage of diffusion models is the ability to apply cost guidance \textsl{at inference time}, steering the denoising process to generate trajectories that avoid obstacles and respect higher-order constraints. This approach requires diversity in training data to function effectively. Additionally, inpainting techniques enforce hard state compliance for problem-specific constraints like start and goal states, while the remainder of the trajectory is generated through the denoising process \cite{janner2022planning,saha2024edmp,carvalho2023motion}.
+    
+    \item \textbf{\textcolor{customred}{Constraint Integration}:} Real-world tasks invariably operate under both kinematic and dynamic constraints. These constraints are incorporated via the conditioning mechanism, effectively learning a conditional distribution that leverages prior work in sensory feature learning \cite{krizhevsky2012imagenet}. This conditioning can take various forms---RGB images \cite{chi2023diffusion,sridhar2024nomad}, point clouds \cite{ze20243d}, depth information \cite{huang2024diffusionseeder}, or task-centric representations \cite{seo2024presto}---all aimed at generating near-admissible motions that can be further refined by trajectory optimization.
+\end{enumerate}
+
+
+While these building blocks provide a foundation for trajectory generation, existing diffusion-based approaches primarily focus on kinematic feasibility and collision avoidance, overlooking the critical role of dynamics constraints in real-world robotic tasks. This limitation significantly reduces their effectiveness as initializers for trajectory optimizers like GOMP-FIT \cite{ichnowski2022gomp}, which must subsequently reconcile the kinematically-viable but dynamically-infeasible paths.
+
+My current and proposed work address the fundamental challenge of incorporating dynamic constraints directly into the diffusion model framework. Rather than treating diffusion models as geometric path planners, I present a current work that uses a high-level conditioning mechanism to implicitly encode dynamic constraints for a payload transport task and I propose a follow-up work that presents a task-agnostic trajectory generation framework.
+As a result, this work aims to significantly reduce the computation burden on trajectory optimization with kinematic and dynamic constraints.
+% we propose a novel conditioning mechanism that enables these generative models to respect the physical dynamics of both the robot and its interaction with the environment.
+% By explicitly modeling system dynamics through our conditioning approach, we generate trajectories that are not only collision-free but also dynamically feasible from the outset. This significantly reduces the computational burden on subsequent optimization processes, which no longer need to substantially modify the initial trajectory to satisfy dynamics constraints.
+% Our method thus bridges a critical gap in trajectory generation—producing seeds that honor both kinematic and dynamic feasibility requirements simultaneously.
+
+\section{Current Work}
+
+\input{figs/architecture}
+
+\header{Trajectory Generation with Implicit Dynamics Modeling}
+To overcome the challenges of handling coupled robot-object dynamics in high-dimensional state spaces, my current research explores generative diffusion models for trajectory planning that implicitly incorporate dynamic constraints \cite{pasricha2024towards,wang2001payload}.
+As a specific use case of this approach and without loss of generalization, I focus on expanding the operational capabilities of existing robot hardware by enabling super-nominal payload manipulation---allowing safe operation beyond manufacturer-specified limits while respecting hardware constraints.
+% This work significantly expands the operational capabilities of existing robot hardware by enabling super-nominal payload manipulation---allowing robots to safely operate beyond manufacturer-specified limits while respecting true hardware constraints.
+% By simultaneously modeling both kinematic and dynamic constraints, the system properly accounts for how payload characteristics interact with joint configurations and their higher-order derivatives to determine feasible motions.
+
+Diffusion models offer a compelling solution to this challenge through their inherent properties: they naturally explore diverse solution trajectories through stochastic denoising \cite{chi2023diffusion} while modeling complex, multimodal distributions that accommodate rich contextual information. My key innovation extends beyond existing diffusion-based approaches that operate solely in position space \cite{carvalho2023motion,saha2024edmp} by jointly learning valid distributions across positions, velocities, and accelerations, thereby addressing the complete dynamic state space.
+
+Specifically, we extend the diffusion policy architecture to condition trajectory generation on payload mass through global conditioning \cite{chi2023diffusion}. Unlike local conditioning where features influence each timestep individually, global conditioning applies the mass embedding uniformly across the entire trajectory generation process, preserving dynamic feasibility across the generated motion (\Cref{fig:architecture}).
+Through training on dynamically verified trajectories, the model implicitly encodes kinodynamic constraints without requiring explicit mathematical formulation during inference. Our experimental results demonstrate that robots can safely handle payloads across $67.6\%$ of the nominal workspace at $3\times$ rated capacity while maintaining sub-$0.1$ second planning times.
+
+
+% Addressing the scalability challenges posed by explicitly modeled dynamics in high-dimensional state-action spaces, my most recent work introduced generative diffusion models for trajectory planning \cite{self2024icra40,self2025rss}.
+% My current work allows to expand the safe operational envelope of a fixed/given robot embodiment and enables it to perform beyond nominal payload specifications.
+% This requires unified handling of both geometric (i.e., kinematic) and dynamic constraints, as payload characteristics interact with joint configurations and higher-order derivatives to determine feasible motions.
+% Limitations of prior methods in this space highlight the need for a method that balances constraint satisfaction with flexibility and generalizability---i.e., the ability to adapt to varying payloads, environmental conditions, and task requirements while maintaining consistent performance.
+% Of note, diffusion models \cite{chi2023diffusionpolicy,sridhar2024nomad} present a compelling opportunity to bridge the gap between constraint satisfaction and adaptability in robotic motion planning and trajectory generation.
+% The inherent stochasticity in the denoising process enables the exploration of diverse solution trajectories \cite{chi2023diffusionpolicy}, while their capacity to model complex, multimodal distributions allows incorporation of rich contextual information such as natural language commands, sensor data, and environmental conditions.
+% However, existing diffusion-based approaches have been confined to position-controlled systems \cite{carvalho2023motion,saha2024edmp}, leaving the fundamental challenge of integrating both kinematic and dynamic constraints unaddressed.
+% In this work, we propose a method that directly tackles this problem by jointly learning valid distributions of positions, velocities, and accelerations that satisfy both constraint types simultaneously---moving beyond prior work that only denoises in position space.
+
+% Diffusion models implicitly encode kinodynamic constraints through training data and inference-time guidance, enabling highly flexible trajectory generation even in complex, coupled robot-object scenarios. By conditioning these models on task goals and initial dynamic states, my approaches have demonstrated promising capability for cross-task generalization and rapid synthesis of dynamically feasible trajectories. However, the intrinsic limitations of purely implicit modeling—such as the lack of guarantees and occasional infeasibility—highlight the need for careful integration with traditional planning and verification techniques.
+\header{Limitations}
+While promising, the current implementation has several limitations that point toward important future work. The framework currently lacks cross-task generalization, being primarily trained for tabletop manipulation. This specificity limits applicability to arbitrary point-to-point motions and more complex task spaces.
+The experiments were conducted in relatively collision-sparse environments with simplifying assumptions about payload characteristics, particularly regarding mass distribution.
+% These limitations highlight the need for more sophisticated payload models that account for non-rigid dynamics, offset centers of mass, and complex inertial properties.
+Combined, these limitations pave the way for future work and necessitate the use of task-agnostic conditioning in diffusion and subsequent trajectory optimization that involves the use of both kinematic and dynamic constraints.
+% Addressing these constraints will require extending the conditioning mechanism to incorporate task-agnostic parameters and expanding the training distribution to include diverse environmental conditions. For highly complex tasks involving both kinematic and dynamic constraints, hybrid approaches that combine learned models with traditional trajectory optimization may offer the most robust solution path forward.
+
+% Task generalization is missing. Task agnostic conditioning is required. Dataset is over-specific to tabletop manipulation. Additional experiments show lack of generalization to arbitrary point to point motions. Experiments were conducted in collision-sparse environments with simplifying assumptions about payload characteristics like geometric distribution. 
+
+
+
+% Our first work looks into this. Makes use of all these components for different aspects of planning...
+
+% \header{The need for new skills}
+
+% \header{Addressing the failure cases of the rigid attachment assumption}
+
+% The major focus in prior work is geometric.
