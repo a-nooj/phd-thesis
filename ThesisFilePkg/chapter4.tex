@@ -5,8 +5,9 @@
 \chapter{Extending Sampling-Based Dynamics Planning to Constrained Settings}
 \label{ch:constrained}
 
-% TODO: Describe how the Poke-RRT line of thinking generalizes to two
-% richer settings: constrained embodiments and constrained payloads.
+The sampling-based dynamics planning framework introduced in \cref{ch:poking} treats the robot arm as fully operational.
+Two companion works extend this framework to settings where additional physical constraints restrict the feasible space of plans: one in which the robot's embodiment is partially disabled by mechanical failure, and one in which the payload imposes dynamic limits on feasible trajectories.
+Both works were led by collaborating PhD students; this chapter summarizes the problem structure, methods, and key results.
 
 \section{Whole-Body Non-Prehensile Manipulation Under Actuation Failures}
 \label{sec:constrained:failures}
@@ -14,20 +15,83 @@
 \subsection{Long Deployments and Locked-Joint Failures}
 \label{sec:constrained:deployments}
 
-% TODO: Motivate long deployments in harsh environments and the prevalence
-% of locked-joint failures.
+Robots are increasingly integrated into critical applications, ranging from industrial automation to healthcare and even space exploration~\cite{CensusSurveyRobotic2022, Kyrarini2021, papadopoulos2021robotic}.
+The reliability and continuous operation of these robotic systems are crucial for their acceptance and utilization in such demanding environments.
+However, as robots perform tasks over extended periods, the likelihood of mechanical failures increases~\cite{austin2020robotic, She2016, muirhead2012coalescing}.
+A particularly critical and crippling case is when multiple joints fail simultaneously.
+These multi-joint failures can drastically reduce the robot's task space and challenge standard motion planning algorithms due to the constraints of the robot's configuration and control spaces~\cite{kingston2018sampling}.
 
 \subsection{Effects on Workspace, Manipulability, and Feasibility}
 \label{sec:constrained:effects}
 
-% TODO: Quantify how a locked joint reshapes the reachable workspace,
-% manipulability, and feasible interactions.
+These constraints in the robot's kinematics and dynamics can degrade its manipulation capability through reduced abilities.
+For a robot manipulator that becomes underactuated due to multi-joint failures, several constraints can occur:
+i) the position and orientation of the end effector become coupled to the robot's remaining functional joints,
+ii) the manipulable area will be constrained to a subset of its non-failure size,
+iii) grasping may not be possible due to task constraints, such as an object being in an ungraspable orientation,
+iv) the robot may lose the ability to manipulate the end-effector entirely due to an adverse configuration, and
+v) the end effector will be subject to nonholonomic constraints~\cite{Bloch_Krishnaprasad_Murray_2016}.
+
+We consider two failure cases on the Franka Emika Panda arm, shown in \cref{fig:constrained:panda}.
+Failure Case~1 locks three joints---the Posterior Elbow Rotation, Anterior Elbow Rotation, and Wrist Rotation---which limits the graspable area and reduces the range of grasping configurations by coupling the end-effector orientation to the joint configuration.
+Failure Case~2 locks the Wrist Lift and Wrist Rotation joints, precluding use of the end-effector in completing manipulation tasks entirely.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.85\linewidth]{../wholebody/figures/Figure_3_update_02b_comp-1.pdf}
+  \caption{Two locked multi-joint (LMJ) failure cases on the Franka Emika Panda arm (failed joints indicated by red rings).
+  \textbf{Left (Case~1):} Posterior Elbow Rotation, Anterior Elbow Rotation, and Wrist Rotation joints locked, restricting grasp configurations.
+  \textbf{Right (Case~2):} Wrist Lift and Wrist Rotation joints locked, precluding end-effector use entirely.}
+  \label{fig:constrained:panda}
+\end{figure}
 
 \subsection{Whole-Body Non-Prehensile Manipulation as Recovery}
 \label{sec:constrained:wholebody}
 
-% TODO: Present whole-body non-prehensile manipulation as a recovery
-% strategy for the failed embodiment.
+To counteract the limits multi-joint failures impose on the robot's manipulation capability, we must shift the manipulation paradigm to include abilities beyond grasping and interaction beyond the end-effector.
+We propose using non-prehensile manipulation (NPM), or abilities corresponding to ``anything but'' grasping, through contact across the whole robot embodiment, to compensate for these constraints.
+
+We leverage the poking primitive from \cref{ch:poking} as a representative NPM ability to enable manipulation in the presence of LMJs, since it significantly expands the set of reachable configurations and the number of degrees of freedom of the robot's operational space.
+The challenge of identifying a viable sequence of NPM actions is compounded when dealing with robots experiencing locked joint failures: the search must find actions feasible within the altered kinematic landscape imposed by the failure.
+This intersection often leads to a zero-measure manifold, which is difficult to sample when following a uniformly random strategy.
+To mitigate this issue, we propose a pre-computation approach, which maps the reach and capability post-LMJ and then finds a set of dynamic actions the robot can achieve, considering the limitations imposed by LMJs.
+
+We adapt kinodynamic edge bundles to store NPM actions in a failure-centric map~\cite{shome2021asymptotically}, a method that captures the effects of nonholonomic constraints on end-effector motion.
+The set of all possible joint states and valid control inputs form manifolds $\mathcal{C}$ and $\mathcal{U}$; under LMJ failure, these degenerate into constrained manifolds $\mathcal{C}_c$ and $\mathcal{U}_c$ with significantly smaller volume~\cite{kingston2018sampling}.
+We approximate $\mathcal{C}_c$ through a collection of Monte Carlo rollouts---kinodynamic edges---of the robot's dynamical model with random control inputs sampled from $\mathcal{U}_c$.
+This precomputed \textit{failure-centric kinodynamic map} is multi-query, requiring only a single offline build per failure configuration.
+
+To utilize the kinodynamic map, we developed a sim-in-the-loop task planner.
+To understand the benefits of utilizing a simulator in the planning loop, we study three Action Selection Mechanisms (ASMs):
+the \textbf{Random} ASM finds all the edges that intersect the object and picks one randomly;
+the \textbf{Lazy} ASM picks the first edge that the simulator predicts will move the target object toward the goal;
+and the \textbf{Greedy} ASM scores a subset of candidate edges in simulation and executes the highest-scored edge on the real robot.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}cccc@{}}
+\toprule
+\textit{\textbf{Failure Case}} & \textit{\textbf{Ability}} & \textit{\textbf{Area (m$^2$)}} & \textit{\textbf{Change in Reachable Area}}\\ \midrule
+\textit{No Failure} & \textbf{NPM+PM} & \textbf{0.92} & Datum \\
+                    & PM only & 0.85 & $-8\%$ \\ \midrule
+\textit{Case 1}     & \textbf{NPM+PM} & \textbf{0.85} & $\mathbf{-8\%}$ \\
+                    & PM only & 0.62 & $-33\%$ \\ \midrule
+\textit{Case 2}     & \textbf{NPM+PM} & \textbf{0.73} & $\mathbf{-21\%}$ \\
+                    & PM only & 0 & $-100\%$ \\ \bottomrule
+\end{tabular}
+\caption{Reachability data. Whole-body NPM recovers most of the nominal workspace even when prehensile-only manipulation fails completely.}
+\label{tab:constrained:reach}
+\end{table}
+
+Relying solely on the end effector renders the robot ineffectual in failure cases that severely or entirely limit its use.
+NPM abilities and the capability to interact with the environment using the whole embodiment allow for increased robot manipulable area.
+The nominal full-dexterity manipulable area is $0.85\,\text{m}^2$; the use of NPM increases this to 108\% of nominal (\cref{tab:constrained:reach}).
+When using NPM actions, the robot maintains 92\% of the reachable area in Failure Case~1 compared to 67\% when using prehensile manipulation only.
+Since Failure Case~2 precludes use of the end-effector, the prehensile-only reachable area is eliminated; however, using NPM actions, the reachable area is only reduced by 21\%.
+
+Across 267 real-world trials over three scenarios and two failure cases, the Greedy ASM achieves a 100\% success rate in Failure Case~1 across all scenarios.
+Overall, our data shows a new and unique ability to conduct manipulation tasks while experiencing LMJs that restrict the robot's capability to manipulate using traditional pick-and-place approaches.
+Our sim-in-the-loop planner improved the robot's ability to conduct these tasks by looping in a physics model to our NPM actions.
 
 \section{Liquid Container Manipulation with Obstacle Avoidance}
 \label{sec:constrained:liquid}
@@ -35,32 +99,83 @@
 \subsection{Task-Biased Geometric Planning}
 \label{sec:constrained:biased}
 
-% TODO: Geometric planner biased toward task-relevant configurations of
-% the container.
+Among the different categories of objects robots encounter, liquids present a unique challenge due to their complex behavior.
+Despite the importance of robotic fluid manipulation in applications ranging from handling hazardous materials in laboratories to facilitating assistive feeding technologies designed for differently-abled individuals, research in robotic fluid manipulation remains under-explored and challenging.
+Fluid manipulation is challenging due to the intricate and nonlinear nature of fluid dynamics.
+Accurately modeling fluid dynamics is heavily task-dependent and requires substantial computational resources, hindering real-time control~\cite{systemstudy1, systemstudy2}.
+Existing approaches tackle these challenges by simplifying the complex fluid dynamics into more computationally efficient linearized pendulum or mass-spring-damper models.
+However, these methods struggle in cluttered scenes: they restrict the robot's motions to pendulum-like or mass-spring-damper-like behavior~\cite{pendulum2, pendulum2018, pendulum, springdamper2022, springdamper2021, pendulum2019}, impose restrictions on the container's orientation by setting fixed or limited Euler angle ranges throughout the trajectory~\cite{pendulum, springdamper2021}, and rely on constant monitoring of the liquid surface to execute trajectories, which can be obstructed in cluttered scenes~\cite{spill1, pendulum2019, montazeri2013chemical}.
+Consequently, the action space is over-constrained, and the robot can only perform limited motions, inhibiting its ability to maneuver around obstacles in cluttered environments.
+
+To address these limitations, we propose \emph{Spill-Free RRT*} (\textit{SFRRT*}), for spill-free manipulation of open-top liquid-filled containers in cluttered environments.
+SFRRT* first uses the container shape to inform the generation of a spill-free path via RRT*: by considering the container geometry, the algorithm calculates the maximum tilt angle $\theta_{\max}$ beyond which the container will spill and constrains the path search accordingly.
+An informed sampler samples robot configurations where the container orientation is less than the spill threshold $\theta_{\max}$, and is incorporated into an RRT* path planner to generate spill-free paths.
+RRT* is chosen due to its asymptotic optimality properties; by preferring transitions with minimal cost, it generates smooth motion profiles that maintain orientation stability~\cite{rrt*}.
 
 \subsection{Analytical Static Models for Fill Level}
 \label{sec:constrained:analytical}
 
-% TODO: Tie end-effector orientation to fill level via analytical static
-% models.
+A challenge in spill-free trajectory generation is that the volume of the robot configuration space containing spill-free trajectories is small and therefore inefficient to explore with random sampling alone~\cite{zach}.
+This dictates the need for an informed approach to explore dynamically-valid robot states.
+However, developing a model for combined robot and object dynamics is computationally expensive, task-specific, and impractical for real-world control.
+To address this, we mathematically formalize how container properties inform the construction of the \textit{spill-free space}.
+
+We model containers as frustums of cones, which accurately represents most common container shapes and provides an upper bound on the maximum tilt angle of containers with other shapes, such as round bottom flasks or wine glasses.
+Under quasi-static conditions, we consider tilting a container to the angle $\theta_{\max}$ such that any $\theta_t \leq \theta_{\max}$ is spill-free.
+Given the container's bottom radius $r_b$, top radius $r_u$, container height $h_c$, and water height $h_w$, two spillage cases arise: one where the tilted liquid forms a trapezoid and a triangle, and another where it forms only a triangle.
+We leverage the key insight that the total amount of liquid remains constant before and after tilting, yielding closed-form expressions for $\theta_{\max}$:
+
+\begin{equation}
+\theta_{\max} = \tan^{-1} \!\left[\frac{h_c(r_u - r_{w'})}{(r_u - r_b)(r_u + r_{w'})}\right] \quad \text{(Case~I)}
+\label{eq:constrained:caseI}
+\end{equation}
+where $r_{w'} = \frac{h_c r_u r_b - h_c r_2 r_b + h_w r_2 r_w + h_w r_2 r_b}{h_c r_2 + h_c r_b}$, and
+
+\begin{equation}
+\theta_{\max} = \tan^{-1} \!\left[\frac{h_c}{r_u - r_b + \tfrac{2h_w(r_w + r_b)}{h_c}}\right] \quad \text{(Case~II)}
+\label{eq:constrained:caseII}
+\end{equation}
+where $r_w = r_u - \left[\frac{r_u - r_b}{h_c}(h_c - h_w)\right]$.
 
 \subsection{Learned Dynamics Model for Trajectory Verification}
 \label{sec:constrained:learned}
 
-% TODO: Train a learned dynamics model on real-world data; use it to
-% verify candidate trajectories.
+While RRT* generates spill-free paths, to ensure the generation of a spill-free \textit{trajectory}, we must carefully parameterize the path such that the velocity, acceleration, and jerk do not cause spillage.
+To capture this relationship, we employ a transformer-based machine learning model trained to classify whether a container's trajectory is spill-free or not---the \textit{Spill-Free Classifier} (SFC).
+
+The input to SFC is the container trajectory (position and orientation over time) and container properties (top and bottom radius, container height, and liquid fill level).
+The SFC model employs the transformer architecture because its input is sequence data and transformers have become the leading architecture for handling sequential data due to their efficient parallel training capabilities and long context window~\cite{huggingfacetransformers}.
+To train the SFC model, we utilized a motion capture system to collect container trajectories performed by individuals across different container types and liquid volumes.
+We collected a total of 700 trajectories, including 655 human-performed trajectories and 45 trajectories from the Panda robot; the SFC achieves 94\% validation accuracy.
 
 \subsection{Where Analytical and Learned Components Meet}
 \label{sec:constrained:hybrid}
 
-% TODO: Discuss the boundary between analytical and learned model
-% components in the planner.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{../liquid/figs/tilt_angle_ranges.png}
+  \caption{Maximum tilt angles executed across all 30 evaluation trials by SFRRT* (solid lines, within the shaded allowable range per container) compared to the SpillNot baseline~\cite{pendulum} (fixed $15^\circ$ limit). In every experiment, SFRRT* utilizes a larger tilt range than SpillNot.}
+  \label{fig:constrained:tilt}
+\end{figure}
+
+Having modeled the relationship between container trajectory and spillage risk, we leverage SFC to generate spill-free trajectories via the \textit{Spill-Free Time Parameterization} (SFTP) algorithm.
+The key idea is to find the maximum jerk that does not cause spillage: SFTP iteratively reduces the maximum jerk of the trajectory and queries SFC after each iteration until SFC predicts the resulting trajectory is spill-free.
+Jerk constraints are especially critical in preventing sudden changes in acceleration that could cause spillage.
+
+We evaluate SFRRT* on the 7-DoF Franka Emika Panda across two scenarios (transporting a drink while avoiding table obstacles; transporting a chemistry vessel into a fume hood).
+Overall, we achieved a 100\% success rate for all experiments except experiment~5, where spill-free trajectories were accomplished in four out of five trials.
+As shown in \cref{fig:constrained:tilt}, in every experiment SFRRT* utilizes a larger tilt range than SpillNot~\cite{pendulum}; SpillNot's tilt angles are always limited to a maximum of $15^\circ$ to maintain low linearization error.
+SFRRT* achieves a maximum tilt angle of $45^\circ$ when transporting the basic container with a 30\% fill level, surpassing SpillNot's $15^\circ$---a $3\times$ increase in orientation range.
+For the flute glass with a 70\% fill level the maximum tilt angle is $72^\circ$, a $4.8\times$ increase.
+Furthermore, SFRRT* can generate trajectories where all three axes of orientation are utilized, with ranges for roll, pitch, and yaw of $[-49, 41]$, $[-30, 30]$, and $[-16, 9]$ degrees respectively.
+In contrast, the SpillNot method imposes a fixed yaw angle throughout the trajectory~\cite{pendulum}.
 
 \section{Lessons Learned}
 \label{sec:constrained:lessons}
 
-% TODO: Synthesize the strengths and limits of sampling combined with
-% heuristics and analytical or learned models.
+Both works in this chapter share a common structure: sampling-based planning augmented with compact physical structure---kinodynamic edge maps in the LMJ setting, analytical tilt bounds combined with a learned trajectory classifier in the liquid setting---to make an otherwise low-measure feasible set tractable to explore.
+The lesson is that sampling alone is insufficient when physical constraints concentrate valid states on a thin manifold; targeted precomputation or lightweight analytical guidance is necessary to steer the planner into the feasible region efficiently.
 
-% TODO: Foreshadow the multi-query and learning-based directions taken in
-% Chapters~\ref{ch:multiquery} through~\ref{ch:seeding}.
+At the same time, both works reveal the limits of fixed, precomputed representations.
+The kinodynamic edge map must be rebuilt whenever the failure mode changes; the spill-free classifier requires retraining when container types stray far from the training distribution.
+\cref{ch:multiquery,ch:seeding} take up this challenge, moving toward representations that generalize across tasks and environments and that can be queried and updated without full recomputation.
