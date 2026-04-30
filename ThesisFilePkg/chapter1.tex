@@ -1,43 +1,39 @@
 \chapter{Introduction}
 \label{ch:introduction}
 
-% TODO: Open the thesis with a hook that motivates dynamics-constrained
-% manipulation and previews the arc from sampling-based to generative methods.
-
 \section{The State of Robot Manipulation Today}
 \label{sec:intro:state}
 
-% TODO: Frame the contemporary landscape of robot manipulation.
+Humans engage naturally in multiple forms of dexterous manipulation that involve grasping, pushing, poking, rolling, and tossing objects \cite{bullock2011classifying}.
+This highlights a significant capability gap between human and robotic manipulation skills, as evidenced by the disproportionate research attention devoted to prehensile manipulation, or \textsl{grasping} \cite{billard2019trends}.
+Manipulation by grasping is computationally attractive primarily because, once an object is under form or force closure, it generally does not need to be tracked over time and uncertainty on its state is reduced.
+Despite these advantages, grasping is limited in capability by i) reachability constraints of the robot arm, ii) mechanical design limitations of the end-effector, iii) physical properties of the object being manipulated, and iv) accuracy of the perception system.
+Additionally, extending prehensile capability beyond objects assumed to be rigidly attached to the robot's end-effector introduces the challenge of dealing with coupled dynamics between robot and object motion \cite{yin2021modeling,ichnowski2022gomp}.
+This also begins to underscore the complexities associated with motions involving the consideration of both kinematic and dynamic constraints, as evidenced by research in non-prehensile manipulation \cite{ruggiero2018nonprehensile}.
+These complexities manifest in multiple ways: good models become scarce, problem dimensionality increases exponentially, component integration grows increasingly challenging, and existing pipelines demand substantial engineering effort, reducing practical utility.
+
+Recent advances in robotic manipulation present two divergent approaches with complementary limitations.
 
 \subsection{Progress in Pipelined Industrial Systems}
 \label{sec:intro:industrial}
 
-% TODO: Discuss reliability and debuggability as the dominant priorities of
-% deployed industrial manipulation pipelines.
+Traditional control-based methods successfully incorporate dynamics---and often, only robot dynamics---through analytical models and optimization, but struggle to scale beyond carefully engineered environments due to modeling complexity \cite{feng2014optimization,gamba2023springy}.
 
 \subsection{Progress in Academic Systems}
 \label{sec:intro:academic}
 
-% TODO: Discuss academic systems pushing toward generalist manipulation
-% behaviors.
+Learning-based approaches like foundational models have demonstrated impressive real-world behaviors through imitation, but typically operate at a surface level of dynamics integration---controlling robots primarily through position commands, focusing on prehensile manipulation, and operating within conservative joint limits \cite{chi2023diffusion,team2024octo}.
 
 \subsection{Common Limitations}
 \label{sec:intro:limitations}
 
-% TODO: Brittleness, task-specific engineering, and poor cross-task
-% generalization remain the shared bottlenecks across both styles of system.
+This fundamental disconnect between dynamics-aware but brittle traditional approaches and generalizable but dynamics-limited learning methods represents a critical gap in advancing manipulation capabilities.
 
 \section{The Geometric vs.\ Dynamic Divide}
 \label{sec:intro:divide}
 
-% TODO: Most planning reasons over collisions, grasps, and singularities ---
-% all purely geometric quantities.
-
-% TODO: Real-world tasks demand reasoning over contact accelerations,
-% traversal time, and impulsive forces.
-
-% TODO: Argue that accessing the full range of manipulation requires
-% integrating dynamics constraints into motion generation.
+By generating dynamically admissible trajectories from the coupled, task-constrained state spaces of the robot and its environment, my work expands the scope of robotic manipulation beyond geometric pick-and-place operations. This approach \ul{incorporates dynamic non-prehensile skills and motions governed by object inertial properties, impulsive contact, and motion-induced forces.} In doing so, it directly addresses fundamental challenges in dynamics modeling, problem dimensionality, system design, and usability for real-world deployment.
+This enables robots to perform a broader spectrum of manipulation tasks involving both kinematic and dynamic constraints across diverse settings, ultimately improving generalization capabilities while significantly reducing the engineering complexity typically associated with such systems.
 
 \section{Thesis Statement and Contributions}
 \label{sec:intro:contributions}

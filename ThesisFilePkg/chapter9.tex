@@ -3,15 +3,12 @@
 \chapter{Task-Agnostic Seeding for Constrained Trajectory Optimization}
 \label{ch:seeding}
 
-% TODO: The current research frontier --- pushing on what \emph{kind} of
-% conditioning input the generative model should accept.
-
 \section{The Insight}
 \label{sec:seeding:insight}
 
-% TODO: Conditioning inputs need not be physically interpretable. The
-% useful signal is whatever uniquely distinguishes environments and
-% constraint conditions.
+While prior work has demonstrated promising results in trajectory generation using diffusion models, existing approaches remain focused on geometric constraints \cite{sundaralingam2023curobo,seo2024presto}, are limited in task generalization \cite{ichnowski2020deep}, or implicitly encode robot dynamics for specific tasks like payload manipulation \cite{pasricha2025payload}.
+My proposed work addresses these limitations by \ul{developing a task-agnostic approach that generates diverse, high-quality trajectory seeds for optimization problems involving dynamic constraints}.
+Rather than biasing trajectory diffusion solely by scene geometry, we condition the diffusion process on task-level constraints represented as robot state samples of joint angles, velocities, accelerations, and torques.
 
 \subsection{Key Trajectories as Distinguishing Signatures}
 \label{sec:seeding:keytrajectories}
@@ -22,22 +19,60 @@
 \subsection{Binary Vectors Maximizing Distinguishability}
 \label{sec:seeding:binary}
 
-% TODO: Optimize binary vectors over the constraint space to maximize
-% pairwise distinguishability.
+I will start with low-dispersion sampling of the robot state space with binary vectors indicating problem-specific constraint satisfaction---a generalization of PRESTO to accommodate dynamic constraints \cite{seo2024presto}. If this proves insufficient for complex constraint manifolds, I will explore progressively more sophisticated embeddings: 1) addressing the high-dimensionality of the state space by creating submaps as channels for a richer representation \cite{krizhevsky2012imagenet}; 2) employing PointNet-style encoders that are invariant to the permutation of constraint samples \cite{qi2017pointnet}; and, 3) investigating graph-based architectures to capture relationships between constraint-satisfying configurations \cite{hamilton2017inductive}.
 
 \section{Seeding Diverse Constrained Trajectory Optimization Problems}
 \label{sec:seeding:seeding}
 
-% TODO: Use the learned encodings to seed kinematically and dynamically
-% constrained trajectory optimization.
+\begin{figure}
+  \centering
+    \includegraphics[width=\columnwidth]{../proposal/graphics/new-diag.pdf}
+  \caption{My proposed project involves generating near-admissible seed trajectories for optimization with kinematic and dynamic constraints. The sample conditioning mechanism makes the diffusion model applicable to a variety of trajectory optimization problems.}\label{fig:proposed}
+\end{figure}
+
+My proposed method is composed of these steps (\cref{fig:proposed}):
+\begin{enumerate}
+    \item Generate a problem-agnostic set of state-action samples $(q, \dot{q}, \ddot{q}, \tau)$ using the robot dynamics model \cite{Gaz2019}.
+    \item Filter these samples according to problem-specific constraints (e.g., verify if the robot equation for sample $(q, \dot{q}, \ddot{q})$ with a payload of mass $m$ produces valid torques, then add to the valid sample set).
+    \item Process these samples through an embedding network.
+    \item Condition the diffusion model on this embedding.
+    \item Denoise to obtain a joint-space trajectory that can be refined by trajectory optimization to enforce kinematic and dynamic constraints.
+\end{enumerate}
+
+This approach allows us to represent inequality constraints on end-effector accelerations, joint torques, and other dynamic properties using joint-space samples that can guide the trajectory denoising process. Start and goal states can be enforced through inpainting, ensuring boundary condition compliance.
+By generating trajectories that respect both kinematic and dynamic constraints from the outset, my proposed approach aims to significantly reduce the computational burden on downstream trajectory optimization, enabling efficient task-agnostic motion generation for complex dynamic tasks.
+
+\header{Use Cases}
+The proposed approach is particularly well-suited for certain classes of optimization problems where robot and object inertial constraints can be expressed naturally via sample-based conditioning. Specifically, I will focus on payload transport and liquid handling tasks, where constraints on joint torques and end-effector accelerations play a critical role in determining trajectory feasibility.
+
+\header{Beyond the Scope of my Evaluation}
+While the proposed architecture can theoretically accommodate other applications such as non-prehensile manipulation \cite{pasricha2022pokerrt}, whole-body manipulation \cite{briscoe2024exploring}, or constraints imposed by language models \cite{ha2023scaling}, these demonstrations remain beyond the scope of my work. I also do not address task-space geometric constraint handling \cite{kingston2018sampling} or imitation learning from demonstration trajectories \cite{chi2023diffusion}.
+Similarly, my proposed framework offers natural extension points for incorporating problem-specific inverse dynamics models, RGB feature networks, or language embeddings. For instance, an auxiliary network for poking manipulation could be trained to generate end-effector velocities and contact points given an object target pose, from which target joint angles and velocities could be derived and incorporated through inpainting, with the denoising network conditioned on valid joint samples that satisfy task constraints. However, it is important to note that while our approach enables the integration of multiple task encoders and dynamic functions, the ideal (and potentially, task-specific) design of these components falls outside the scope of this research.
+Our work could optionally be enhanced with dynamics-based gradient guidance during the denoising process (e.g., using $\partial \tau / \partial q$). However, we limit our scope to two-point inpainting problems (start and goal states), excluding complex scenarios like rope manipulation that would require additional inpainting points \cite{zhang2021robots}.
 
 \section{What This Says About Feature Learning}
 \label{sec:seeding:features}
 
-% TODO: Reflect on what this approach implies about feature learning
-% under the hood --- and how the literature obfuscates it.
+My proposed work addresses gaps in existing literature by integrating both kinematic and \textsl{dynamic} constraints within the diffusion process framework. This approach can be applied to various trajectory optimization problems that involve higher-order robot and object inertial constraints.
+To overcome limited task generalization, the sample-based conditioning mechanism (which can be supplemented with dynamics cost guidance during inference) facilitates a unified seeding mechanism applicable across multiple optimization problems.
+Since our sampling process operates in a space closely aligned with the target distribution, it should improve learning efficiency as demonstrated by PRESTO \cite{seo2024presto}.
+In contrast to existing work that implicitly encodes combined robot and task space dynamics for specific problems like payload manipulation, our approach conditions robot trajectories on valid state space samples that are induced by task space dynamics, effectively learning a conditional distribution that can adapt to arbitrary dynamic problem constraints.
 
 \section{Open Questions and Follow-Up Directions}
 \label{sec:seeding:open}
 
 % TODO: List the open questions left by this line of work.
+
+\header{Evaluation Plan}
+This section outlines the steps I will take towards evaluating this method and structuring the narrative to show how dynamics-constrained seed generation with diffusion can work in conjunction with trajectory optimization.
+
+\begin{itemize}
+    \item Make the case for trajectory optimization by demonstrating soft constraint-compliance in existing task-specific diffusion methods that implicitly encode dynamics.
+    \item Quantify reduction in the number of trajectory optimization iterations across multiple problem domains when using our method as initialization.
+    \item Measure the effect of conditioning on trajectory quality, diversity, and optimization efficiency.
+    \item Compare task-specific conditioning against uniform sampling to establish benefits of targeted sampling.
+    \item Analyze trajectory diversity across different constraints and parameter values, demonstrating the method's ability to generate solutions in different homotopy classes.
+    \item Visualize/compare feasible sets for various constraints.
+    \item Compare trajectory constraint violations of sample-based conditioning versus cost guidance approaches.
+    \item Benchmark against other seeding methods like linear interpolation and geometric planning \cite{thomason2024motions}.
+\end{itemize}

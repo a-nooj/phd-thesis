@@ -1,9 +1,6 @@
 \chapter{Discussion and Future Directions}
 \label{ch:discussion}
 
-% TODO: Step back from individual contributions and survey the
-% landscape this thesis has carved out.
-
 \section{Where Dynamic Manipulation Stands}
 \label{sec:discussion:state}
 
@@ -38,8 +35,23 @@
 % TODO: Importing guarantees from force-based and energy-based control
 % into learned, generative systems.
 
+\subsection{Risks and Mitigation Strategies}
+\label{sec:discussion:risks}
+
+There are several key risks associated with the proposed project.
+
+\begin{itemize}
+   \item \textbf{Design of constraint embedding mechanism:} The representation of dynamic constraints as embeddings for diffusion conditioning is non-trivial. I will start with low-dispersion sampling of the robot state space with binary vectors indicating problem-specific constraint satisfaction---a generalization of PRESTO to accommodate dynamic constraints \cite{seo2024presto}. If this proves insufficient for complex constraint manifolds, I will explore progressively more sophisticated embeddings: 1) addressing the high-dimensionality of the state space by creating submaps as channels for a richer representation \cite{krizhevsky2012imagenet}; 2) employing PointNet-style encoders that are invariant to the permutation of constraint samples \cite{qi2017pointnet}; and, 3) investigating graph-based architectures to capture relationships between constraint-satisfying configurations \cite{hamilton2017inductive}.
+   \item \textbf{Insufficient task complexity:} Initial test cases (payload transport in clutter-free environments) may not be complex enough to elicit the benefits of my proposed approach. To mitigate this risk, I will systematically increase task complexity by introducing collision objects, varying payload characteristics, and implementing more complex dynamic constraints (e.g., end-effector acceleration constraints for liquid handling \cite{ichnowski2022gomp,abderezaei2024clutter}).
+   \item \textbf{Optimization problem design:} Designing optimization problems for payload and liquid handling tasks can be challenging, since it involves hyperparameter tuning, constraint linearization, and applying trust regions, which I only have a cursory knowledge of \cite{schulman2013finding}. I have already implemented have a slow version of optimization for payload transport which I will extend to accommodate liquid handling constraints \cite{pasricha2025payload}. I will also need to incorporate collision-checking, however there is extensive past work in this domain which will be useful \cite{ichnowski2020deep}.
+\end{itemize}
+
 \section{Closing Reflection}
 \label{sec:discussion:closing}
+
+For my thesis work, I propose a novel approach that uses diffusion models to generate dynamically near-admissible trajectories within the coupled, task-constrained state space of robot-environment interactions.
+Through the implementation of a task-agnostic conditioning mechanism that encodes constraints via robot state space samples, I aim to demonstrate that diffusion models can enable the efficient generation of diverse and high-quality trajectory seeds that concurrently satisfy both kinematic and dynamic constraints, thereby substantially reducing computation demands on subsequent dynamically-constrained trajectory optimization.
+By leveraging the strengths of both generative approaches and classical methods, my proposed project (in conjunction with my prior work) aims to expand the scope of robotic manipulation beyond geometric pick-and-place to include dynamic non-prehensile skills and motions governed by object inertial properties, impulsive contact, and motion-induced forces.
 
 % TODO: Revisit the four design axes from Chapter~\ref{ch:framework}
 % across the arc of the thesis, and close the document.

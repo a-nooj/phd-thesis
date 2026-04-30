@@ -1,35 +1,44 @@
 \chapter{From Sampling to Generation: Planning as Conditional Sampling}
 \label{ch:generation}
 
-% TODO: Pivot the thesis from sampling-based methods to generative ones.
-% This chapter is the methodological spine connecting Chapters
-% \ref{ch:multiquery} and \ref{ch:payload}-\ref{ch:seeding}.
-
 \section{Reframing Planning}
 \label{sec:generation:reframing}
 
-% TODO: Recast planning as sampling from a learned conditional distribution
-% over trajectories: a constant-time, near-admissible first guess
-% conditioned on problem constraints.
-
-% TODO: Discuss why multi-modality matters for downstream optimization
-% and execution.
+Diffusion models have recently emerged as an effective generative modeling approach for producing high-quality, diverse samples from learned approximations to conditional or unconditional \textsl{multimodal} distributions, albeit at the cost of longer generation times \cite{sohl2015deep,ho2020denoising,rombach2022high,nichol2021glide}.
+This class of generative methods has found application in robotics in two main areas: imitation learning \cite{chi2023diffusion,sridhar2024nomad} and seeding for trajectory optimization \cite{carvalho2023motion,huang2024diffusionseeder}, owing to its ability to represent multimodal distributions effectively and produce diverse and high-quality samples from the modeled data space.
+While existing applications have shown diverse real-world behaviors through end-effector delta actions, they primarily focus on kinematic constraints, require many human demonstrations, and necessitate training a new model for novel behaviors \cite{chi2023diffusion,ajay2023is,ha2023scaling,ze20243d}. These limitations direct my research toward the seeding problem for trajectory optimization---specifically, developing diffusion models that produce kinematically and dynamically admissible trajectories which can further be refined by standard trajectory optimization iterations.
 
 \section{Why Diffusion}
 \label{sec:generation:diffusion}
 
-% TODO: Iterative refinement at inference time.
-
-% TODO: Parallel sampling.
-
-% TODO: Natural support for inference-time guidance --- not native to
-% most alternatives.
+Diffusion models offer a compelling solution to trajectory generation through their inherent properties: they naturally explore diverse solution trajectories through stochastic denoising \cite{chi2023diffusion} while modeling complex, multimodal distributions that accommodate rich contextual information. A distinctive advantage of diffusion models is the ability to apply cost guidance \textsl{at inference time}, steering the denoising process to generate trajectories that avoid obstacles and respect higher-order constraints---a capability not native to most alternative generative architectures.
 
 \section{Background on Diffusion}
 \label{sec:generation:background}
 
-% TODO: Forward and reverse processes; notation that downstream chapters
-% will reuse.
+Diffusion operates as a two-step process: forward and reverse (also known as inference, sampling, planning, or denoising). In its simplest implementation, the training process consists of adding noise according to a scheduler to a training data sample, then training a neural architecture to predict the magnitude of added noise (epsilon prediction), and minimizing the MSE loss between the added noise and the predicted noise \cite{ho2020denoising}.
+During inference, random Gaussian noise of the same dimensionality as the target data is generated and iteratively denoised through the trained neural architecture over multiple steps to generate a valid sample.
+
+\begin{figure}
+  \centering
+    \includegraphics[width=\columnwidth]{../proposal/graphics/diffusion.png}
+  \caption{When combined, \textcolor{customred}{input conditioning}, \textcolor{customgreen}{training dynamics}, and \textcolor{customaqua}{inference-time guidance} enable a strong multimodal approximation of the distribution of (near-)admissible trajectories that can be refined with \textcolor{customblack}{trajectory optimization}.}\label{fig:diffusion}
+\end{figure}
+
+A joint space trajectory with $t$ waypoints at denoising step $k$ is defined as
+$\bm{\pi}^k = [ X_0^k, X_1^k, \dots, X_{t-1}^k ]^T$
+where $X_i = (q_i, \dot{q}_i, \ddot{q}_i) \in \mathbb{R}^n$ represents the complete state (joint angles, velocities, and accelerations) of an $n$-DoF robot arm at timestep $i$.
+The training process for the diffusion model approximates the conditional distribution $p(\bm{\pi}\ |\ \mathcal{C})$, where $\mathcal{C}$ is the target conditioning embedding (\textcolor{customred}{\cref{fig:diffusion}}).
+It samples $\bm{\pi}$ from dataset $\mathcal{D}$, adds noise according to a schedule parameterized by $\alpha$, $\gamma$, and $\sigma$, and learns to predict the underlying sample. The noise prediction network $\epsilon_\theta$, where $\theta$ represents the parameters of the 1D U-Net architecture, is trained to minimize
+\begin{equation}
+    \mathcal{L}(\theta) = MSE(\epsilon^k, \epsilon_\theta(\mathcal{C}, \bm{\pi}^0 + \epsilon^k, k))
+\end{equation}
+
+Given a trained $\epsilon_\theta$, the $K$-step iterative denoising process
+\begin{equation}
+    \bm{\pi}^{k-1} = \alpha \cdot (\bm{\pi}^k - \gamma\epsilon_\theta(\mathcal{C}, \bm{\pi}^k, k) + \mathcal{N}(0, \sigma^2I))
+\end{equation}
+starts from $\bm{\pi}^K \sim \mathcal{N}(0, I)$ and generates a trajectory $\bm{\pi}^0$ that respects the conditioning information and obeys start, goal, joint limit, collision, and dynamic constraints.
 
 \section{Two Roles of Diffusion in Robotics}
 \label{sec:generation:roles}
@@ -37,55 +46,54 @@
 \subsection{Behavior Cloning and Imitation}
 \label{sec:generation:bc}
 
-% TODO: Diffusion as an imitation learning objective.
+In imitation learning, diffusion models learn a policy directly from demonstration data, generating end-effector delta actions conditioned on sensory observations \cite{chi2023diffusion,sridhar2024nomad}. This role has demonstrated impressive real-world generalization but remains fundamentally tied to kinematic, position-controlled execution.
 
 \subsection{Trajectory-Level Planning}
 \label{sec:generation:planning}
 
-% TODO: Diffusion as a trajectory-level planner --- the line of work the
-% remainder of this thesis follows.
+In trajectory-level planning, the diffusion model generates full joint-space trajectories that serve as seeds for downstream trajectory optimization \cite{carvalho2023motion,huang2024diffusionseeder}. This is the role that the remainder of this thesis follows: rather than executing diffusion outputs directly, we use them as near-admissible initializations that substantially reduce the iteration burden on optimization-based refinement.
 
 \section{The Standard Trajectory-Diffusion Pipeline}
 \label{sec:generation:pipeline}
 
-% TODO: Gaussian noise -> iterative denoising -> executable trajectory.
-
-% TODO: Soft constraint compliance as the fundamental ceiling of the
-% standard pipeline.
+In practice, start and goal states are enforced via inpainting \cite{carvalho2023motion}, i.e., terminal states are ignored from the denoising process and set to problem constraints $\bm{\pi}_0^k = X_{start}$ and $\bm{\pi}_{t-1}^k = X_{goal}$ where $\dot{q}_{start} = \dot{q}_{goal} = \ddot{q}_{start} = \ddot{q}_{goal} = \bm{0}$.
+Collisions are avoided via inference-time gradient guidance $\bm{\pi}^{k-1} = \bm{\pi}^k - \beta\ \cdot \nabla J(\bm{\pi}; E)$ where $\beta$ is a tunable guidance weight, $J$ defines the collision cost function and $E$ represents the set of all obstacles in the environment \cite{saha2024edmp}.
+Additionally, joint limits are enforced via clamping during training and inference.
+While existing approaches have shown diverse real-world behaviors, they primarily focus on kinematic constraints and soft constraint compliance remains the fundamental ceiling of the standard pipeline.
 
 \section{Levers for Tightening Constraint Compliance}
 \label{sec:generation:levers}
 
+The diffusion-based trajectory generation system comprises four core components (\cref{fig:diffusion}):
+
 \subsection{Problem-Specific Conditioning}
 \label{sec:generation:conditioning}
 
-% TODO: How conditioning inputs encode constraint information.
+Real-world tasks invariably operate under both kinematic and dynamic constraints. These constraints are incorporated via the conditioning mechanism, effectively learning a conditional distribution that leverages prior work in sensory feature learning \cite{krizhevsky2012imagenet}. This conditioning can take various forms---RGB images \cite{chi2023diffusion,sridhar2024nomad}, point clouds \cite{ze20243d}, depth information \cite{huang2024diffusionseeder}, or task-centric representations \cite{seo2024presto}---all aimed at generating near-admissible motions that can be further refined by trajectory optimization.
 
 \subsection{Training Data Composition}
 \label{sec:generation:data}
 
-% TODO: How dataset construction shapes the support of the learned
-% distribution.
+This unconditional approximation can be enhanced to better capture the underlying distribution through high-quality, task-specific training data. The model can also be guided toward on-manifold learning through task-specific loss function design, in addition to the standard noise prediction loss \cite{chi2023diffusion,saha2024edmp,carvalho2023motion}.
 
 \subsection{Loss Design}
 \label{sec:generation:loss}
 
-% TODO: Loss-level mechanisms for encouraging constraint compliance.
+Examples of loss functions include trajectory smoothness and collision distance \cite{seo2024presto}, and Cartesian space error and non-linearity-aware weighting \cite{huang2024diffusionseeder}. These design choices can be supplemented by the numerous methods available in machine learning literature to support generalization (e.g., regularization, data augmentation, cross-validation).
 
 \subsection{Inference-Time Cost Guidance}
 \label{sec:generation:guidance}
 
-% TODO: Cost-based guidance at sampling time.
+A distinctive advantage of diffusion models is the ability to apply cost guidance \textsl{at inference time}, steering the denoising process to generate trajectories that avoid obstacles and respect higher-order constraints. This approach requires diversity in training data to function effectively.
 
 \subsection{Inpainting}
 \label{sec:generation:inpainting}
 
-% TODO: Inpainting as a way to enforce hard endpoint or waypoint
-% constraints.
+Additionally, inpainting techniques enforce hard state compliance for problem-specific constraints like start and goal states, while the remainder of the trajectory is generated through the denoising process \cite{janner2022planning,saha2024edmp,carvalho2023motion}.
 
 \section{What the Literature Emphasizes and What It Underexplores}
 \label{sec:generation:gap}
 
-% TODO: The literature largely emphasizes collision constraints; dynamics
-% and other non-geometric constraints remain underexplored. This sets up
-% Chapters~\ref{ch:payload} through~\ref{ch:seeding}.
+While these building blocks provide a foundation for trajectory generation, existing diffusion-based approaches primarily focus on kinematic feasibility and collision avoidance, overlooking the critical role of dynamics constraints in real-world robotic tasks. This limitation significantly reduces their effectiveness as initializers for trajectory optimizers like GOMP-FIT \cite{ichnowski2022gomp}, which must subsequently reconcile the kinematically-viable but dynamically-infeasible paths.
+My current and proposed work address the fundamental challenge of incorporating dynamic constraints directly into the diffusion model framework. Rather than treating diffusion models as geometric path planners, I present a current work that uses a high-level conditioning mechanism to implicitly encode dynamic constraints for a payload transport task (Chapter~\ref{ch:payload}) and I propose a follow-up work that presents a task-agnostic trajectory generation framework (Chapter~\ref{ch:seeding}).
+As a result, this work aims to significantly reduce the computation burden on trajectory optimization with kinematic and dynamic constraints.
