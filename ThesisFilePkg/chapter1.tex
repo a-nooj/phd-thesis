@@ -38,13 +38,43 @@ This enables robots to perform a broader spectrum of manipulation tasks involvin
 \section{Thesis Statement and Contributions}
 \label{sec:intro:contributions}
 
-% TODO: State the thesis: a progression of methods --- sampling-based to
-% generative --- for dynamics-constrained motion generation.
+Moving beyond kinematic (geometric) behaviors requires modeling and integrating dynamic constraints for tasks involving complex object interactions, unstructured environments, and high-speed operations.
+This thesis advances robot manipulation by developing a progression of methods---from sampling-based kinodynamic planning to conditional generative models---that expand the scope of robotic manipulation beyond geometric pick-and-place by incorporating dynamic non-prehensile skills and motions governed by object inertial properties, impulsive contact, and motion-induced forces.
 
-% TODO: Enumerate contributions across tabletop manipulation, actuation
-% failures, liquid handling, and payload transport.
+The contributions of this thesis span three thematic areas:
+
+\paragraph{Sampling-Based Kinodynamic Planning.}
+\begin{itemize}
+  \item A unifying framework that characterizes the landscape of dynamics-constrained motion generation and motivates the design choices made throughout this work (\cref{ch:framework}).
+  \item Dynamic manipulation primitives based on impulsive contact (poking), enabling non-prehensile rearrangement through sampling-based planning without explicit contact models (\cref{ch:poking}).
+  \item Extensions of kinodynamic planning to constrained interaction settings, including whole-body contact and transport of containers with coupled liquid dynamics (\cref{ch:constrained}).
+  \item A multi-query kinodynamic planner based on lazy edge bundles that substantially reduces repeated planning cost over shared workspaces (\cref{ch:multiquery}).
+\end{itemize}
+
+\paragraph{Generative Models for Dynamics-Aware Motion.}
+\begin{itemize}
+  \item A reformulation of motion planning as conditional sampling, bridging classical kinodynamic planners and learned generative models (\cref{ch:generation}).
+  \item A diffusion-based trajectory generator conditioned on payload mass that achieves super-nominal payload manipulation through implicit dynamic constraint satisfaction, with a case study extending this conditioning principle to fail-active behavior under actuation failures (\cref{ch:payload}).
+\end{itemize}
+
+\paragraph{Seeding for Constrained Trajectory Optimization.}
+\begin{itemize}
+  \item A task-agnostic trajectory seeding method that improves convergence and feasibility of constrained trajectory optimization across diverse tasks without task-specific engineering (\cref{ch:seeding}).
+\end{itemize}
 
 \section{Roadmap of the Thesis}
 \label{sec:intro:roadmap}
 
-% TODO: Walk the reader through the structure of the remaining chapters.
+Chapter~\ref{ch:framework} establishes a conceptual framework for dynamics-constrained motion generation, organizing the landscape of approaches and motivating the progression of methods developed in subsequent chapters.
+
+Chapters~\ref{ch:poking}--\ref{ch:multiquery} develop sampling-based kinodynamic methods of increasing generality.
+Chapter~\ref{ch:poking} introduces poking as a dynamic manipulation primitive, using impulsive contact to achieve non-prehensile rearrangement within a sampling-based planner.
+Chapter~\ref{ch:constrained} extends kinodynamic planning to constrained settings, handling tasks where robot and object dynamics are coupled---such as whole-body contact and liquid-filled container transport.
+Chapter~\ref{ch:multiquery} addresses the multi-query setting via lazy edge bundles, amortizing planning cost across repeated queries in a shared workspace.
+
+Chapter~\ref{ch:generation} marks a transition from sampling to generation, reframing motion planning as conditional sampling and establishing the conceptual bridge to the generative methods that follow.
+Chapter~\ref{ch:payload} develops diffusion-based trajectory generation conditioned on high-level object properties, demonstrating that dynamic constraints can be implicitly encoded through the conditioning signal; a case study extends this principle to fail-active manipulation under actuation failures.
+
+Chapter~\ref{ch:seeding} shifts focus to constrained trajectory optimization, contributing a task-agnostic seeding strategy that substantially improves solver convergence and feasibility without task-specific design.
+
+Chapter~\ref{ch:discussion} concludes with a synthesis of the thesis contributions, a discussion of their collective implications for dynamic manipulation, and directions for future work.
