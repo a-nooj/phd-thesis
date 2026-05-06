@@ -1,0 +1,30 @@
+\section{Summary of Contributions and Key Takeaways}
+\label{sec:discussion:contributions}
+
+\subsection{Poking as a Complementary Dynamic Manipulation Primitive}
+\label{sec:discussion:poking}
+
+Non-prehensile manipulation research before \cref{ch:poking} had focused almost entirely on pushing---contact modes in which the robot maintains continuous contact with the object throughout the trajectory.
+Pushing is limited because it ties object displacement to robot end-effector arc length: moving an object far requires the robot arm to travel far, and reachability constraints clip the feasible workspace accordingly.
+\textit{PokeRRT} introduced \textit{poking}---impulsive, instantaneous contact---as a complementary primitive, embedded in a closed-loop RRT-based planner that uses physics simulation as a forward model.
+The key insight is geometric: an impulsive contact interaction can displace an object substantially with a comparatively short end-effector trajectory, decoupling object travel distance from robot joint motion.
+In experiments across six scenarios, poking-based planners outperformed both pushing and grasping in success rate and achieved significantly lower task times by avoiding the constant-contact constraint.
+Poking succeeded in scenarios where grasping was geometrically infeasible and where pushing's monotonic displacement model caused failure in cluttered environments.
+The broader takeaway is methodological: simulation-in-the-loop planning can realize a manipulation skill whose contact dynamics would be prohibitively complex to model analytically, without requiring explicit contact models at planning time.
+
+\subsection{Kinodynamic Planning for Whole-Body Contact and Coupled Dynamics}
+\label{sec:discussion:constrained}
+
+\cref{ch:constrained} extended kinodynamic planning to two settings where robot and object dynamics are coupled throughout the motion, not only at an impact instant.
+
+The first is manipulation under locked multi-joint failures (LMJs).
+Current systems respond to actuation failures by freezing---a conservative strategy that prioritizes safety but eliminates manipulation capability entirely.
+This work demonstrated that robots in failure states still possess substantial manipulation capability through whole-body non-prehensile contact.
+By pre-computing kinodynamic edge bundles for specific failure configurations and using a simulation-in-the-loop planner to select among them, the approach maintains up to 92\% of the nominal reachable area even when the gripper is entirely unusable, achieving a 79\% increase in failure-constrained reachable area and task success rates of 88.9--100\% across tested scenarios.
+The key insight is that failure modes are better reframed as new embodiment configurations to plan around than as exceptional states to recover from.
+
+The second contribution is spill-free liquid transport in cluttered environments (\textit{SFRRT*}).
+Prior approaches restricted container orientation to conservative angle ranges or used simplified linear liquid models (pendulum, mass-spring-damper) that cannot operate in genuinely cluttered scenes.
+\textit{SFRRT*} instead uses a transformer-based spill-free classifier trained on human-collected trajectory data as an implicit liquid dynamics model, combined with container geometry to estimate maximum safe tilt angles.
+This achieves a 3$\times$ expansion of the feasible solution space compared to prior approaches, with 93\%+ task success and full six-degree-of-freedom end-effector orientation flexibility---without explicit liquid modeling or visual surface monitoring.
+The takeaway is that implicit learned dynamics can substitute for explicit physics models in a safety-critical planning context, enabling capabilities that analytical models preclude.

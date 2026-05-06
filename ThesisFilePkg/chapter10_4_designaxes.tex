@@ -1,0 +1,37 @@
+
+
+
+
+
+
+\section{What the Arc Reveals: Revisiting the Design Axes}
+\label{sec:discussion:axes}
+
+\cref{ch:framework} identified four design axes that govern dynamics-constrained motion generation: \textit{modeling burden}, \textit{dimensionality and factorization}, \textit{integration and pipeline brittleness}, and \textit{usability}.
+Looking back across the thesis arc, each axis traces a coherent trajectory.
+
+\paragraph{Modeling burden.}
+\textit{PokeRRT} outsourced dynamics modeling entirely to a physics simulator, avoiding the need for analytical contact models at the cost of repeated simulation queries.
+\textit{SFRRT*} replaced explicit liquid modeling with a learned classifier, trading model precision for coverage of complex geometries and obstacle configurations.
+The payload diffusion model absorbed constraint satisfaction into the generation process itself: the ``model'' is the weights of the diffusion network, not a separate physics module.
+Task-agnostic seeding takes this further, eliminating task-specific conditioning by representing constraints as samples from the constraint manifold directly.
+The arc is a consistent progression from explicit simulation to specialized learned models to task-agnostic constraint representations.
+
+\paragraph{Dimensionality and factorization.}
+Kinodynamic planning in joint-velocity-acceleration space is fundamentally high-dimensional.
+\textit{PokeRRT} manages this through random tree exploration; \textit{LazyBoE} manages it through pre-computation and lazy evaluation.
+Diffusion-based methods sidestep the search problem entirely, compressing high-dimensional constraint spaces into learned latent representations and generating solutions directly.
+The progression illustrates a shift from managing dimensionality through clever search to avoiding it through representation.
+
+\paragraph{Integration and pipeline brittleness.}
+Each kinodynamic system required carefully engineered components: a planner, a simulator, a failure model or liquid classifier, a time parameterizer, and their interfaces.
+The diffusion-based systems collapsed multiple pipeline stages---the generator absorbs constraint checking, trajectory parameterization, and task adaptation simultaneously.
+Task-agnostic seeding goes furthest: the same generator feeds into any downstream optimizer, eliminating the need for task-specific pipeline design entirely.
+
+\paragraph{Usability.}
+\textit{PokeRRT} required hand-tuning of planner parameters and scenario-specific design.
+The whole-body and liquid systems required substantial per-task engineering.
+Payload diffusion reduced the task specification to a single scalar.
+\textit{DEFT} reduced it to an embodiment encoding.
+Task-agnostic seeding reduces it to a set of constraint-satisfying state samples, which can be generated automatically from any robot dynamics model.
+Each step along the axis reduces the expertise required to deploy a dynamics-constrained planner on a new task.
