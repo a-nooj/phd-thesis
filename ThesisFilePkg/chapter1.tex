@@ -1,80 +1,151 @@
 \chapter{Introduction}
 \label{ch:introduction}
 
-\section{The State of Robot Manipulation Today}
-\label{sec:intro:state}
+Robotic manipulation encompasses a broad range of interactions between a robot and its environment: grasping, pushing, poking, pivoting, and tossing objects; transporting liquid-filled containers; handling loads near or beyond rated capacity; and adapting to mechanical faults mid-task.
+These interactions span a continuous spectrum of dynamic complexity.
+At one end sits form-closure grasping, which is computationally attractive precisely because, once an object is secured, its state is predictable and control reduces to a geometry problem.
+At the other end sits a class of interactions where robot and environment dynamics are inseparably coupled---where joint torques, object inertia, contact impulses, and fluid motion jointly determine task outcome.
+
+Robotic manipulation research has invested heavily in the simple end of this spectrum, and for good reason.
+Grasping is reliable, compositional, and well-studied.
+But it is limited in scope---and the full range of tasks that manipulation actually demands requires reasoning about dynamics, not just geometry.
+
+\section{Background and Motivation}
+\label{sec:intro:background}
+
+\subsection{The Grasping Paradigm and Its Limits}
+\label{sec:intro:grasping}
 
 Humans engage naturally in multiple forms of dexterous manipulation that involve grasping, pushing, poking, rolling, and tossing objects \cite{bullock2011classifying}.
-This highlights a significant capability gap between human and robotic manipulation skills, as evidenced by the disproportionate research attention devoted to prehensile manipulation, or \textsl{grasping} \cite{billard2019trends}.
-Manipulation by grasping is computationally attractive primarily because, once an object is under form or force closure, it generally does not need to be tracked over time and uncertainty on its state is reduced.
-Despite these advantages, grasping is limited in capability by i) reachability constraints of the robot arm, ii) mechanical design limitations of the end-effector, iii) physical properties of the object being manipulated, and iv) accuracy of the perception system.
-Additionally, extending prehensile capability beyond objects assumed to be rigidly attached to the robot's end-effector introduces the challenge of dealing with coupled dynamics between robot and object motion \cite{yin2021modeling,ichnowski2022gomp}.
-This also begins to underscore the complexities associated with motions involving the consideration of both kinematic and dynamic constraints, as evidenced by research in non-prehensile manipulation \cite{ruggiero2018nonprehensile}.
-These complexities manifest in multiple ways: good models become scarce, problem dimensionality increases exponentially, component integration grows increasingly challenging, and existing pipelines demand substantial engineering effort, reducing practical utility.
+This highlights a significant gap between human and robotic manipulation capabilities, as evidenced by the disproportionate research attention devoted to prehensile manipulation, or \textit{grasping} \cite{billard2019trends}.
+Grasping is computationally attractive primarily because, once an object is under form or force closure, it generally does not need to be tracked over time and uncertainty on its state is reduced.
 
-Recent advances in robotic manipulation present two divergent approaches with complementary limitations.
+Despite these advantages, grasping is limited in four ways.
+First, it is constrained by the \textit{reachability} of the robot arm---objects outside the manipulator's workspace cannot be grasped regardless of the planner's sophistication.
+Second, it depends on \textit{end-effector design}---gripper geometry determines which object shapes, sizes, and orientations are graspable.
+Third, it depends on the \textit{physical properties} of the object---soft, fragile, or deformable objects may not survive grasp forces.
+Fourth, it is sensitive to the \textit{accuracy of the perception system}---small pose estimation errors propagate directly into grasp failure.
 
-\subsection{Progress in Pipelined Industrial Systems}
-\label{sec:intro:industrial}
+Beyond these constraints, extending prehensile capability to objects not rigidly attached to the end-effector introduces the challenge of coupled dynamics between robot and object motion \cite{yin2021modeling,ichnowski2022gomp}.
+Tasks like liquid transport, high-payload handling, and manipulation after joint failures require reasoning about torques, inertial forces, and contact mechanics---phenomena that geometric planners cannot represent.
 
-Traditional control-based methods successfully incorporate dynamics---and often, only robot dynamics---through analytical models and optimization, but struggle to scale beyond carefully engineered environments due to modeling complexity \cite{feng2014optimization,gamba2023springy}.
+\subsection{Two Paradigms, Two Limitations}
+\label{sec:intro:paradigms}
 
-\subsection{Progress in Academic Systems}
-\label{sec:intro:academic}
+Recent advances in robotic manipulation have proceeded along two largely separate paths with complementary strengths and weaknesses.
 
-Learning-based approaches like foundational models have demonstrated impressive real-world behaviors through imitation, but typically operate at a surface level of dynamics integration---controlling robots primarily through position commands, focusing on prehensile manipulation, and operating within conservative joint limits \cite{chi2023diffusion,team2024octo}.
+\header{Traditional control-based methods}
+Classical control and optimization approaches successfully incorporate robot dynamics through analytical models and constrained optimization, but struggle to scale beyond carefully engineered environments due to modeling complexity \cite{feng2014optimization,gamba2023springy}.
+These methods provide strong theoretical guarantees---stability certificates, constraint satisfaction bounds, optimality conditions---and have been deployed successfully in industrial settings.
+Their limitation is scalability: accurate analytical models are hard to construct for complex robot-object interactions, and the engineering effort to extend these systems to new tasks is substantial.
 
-\subsection{Common Limitations}
-\label{sec:intro:limitations}
+\header{Learning-based approaches}
+Data-driven methods, including diffusion policies and foundation models for manipulation, have demonstrated impressive real-world generalization through imitation learning \cite{chi2023diffusion,team2024octo}.
+These approaches reduce task-specific engineering burden and improve naturally over deployment lifespans.
+Their limitation is depth: current methods typically operate through position commands, focus on prehensile manipulation, and treat dynamics as an implicit property of demonstrated trajectories rather than an explicit constraint to satisfy.
+A policy that has never seen a joint failure, a heavy payload, or a liquid-filled container will not generalize to them.
 
-This fundamental disconnect between dynamics-aware but brittle traditional approaches and generalizable but dynamics-limited learning methods represents a critical gap in advancing manipulation capabilities.
+The fundamental disconnect---between dynamics-aware but brittle traditional approaches and generalizable but dynamics-limited learning methods---is a critical gap in advancing manipulation capabilities \cite{ruggiero2018nonprehensile}.
 
-\section{The Geometric vs.\ Dynamic Divide}
-\label{sec:intro:divide}
+\subsection{Four Recurring Challenges}
+\label{sec:intro:challenges}
 
-By generating dynamically admissible trajectories from the coupled, task-constrained state spaces of the robot and its environment, my work expands the scope of robotic manipulation beyond geometric pick-and-place operations. This approach \ul{incorporates dynamic non-prehensile skills and motions governed by object inertial properties, impulsive contact, and motion-induced forces.} In doing so, it directly addresses fundamental challenges in dynamics modeling, problem dimensionality, system design, and usability for real-world deployment.
-This enables robots to perform a broader spectrum of manipulation tasks involving both kinematic and dynamic constraints across diverse settings, ultimately improving generalization capabilities while significantly reducing the engineering complexity typically associated with such systems.
+Across both paradigms, four challenges recur whenever dynamics enter the manipulation problem.
+These challenges are not incidental; they reflect deep structural tensions in the problem.
 
-\section{Thesis Statement and Contributions}
+\textit{Modeling burden}: constructing or learning an accurate dynamics model for complex interactions is expensive.
+Simulation-in-the-loop approaches provide accuracy but require repeated forward propagation at planning time; learned models offer speed but are limited to the dynamics they have seen.
+
+\textit{Dimensionality}: incorporating higher-order state---velocity, acceleration, torque---alongside geometric constraints exponentially expands the search and optimization space.
+Kinodynamic planning in joint-velocity-acceleration space is fundamentally harder than geometric path planning, and the difficulty grows with system complexity.
+
+\textit{Integration and pipeline brittleness}: combining a dynamics model, a planner, a trajectory optimizer, and safety checks into a working system introduces brittleness at every interface.
+Each component requires careful tuning, and errors propagate across components in ways that are hard to debug or predict.
+
+\textit{Usability}: traditional dynamics-constrained methods require task-specific engineering---developing bespoke sampling strategies, designing cost functions, determining which phenomena to model---that limits deployment to controlled environments.
+
+\cref{ch:framework} provides a detailed treatment of these challenges and organizes the landscape of dynamics-constrained motion generation around them.
+They recur throughout this thesis as a lens for evaluating each contribution.
+
+\section{Research Themes}
+\label{sec:intro:themes}
+
+This thesis addresses the gap between dynamics-aware and generalizable manipulation through three research themes, each targeting a different aspect of the problem.
+
+\paragraph{RT1: Sampling-Based Kinodynamic Planning.}
+The first theme develops planners that incorporate dynamics directly into the search process through physics simulation and kinodynamic exploration.
+This includes introducing impulsive non-prehensile manipulation primitives, extending kinodynamic planning to settings with coupled robot-object dynamics, and developing multi-query planners that amortize dynamics computation across repeated queries.
+
+\paragraph{RT2: Generative Models for Dynamics-Aware Motion.}
+The second theme reframes motion generation as conditional sampling: a generative model learns to produce trajectories that implicitly satisfy dynamic constraints by conditioning on task-level properties such as payload mass or embodiment configuration.
+This approach achieves constant-time generation without runtime constraint checking and generalizes across failure modes and payload levels without task-specific redesign.
+
+\paragraph{RT3: Seeding for Constrained Trajectory Optimization.}
+The third theme closes the loop between generative and optimization-based approaches by developing a task-agnostic trajectory seeding strategy.
+By conditioning a diffusion model on robot state samples that satisfy dynamic constraints, this approach provides near-feasible initialization seeds that improve solver convergence and feasibility across diverse tasks without requiring task-specific engineering.
+
+Together, these themes trace a progression from dynamics embedded in search, to dynamics embedded in learned representations, to dynamics embedded in initialization seeds for optimization.
+
+\section{Thesis Statement}
+\label{sec:intro:statement}
+
+\textit{By explicitly incorporating dynamic constraints into the motion generation process---through sampling-based kinodynamic planning, learned generative models, and dynamics-informed trajectory seeding---robots can perform a substantially broader range of manipulation tasks while operating closer to their true physical limits.}
+
+This thesis advances robot manipulation by developing a progression of methods that expand the scope of manipulation beyond geometric pick-and-place to include dynamic non-prehensile skills and motions governed by object inertial properties, impulsive contact, and motion-induced forces.
+Across all three research themes, dynamic constraints are treated not as a complexity to be avoided but as structured information to be modeled, learned, and exploited.
+
+\section{Contributions}
 \label{sec:intro:contributions}
 
-Moving beyond kinematic (geometric) behaviors requires modeling and integrating dynamic constraints for tasks involving complex object interactions, unstructured environments, and high-speed operations.
-This thesis advances robot manipulation by developing a progression of methods---from sampling-based kinodynamic planning to conditional generative models---that expand the scope of robotic manipulation beyond geometric pick-and-place by incorporating dynamic non-prehensile skills and motions governed by object inertial properties, impulsive contact, and motion-induced forces.
-
-The contributions of this thesis span three thematic areas:
+The contributions of this thesis span the three research themes above.
 
 \paragraph{Sampling-Based Kinodynamic Planning.}
-\begin{itemize}
-  \item A unifying framework that characterizes the landscape of dynamics-constrained motion generation and motivates the design choices made throughout this work (\cref{ch:framework}).
-  \item Dynamic manipulation primitives based on impulsive contact (poking), enabling non-prehensile rearrangement through sampling-based planning without explicit contact models (\cref{ch:poking}).
-  \item Extensions of kinodynamic planning to constrained interaction settings, including whole-body contact and transport of containers with coupled liquid dynamics (\cref{ch:constrained}).
-  \item A multi-query kinodynamic planner based on lazy edge bundles that substantially reduces repeated planning cost over shared workspaces (\cref{ch:multiquery}).
-\end{itemize}
+\begin{enumerate}
+  \item \textbf{A unifying framework for dynamics-constrained motion generation} (\cref{ch:framework}).
+        A conceptual framework that organizes the landscape of planning approaches along four design axes---modeling burden, dimensionality, integration, and usability---and motivates the design choices made throughout this work.
+
+  \item \textbf{PokeRRT: poking as a dynamic manipulation primitive} (\cref{ch:poking}).
+        A sampling-based kinodynamic planner that uses physics simulation as a forward model to enable non-prehensile object rearrangement via impulsive contact, without requiring explicit contact models.
+        Demonstrated across six scenarios, poking outperforms pushing and grasping baselines in success rate and task time.
+
+  \item \textbf{Kinodynamic planning for constrained coupled-dynamics settings} (\cref{ch:constrained}).
+        Two extensions of kinodynamic planning to settings with coupled robot-object dynamics: whole-body non-prehensile manipulation under locked multi-joint failures, maintaining up to 92\% of the nominal reachable area; and spill-free liquid container transport in cluttered environments, achieving a 3$\times$ expansion of the feasible solution space over prior methods.
+
+  \item \textbf{LazyBoE: multi-query kinodynamic planning via lazy edge bundles} (\cref{ch:multiquery}).
+        A multi-query kinodynamic planner that pre-computes control-parameterized edge bundles over discretized state and control spaces and applies lazy propagation and collision checking to substantially reduce repeated planning cost.
+\end{enumerate}
 
 \paragraph{Generative Models for Dynamics-Aware Motion.}
-\begin{itemize}
-  \item A reformulation of motion planning as conditional sampling, bridging classical kinodynamic planners and learned generative models (\cref{ch:generation}).
-  \item A diffusion-based trajectory generator conditioned on payload mass that achieves super-nominal payload manipulation through implicit dynamic constraint satisfaction, with a case study extending this conditioning principle to fail-active behavior under actuation failures (\cref{ch:payload}).
-\end{itemize}
+\begin{enumerate}
+  \setcounter{enumi}{4}
+  \item \textbf{Planning as conditional sampling} (\cref{ch:generation}).
+        A reframing of dynamics-constrained motion planning as a conditional sampling problem, establishing the conceptual bridge from kinodynamic search to learned generative models.
+
+  \item \textbf{Conditional trajectory diffusion for dynamic constraint satisfaction} (\cref{ch:payload}).
+        A diffusion-based trajectory generator conditioned on payload mass that achieves super-nominal payload manipulation---67.6\% workspace accessibility at $3\times$ rated capacity---in approximately 10\,ms without runtime constraint checking.
+        A case study extends this conditioning principle to fail-active manipulation under actuation failures.
+\end{enumerate}
 
 \paragraph{Seeding for Constrained Trajectory Optimization.}
-\begin{itemize}
-  \item A task-agnostic trajectory seeding method that improves convergence and feasibility of constrained trajectory optimization across diverse tasks without task-specific engineering (\cref{ch:seeding}).
-\end{itemize}
+\begin{enumerate}
+  \setcounter{enumi}{6}
+  \item \textbf{Task-agnostic seeding for constrained trajectory optimization} (\cref{ch:seeding}).
+        A conditioning mechanism that generates near-feasible trajectory seeds by representing dynamic constraints as robot state samples, improving solver convergence and feasibility across diverse tasks without task-specific engineering.
+\end{enumerate}
 
 \section{Roadmap of the Thesis}
 \label{sec:intro:roadmap}
 
-Chapter~\ref{ch:framework} establishes a conceptual framework for dynamics-constrained motion generation, organizing the landscape of approaches and motivating the progression of methods developed in subsequent chapters.
+\cref{ch:framework} establishes a conceptual framework for dynamics-constrained motion generation, organizing the landscape of approaches and motivating the progression of methods developed in subsequent chapters.
 
 Chapters~\ref{ch:poking}--\ref{ch:multiquery} develop sampling-based kinodynamic methods of increasing generality.
-Chapter~\ref{ch:poking} introduces poking as a dynamic manipulation primitive, using impulsive contact to achieve non-prehensile rearrangement within a sampling-based planner.
-Chapter~\ref{ch:constrained} extends kinodynamic planning to constrained settings, handling tasks where robot and object dynamics are coupled---such as whole-body contact and liquid-filled container transport.
-Chapter~\ref{ch:multiquery} addresses the multi-query setting via lazy edge bundles, amortizing planning cost across repeated queries in a shared workspace.
+\cref{ch:poking} introduces poking as a dynamic manipulation primitive, using impulsive contact to achieve non-prehensile rearrangement within a sampling-based planner.
+\cref{ch:constrained} extends kinodynamic planning to constrained settings, handling tasks where robot and object dynamics are coupled---such as whole-body contact and liquid-filled container transport.
+\cref{ch:multiquery} addresses the multi-query setting via lazy edge bundles, amortizing planning cost across repeated queries in a shared workspace.
 
-Chapter~\ref{ch:generation} marks a transition from sampling to generation, reframing motion planning as conditional sampling and establishing the conceptual bridge to the generative methods that follow.
-Chapter~\ref{ch:payload} develops diffusion-based trajectory generation conditioned on high-level object properties, demonstrating that dynamic constraints can be implicitly encoded through the conditioning signal; a case study extends this principle to fail-active manipulation under actuation failures.
+\cref{ch:generation} marks a transition from sampling to generation, reframing motion planning as conditional sampling and establishing the conceptual bridge to the generative methods that follow.
+\cref{ch:payload} develops diffusion-based trajectory generation conditioned on high-level object properties, demonstrating that dynamic constraints can be implicitly encoded through the conditioning signal; a case study extends this principle to fail-active manipulation under actuation failures.
 
-Chapter~\ref{ch:seeding} shifts focus to constrained trajectory optimization, contributing a task-agnostic seeding strategy that substantially improves solver convergence and feasibility without task-specific design.
+\cref{ch:seeding} shifts focus to constrained trajectory optimization, contributing a task-agnostic seeding strategy that substantially improves solver convergence and feasibility without task-specific design.
 
-Chapter~\ref{ch:discussion} concludes with a synthesis of the thesis contributions, a discussion of their collective implications for dynamic manipulation, and directions for future work.
+\cref{ch:discussion} concludes with a synthesis of the thesis contributions, a discussion of their collective implications for dynamic manipulation, and directions for future work.
