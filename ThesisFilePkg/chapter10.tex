@@ -1,57 +1,171 @@
 \chapter{Discussion and Future Directions}
 \label{ch:discussion}
 
-\section{Where Dynamic Manipulation Stands}
-\label{sec:discussion:state}
+Robot manipulation research has long defaulted to a geometric view of the problem: plan a collision-free path through configuration space, close the gripper, and move the object to its goal.
+This is computationally convenient---once an object is under grasp, its state becomes predictable and control straightforward.
+But grasping is inherently limited by robot reachability, end-effector design, and the physical properties of the objects themselves.
+More broadly, the full range of tasks that manipulation actually requires---poking objects into position, transporting liquid-filled containers without spilling, operating with a damaged joint, handling payloads beyond rated capacity---depends critically on understanding and exploiting the dynamics of the task, not just its geometry.
 
-% TODO: An honest assessment: dynamic manipulation remains far from the
-% full vision the thesis has implicitly argued for.
+This thesis has argued that explicitly incorporating dynamic constraints into the motion generation process allows robots to perform a substantially broader range of manipulation tasks while operating closer to their true physical limits.
+The work spans three thematic areas: \textit{sampling-based kinodynamic planning}, which integrates dynamics directly into the search process through physics simulation; \textit{generative models for dynamics-aware motion}, which encode dynamic constraints implicitly through conditioning; and \textit{dynamics-informed trajectory seeding}, which improves the convergence of constrained optimization by initializing near the constraint manifold.
+This chapter summarizes what each contribution established, reflects on the collective arc through the lens of the four design axes introduced in \cref{ch:framework}, and identifies the most promising directions for future work.
 
-\section{The ``Cool vs.\ Useful'' Question}
-\label{sec:discussion:coolvsuseful}
+\section{Summary of Contributions and Key Takeaways}
+\label{sec:discussion:contributions}
 
-% TODO: Use the slingshotting-boxes-across-a-warehouse provocation to
-% probe what counts as useful capability vs.\ what merely demonstrates
-% capability.
+\subsection{Poking as a Dynamic Manipulation Primitive}
+\label{sec:discussion:poking}
 
-\section{Open Research Threads}
+Non-prehensile manipulation research before \cref{ch:poking} had focused almost entirely on pushing---contact modes in which the robot maintains continuous contact with the object throughout the trajectory.
+Pushing is limited because it ties object displacement to robot end-effector arc length: moving an object far requires the robot arm to travel far, and reachability constraints clip the feasible workspace accordingly.
+\textit{PokeRRT} introduced \textit{poking}---impulsive, instantaneous contact---as a complementary primitive, embedded in a closed-loop RRT-based planner that uses physics simulation as a forward model.
+The key insight is geometric: an impulsive contact interaction can displace an object substantially with a comparatively short end-effector trajectory, decoupling object travel distance from robot joint motion.
+In experiments across six scenarios, poking-based planners outperformed both pushing and grasping in success rate and achieved significantly lower task times by avoiding the constant-contact constraint.
+Poking succeeded in scenarios where grasping was geometrically infeasible and where pushing's monotonic displacement model caused failure in cluttered environments.
+The broader takeaway is methodological: simulation-in-the-loop planning can realize a manipulation skill whose contact dynamics would be prohibitively complex to model analytically, without requiring explicit contact models at planning time.
+
+\subsection{Kinodynamic Planning for Whole-Body Contact and Coupled Dynamics}
+\label{sec:discussion:constrained}
+
+\cref{ch:constrained} extended kinodynamic planning to two settings where robot and object dynamics are coupled throughout the motion, not only at an impact instant.
+
+The first is manipulation under locked multi-joint failures (LMJs).
+Current systems respond to actuation failures by freezing---a conservative strategy that prioritizes safety but eliminates manipulation capability entirely.
+This work demonstrated that robots in failure states still possess substantial manipulation capability through whole-body non-prehensile contact.
+By pre-computing kinodynamic edge bundles for specific failure configurations and using a simulation-in-the-loop planner to select among them, the approach maintains up to 92\% of the nominal reachable area even when the gripper is entirely unusable, achieving a 79\% increase in failure-constrained reachable area and task success rates of 88.9--100\% across tested scenarios.
+The key insight is that failure modes are better reframed as new embodiment configurations to plan around than as exceptional states to recover from.
+
+The second contribution is spill-free liquid transport in cluttered environments (\textit{SFRRT*}).
+Prior approaches restricted container orientation to conservative angle ranges or used simplified linear liquid models (pendulum, mass-spring-damper) that cannot operate in genuinely cluttered scenes.
+\textit{SFRRT*} instead uses a transformer-based spill-free classifier trained on human-collected trajectory data as an implicit liquid dynamics model, combined with container geometry to estimate maximum safe tilt angles.
+This achieves a 3$\times$ expansion of the feasible solution space compared to prior approaches, with 93\%+ task success and full six-degree-of-freedom end-effector orientation flexibility---without explicit liquid modeling or visual surface monitoring.
+The takeaway is that implicit learned dynamics can substitute for explicit physics models in a safety-critical planning context, enabling capabilities that analytical models preclude.
+
+\subsection{Multi-Query Planning via Lazy Edge Bundles}
+\label{sec:discussion:multiquery}
+
+A practical bottleneck for deploying kinodynamic planners is that repeated queries over a shared workspace each incur the full cost of dynamics propagation and collision checking.
+\textit{LazyBoE} (\cref{ch:multiquery}) addresses this by pre-computing a graph of control-parameterized edge bundles over discretized state and control spaces, then applying lazy evaluation: deferring propagation and collision checking until an edge is actually required for a solution.
+Across multi-query manipulation benchmarks, \textit{LazyBoE} reduces average planning time and achieves higher success rates than existing baselines by exploring a wider range of solutions without paying the full propagation cost upfront.
+The broader takeaway is that for kinodynamic planning to be practically deployable---rather than a one-off demonstration---amortizing cost across queries is at least as important as reducing per-query complexity.
+
+\subsection{Conditional Trajectory Diffusion for Dynamic Constraint Satisfaction}
+\label{sec:discussion:diffusion}
+
+The second thematic area of the thesis (\cref{ch:generation,ch:payload}) reframes motion planning as conditional sampling: rather than searching or optimizing for a trajectory that satisfies constraints, a generative model learns to sample from the distribution of constraint-satisfying trajectories conditioned on task-level properties.
+
+For super-nominal payload manipulation, the conditioning signal is payload mass.
+The model is trained on trajectories generated across the full range of payload-dependent dynamic constraints using multiple planners operating in varied environments, so the diffusion process embeds constraint satisfaction in generation rather than enforcing it post-hoc.
+At inference time, the model generates joint-space trajectories---position, velocity, and acceleration---in approximately 10\,ms, maintaining 67.6\% workspace accessibility at three times the robot's nominal payload rating without runtime constraint checking.
+This establishes that dynamic constraints can be implicitly encoded in a generative model through conditioning alone.
+
+\textit{DEFT} extends this conditioning principle to joint failures.
+Rather than treating each failure configuration as a special case requiring replanning or policy switching, \textit{DEFT} conditions the same diffusion architecture on an embodiment representation encoding the failure configuration.
+A single model generalizes across multiple failure types and motion primitives.
+Real-world experiments demonstrate high task success under previously unseen multi-joint failure combinations with strict joint-limit compliance.
+Together, the payload and failure results show that any structured property of the task or robot state can serve as a conditioning signal for dynamics-constrained trajectory generation.
+
+\subsection{Task-Agnostic Seeding for Constrained Trajectory Optimization}
+\label{sec:discussion:seeding}
+
+The final contribution (\cref{ch:seeding}) addresses the initialization sensitivity of constrained trajectory optimization.
+Existing seeding methods are either task-specific or limited to geometric constraints; when dynamics constraints enter the optimization, poor initialization causes convergence failure or infeasible solutions.
+The proposed approach conditions a diffusion model on samples of robot state---joint angles, velocities, accelerations, and torques---that satisfy task-level dynamic constraints, producing near-feasible trajectory seeds without task-specific engineering.
+By initializing the optimizer near the constraint manifold, the approach substantially improves convergence and feasibility across diverse tasks.
+The deeper contribution is architectural: a single conditioning mechanism, agnostic to the specific task or constraint type, can serve as the initialization front-end for any dynamics-constrained trajectory optimizer.
+
+\section{What the Arc Reveals: Revisiting the Design Axes}
+\label{sec:discussion:axes}
+
+\cref{ch:framework} identified four design axes that govern dynamics-constrained motion generation: \textit{modeling burden}, \textit{dimensionality and factorization}, \textit{integration and pipeline brittleness}, and \textit{usability}.
+Looking back across the thesis arc, each axis traces a coherent trajectory.
+
+\paragraph{Modeling burden.}
+\textit{PokeRRT} outsourced dynamics modeling entirely to a physics simulator, avoiding the need for analytical contact models at the cost of repeated simulation queries.
+\textit{SFRRT*} replaced explicit liquid modeling with a learned classifier, trading model precision for coverage of complex geometries and obstacle configurations.
+The payload diffusion model absorbed constraint satisfaction into the generation process itself: the ``model'' is the weights of the diffusion network, not a separate physics module.
+Task-agnostic seeding takes this further, eliminating task-specific conditioning by representing constraints as samples from the constraint manifold directly.
+The arc is a consistent progression from explicit simulation to specialized learned models to task-agnostic constraint representations.
+
+\paragraph{Dimensionality and factorization.}
+Kinodynamic planning in joint-velocity-acceleration space is fundamentally high-dimensional.
+\textit{PokeRRT} manages this through random tree exploration; \textit{LazyBoE} manages it through pre-computation and lazy evaluation.
+Diffusion-based methods sidestep the search problem entirely, compressing high-dimensional constraint spaces into learned latent representations and generating solutions directly.
+The progression illustrates a shift from managing dimensionality through clever search to avoiding it through representation.
+
+\paragraph{Integration and pipeline brittleness.}
+Each kinodynamic system required carefully engineered components: a planner, a simulator, a failure model or liquid classifier, a time parameterizer, and their interfaces.
+The diffusion-based systems collapsed multiple pipeline stages---the generator absorbs constraint checking, trajectory parameterization, and task adaptation simultaneously.
+Task-agnostic seeding goes furthest: the same generator feeds into any downstream optimizer, eliminating the need for task-specific pipeline design entirely.
+
+\paragraph{Usability.}
+\textit{PokeRRT} required hand-tuning of planner parameters and scenario-specific design.
+The whole-body and liquid systems required substantial per-task engineering.
+Payload diffusion reduced the task specification to a single scalar.
+\textit{DEFT} reduced it to an embodiment encoding.
+Task-agnostic seeding reduces it to a set of constraint-satisfying state samples, which can be generated automatically from any robot dynamics model.
+Each step along the axis reduces the expertise required to deploy a dynamics-constrained planner on a new task.
+
+\section{Open Research Directions}
 \label{sec:discussion:threads}
 
-\subsection{Specific vs.\ General-Purpose Actuation}
-\label{sec:discussion:actuation}
+\subsection{Closing the Modeling and Deployment Gap}
+\label{sec:discussion:modeling}
 
-% TODO: When does dynamic capability call for specific actuation, and
-% when can general-purpose actuation suffice?
+Every system in this thesis was developed and primarily evaluated in simulation, with real-world experiments serving as validation rather than the primary test environment.
+The sim-to-real gap is a pervasive problem: physics simulators approximate contact dynamics imperfectly, and discrepancies accumulate over long planning horizons.
+\textit{PokeRRT} addressed this pragmatically through replanning---treating the gap as disturbance and replanning when observations diverge from predictions.
+But replanning is a band-aid; closing the gap requires either better simulation fidelity or learned residual models that correct simulator errors from real interaction data.
+Future work should explore differentiable physics engines that allow gradient-based refinement from real-world trajectory data, and online adaptation mechanisms that update dynamics models during deployment.
+The generative methods raise a related challenge: their training distributions were generated by specific planners in specific environments.
+Understanding how coverage and composition of training data affects generalization---and developing systematic approaches to training data design for dynamics-aware generative models---is an open problem with direct implications for deployment reliability.
 
-\subsection{Alignment with Data, Scaling Laws, and New Sensing}
+\subsection{Scaling with Data and New Sensing Modalities}
 \label{sec:discussion:datascaling}
 
-% TODO: How dynamic manipulation aligns (or fails to align) with current
-% data collection regimes, scaling laws, and emerging sensing modalities.
+The generative methods in this thesis were trained on datasets that are large by robotics standards but small by machine learning standards.
+Whether the quality of dynamics-aware trajectory generation scales with data volume---in the manner of language model scaling laws---is unknown.
+If it does, the practical bottleneck becomes data collection; if it does not, the architecture or training objective requires rethinking.
+Separately, the representations used for dynamics conditioning in this thesis are relatively simple: scalar payload mass, binary embodiment vectors, discrete constraint-satisfying samples.
+New sensing modalities---high-resolution tactile skins, whole-body force-torque sensing, high-speed event cameras---could provide richer constraint representations that enable conditioning on more complex and subtle dynamics.
+Understanding which sensing modalities are most informative for dynamics-constrained generation, and how to incorporate them efficiently into conditioning mechanisms, is a promising direction.
 
-\subsection{Bringing Force- and Energy-Based Guarantees into Learned Systems}
+\subsection{Formal Guarantees and Safety in Learned Dynamics Systems}
 \label{sec:discussion:guarantees}
 
-% TODO: Importing guarantees from force-based and energy-based control
-% into learned, generative systems.
+None of the generative methods in this thesis come with formal guarantees.
+Payload diffusion achieves 67.6\% workspace coverage at $3\times$ nominal payload, but the inaccessible portion of workspace is empirically characterized, not formally bounded.
+\textit{DEFT} maintains high success rates under out-of-distribution failures, but the conditions under which it fails are not analytically characterizable.
+For deployment in safety-critical applications---surgical assistance, unstructured field environments, manipulation near humans---probabilistic success rates are insufficient.
+The fundamental challenge is that the guarantees classical control theory provides (Lyapunov stability, energy-based safety certificates, control barrier functions) are derived analytically from known dynamics, while learned models are defined implicitly through their weights.
+Promising directions include training diffusion models with energy-based objectives that respect known conservative properties of the dynamics, verifying constraint satisfaction post-hoc through lightweight formal checkers applied to generated trajectories, and hybrid architectures that use learned models for initialization and certified optimization for final execution.
 
-\subsection{Risks and Mitigation Strategies}
-\label{sec:discussion:risks}
+\subsection{Hardware Co-Design and Cross-Embodiment Generalization}
+\label{sec:discussion:actuation}
 
-There are several key risks associated with the proposed project.
-
-\begin{itemize}
-   \item \textbf{Design of constraint embedding mechanism:} The representation of dynamic constraints as embeddings for diffusion conditioning is non-trivial. I will start with low-dispersion sampling of the robot state space with binary vectors indicating problem-specific constraint satisfaction---a generalization of PRESTO to accommodate dynamic constraints \cite{seo2024presto}. If this proves insufficient for complex constraint manifolds, I will explore progressively more sophisticated embeddings: 1) addressing the high-dimensionality of the state space by creating submaps as channels for a richer representation \cite{krizhevsky2012imagenet}; 2) employing PointNet-style encoders that are invariant to the permutation of constraint samples \cite{qi2017pointnet}; and, 3) investigating graph-based architectures to capture relationships between constraint-satisfying configurations \cite{hamilton2017inductive}.
-   \item \textbf{Insufficient task complexity:} Initial test cases (payload transport in clutter-free environments) may not be complex enough to elicit the benefits of my proposed approach. To mitigate this risk, I will systematically increase task complexity by introducing collision objects, varying payload characteristics, and implementing more complex dynamic constraints (e.g., end-effector acceleration constraints for liquid handling \cite{ichnowski2022gomp,abderezaei2024clutter}).
-   \item \textbf{Optimization problem design:} Designing optimization problems for payload and liquid handling tasks can be challenging, since it involves hyperparameter tuning, constraint linearization, and applying trust regions, which I only have a cursory knowledge of \cite{schulman2013finding}. I have already implemented have a slow version of optimization for payload transport which I will extend to accommodate liquid handling constraints \cite{pasricha2025payload}. I will also need to incorporate collision-checking, however there is extensive past work in this domain which will be useful \cite{ichnowski2020deep}.
-\end{itemize}
+This thesis assumed standard articulated manipulators.
+But several contributions push against the limits of what standard hardware can do: payload diffusion operates at the edge of rated joint torques, poking involves high-speed end-effector impacts that cause hardware wear, and whole-body manipulation requires arm surfaces not normally treated as manipulation surfaces.
+A natural question is whether the dynamic capabilities explored here call for specialized actuation---compliant joints, variable-stiffness actuators, high-speed lightweight wrists---or whether general-purpose hardware, paired with better motion generation, suffices.
+This is a co-design question that the robotics community has not systematically addressed in the context of dynamics-constrained planning.
+A related question concerns cross-embodiment generalization.
+\textit{DEFT} treats each failure configuration as a distinct embodiment; training one model to generalize across robot platforms, arm configurations, and failure modes remains an open challenge.
+Addressing it would substantially reduce the per-platform engineering cost of deploying dynamics-aware systems.
 
 \section{Closing Reflection}
 \label{sec:discussion:closing}
 
-For my thesis work, I propose a novel approach that uses diffusion models to generate dynamically near-admissible trajectories within the coupled, task-constrained state space of robot-environment interactions.
-Through the implementation of a task-agnostic conditioning mechanism that encodes constraints via robot state space samples, I aim to demonstrate that diffusion models can enable the efficient generation of diverse and high-quality trajectory seeds that concurrently satisfy both kinematic and dynamic constraints, thereby substantially reducing computation demands on subsequent dynamically-constrained trajectory optimization.
-By leveraging the strengths of both generative approaches and classical methods, my proposed project (in conjunction with my prior work) aims to expand the scope of robotic manipulation beyond geometric pick-and-place to include dynamic non-prehensile skills and motions governed by object inertial properties, impulsive contact, and motion-induced forces.
+The four design axes---modeling burden, dimensionality, integration, and usability---were introduced in \cref{ch:framework} as a way to organize the landscape of dynamics-constrained motion generation.
+Looking back, they also describe the trajectory of this thesis.
+Each contribution pushed one or more axes in the direction of less burden, lower effective dimensionality, less pipeline complexity, and lower deployment expertise.
+The endpoint---task-agnostic seeding conditioned on constraint-satisfying dynamics samples---represents a point on that trajectory where the gap between a new manipulation task and a dynamics-aware plan is measured in minutes rather than months.
 
-% TODO: Revisit the four design axes from Chapter~\ref{ch:framework}
-% across the arc of the thesis, and close the document.
+The broader argument this thesis has made is that physics is a resource to be exploited, not a complexity to be avoided.
+Grasping avoids the complexity of object dynamics by eliminating it: once grasped, the object is part of the robot.
+The methods developed here take the opposite posture---treating impulsive contact forces, inertial loads, joint failure configurations, and liquid dynamics not as complications to be engineered around, but as structured information that can be modeled, learned, and conditioned upon to generate richer and more capable manipulation behaviors.
+
+Much remains to be done.
+The gap between demonstration in simulation and reliable deployment in unstructured real-world environments is large.
+Formal safety guarantees for learned dynamics systems do not yet exist in practical form.
+The data and computation requirements for training dynamics-aware generative models at scale remain unclear.
+But the path from sampling-based kinodynamic planning through learned generative models to task-agnostic constrained optimization seeding represents genuine progress toward robotic manipulation that operates at the physical limits of what the hardware can do---rather than the limits of what geometry alone can reason about.
+The confluence of search, optimization, and inference as organizing paradigms for dynamics-constrained motion generation is the frontier, and this thesis has taken several steps toward it.
