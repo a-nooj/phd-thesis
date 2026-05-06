@@ -38,10 +38,13 @@
 
 \abstract{  \OnePageChapter	% remove \OnePageChapter once the abstract grows past a page.
 
-	% TODO: Write the thesis abstract. Summarize the progression from
-	% sampling-based to generative methods for dynamics-constrained
-	% motion generation, the contributions across the application
-	% domains, and the headline results.
+	The ability to pick up and place objects has long been the default mode of robotic manipulation---and for good reason: once an object is grasped, its state is predictable and control is straightforward. But grasping is inherently limited. Objects may be unreachable, too large to grasp, or situated in environments where arm geometry alone cannot succeed. More broadly, the full range of manipulation that humans perform naturally---poking objects into position, carrying a full glass without spilling, handling loads heavier than a robot's rated capacity---depends critically on understanding and exploiting the forces, inertia, and dynamics of the task, not just its geometry.
+
+	I argue that by explicitly incorporating dynamic constraints into the motion generation process---through sampling-based kinodynamic planning, learned generative models, and dynamics-informed trajectory seeding---robots can perform a substantially broader range of manipulation tasks while operating closer to their true physical limits.
+
+	This thesis advances robot manipulation through a progression of methods organized around three thematic areas. In \textit{sampling-based kinodynamic planning}, I introduce poking as an impulsive, non-prehensile primitive embedded in a closed-loop planner (PokeRRT) that uses physics simulation as a forward model, enabling fast object rearrangement in obstacle-rich environments without explicit contact models; extend kinodynamic planning to constrained coupled-dynamics settings including whole-body contact and liquid-filled container transport; and develop a multi-query kinodynamic planner (LazyBoE) that amortizes planning cost across repeated queries through lazy forward propagation and lazy collision checking. In \textit{generative models for dynamics-aware motion}, I develop a diffusion-based trajectory generator conditioned on payload mass that operates directly in joint position, velocity, and acceleration space, achieving constant-time generation ($\approx$10ms) of feasible trajectories that preserve 67.6\% workspace accessibility at three times the robot's nominal payload capacity---without runtime constraint checking---and extend this conditioning principle to fail-active manipulation under actuation failures. In \textit{seeding for constrained trajectory optimization}, I contribute a task-agnostic method that conditions a diffusion model on dynamic state samples satisfying task constraints, producing near-feasible trajectory seeds that improve convergence and feasibility of downstream optimization across diverse tasks without task-specific engineering.
+
+	Together, these contributions establish a systematic path from sampling-based to generative approaches for dynamics-constrained motion generation, opening a broader frontier for robotic manipulation where physics is a resource to be exploited, not a complexity to be avoided.
 	}
 
 \dedication[Dedication]{	% NEVER use \OnePageChapter here.
