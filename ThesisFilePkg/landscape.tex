@@ -1,0 +1,52 @@
+\section{The State of Robot Manipulation Today}
+\label{sec:intro:landscape}
+
+Robotic manipulation has undergone remarkable transformation over the past decade.
+What was once confined to automotive assembly lines has expanded into logistics, manufacturing, healthcare, space exploration, and beyond---and the underlying technology has evolved along two largely separate but equally impressive trajectories.
+
+\header{Engineered pipelines at scale}
+In industry, manipulation is deployed through modular pipelines: a perception module localizes objects, a planner sequences motions, and a controller executes them.
+This architecture underpins robots operating across warehouses and fulfillment centers \cite{CensusSurveyRobotic2022}, factory assembly and welding lines \cite{factory_efficiency_2020}, surgical and assistive healthcare settings \cite{Kyrarini2021}, chemical and pharmaceutical processing \cite{chem1,chem2}, food service and meal preparation \cite{meal1,assistfeed1,assistfeed2}, and space and extreme-environment operations \cite{papadopoulos2021robotic,gaines2016productivity}.
+The defining properties of these systems are reliability and debuggability: each module is maintained by specialists who understand its failure modes, and performance improves through engineering effort accumulated over many deployment cycles.
+The result is highly capable systems within their operational envelopes---systems trusted with production-scale throughput and human safety.
+
+\header{General-purpose learned policies}
+In parallel, a different paradigm has emerged in academia and is now entering industry.
+General-purpose robot policies trained on large, diverse demonstration datasets have demonstrated impressive generalization: a single policy can handle novel objects, environmental variation, and modest task variation without per-task redesign \cite{chi2023diffusionpolicy,team2024octo,o2024open,zitkovich2023rt}.
+Reinforcement learning has pushed further still, enabling dexterous in-hand manipulation of unprecedented complexity by training entirely in simulation \cite{andrychowicz2018learning}.
+The aspiration of this line of work is human-level dexterity accessible through learned behavior---reducing the per-task engineering burden and enabling continuous improvement as deployment data accumulates.
+
+\header{Shared limitations}
+Despite their apparent differences, both paradigms share a set of fundamental limitations.
+Both require substantial engineering effort to robustify against real-world variability: pipeline systems need task-specific tuning and edge-case handling at every component; learned systems require careful dataset curation, sim-to-real transfer, and distribution coverage to avoid brittle failures \cite{billard2019trends}.
+Both exhibit brittleness at component interfaces---errors between perception and planning, and between planning and control, propagate in ways that are difficult to anticipate or recover from \cite{abderezaei2024clutter,briscoe2024exploring}.
+Both rely on simplified models of physics: classical pipelines use analytical models with bounded validity, while learned policies treat dynamics as an implicit property of demonstrated trajectories rather than as an explicit constraint \cite{yin2021modeling}.
+And neither generalizes readily to task contexts substantially different from those encountered during development or training \cite{o2024open}.
+
+\header{The geometric assumption}
+Underlying both paradigms is a shared assumption that has shaped manipulation research for decades: that manipulation is fundamentally a geometric problem.
+The dominant objects of reasoning are collision clearance, grasp pose, reachability, and singularity avoidance---broadly, kinematic constraints on robot configuration.
+This assumption is not arbitrary.
+Grasping has attracted disproportionate research attention \cite{billard2019trends,bohg2013data,mahler2017dex} precisely because form-closure reduces object state to a geometry problem: once an object is secured, its state is predictable and planning reduces to obstacle avoidance \cite{mason1986mechanics,bullock2011classifying}.
+Recent years have brought dramatic improvements to geometric planning infrastructure---GPU-parallelized collision checking and forward kinematics \cite{sundaralingam2023curobo,thomason2024motions}, large-scale motion datasets \cite{o2024open}, and high-fidelity simulation environments \cite{coumans2021}---but the underlying planning abstraction has remained largely geometric.
+
+\header{The dynamic gap}
+The cost of this assumption becomes visible at the boundary of kinematic behaviors.
+A broad class of manipulation tasks is not adequately captured by geometry alone: tasks where joint torques, object inertia, contact impulses, and fluid dynamics jointly determine the outcome.
+Non-prehensile rearrangement through impulsive contact \cite{pasricha2022pokerrt,mason2018toward}, transport of liquid-filled containers \cite{abderezaei2024clutter}, high-speed inertial transport \cite{ichnowski2022gomp,zeng2020tossingbot}, operation near or beyond rated payload capacity, and adaptation to mid-task mechanical failures \cite{briscoe2024exploring} all fall into this category.
+These tasks involve two distinct kinds of dynamic constraint: \textit{higher-order robot constraints}---bounds on velocity, acceleration, jerk, and torque that arise from the robot's own kinematics and actuator limits \cite{pham2018new,berscheid2021jerk}---and \textit{task-induced dynamic constraints} that arise from the physics of robot-object interaction, including contact mechanics, inertial coupling, and motion-induced phenomena such as sloshing.
+Non-prehensile manipulation, which encompasses this class of behaviors, has received comparatively little attention relative to grasping \cite{ruggiero2018nonprehensile,mason2018toward}, and the gap between what current systems can do and what these tasks demand is consequential.
+
+\header{The argument}
+The central claim of this thesis is that accessing the full range of manipulation capability afforded by modern robot embodiments---beyond the kinematic behaviors that dominate current systems---requires explicitly modeling and integrating dynamic constraints into the motion generation process.
+Tasks involving complex object interactions, unstructured environments, and high-speed or high-load operations cannot be adequately planned or controlled using geometry alone.
+Dynamics must be treated not as implicit background or a post-hoc check, but as structured information to be modeled, learned, and exploited.
+
+\header{A spectrum of approaches}
+How to incorporate dynamics into manipulation planning is not a settled question, and the literature reflects a spectrum of strategies.
+At one end, \textit{plan-and-filter} methods generate geometric paths and apply time parameterization or post-processing to enforce dynamic feasibility, iterating until constraints are satisfied \cite{pham2018new,berscheid2021jerk,kuntz2019fast}.
+\textit{Kinodynamic search} methods embed dynamics directly in the planning search, propagating controls through physics-aware forward models to build dynamically feasible trees \cite{pasricha2022pokerrt,li2016asymptotically,nayak2022bidirectional}.
+\textit{Constrained trajectory optimization} formulates dynamics as explicit equality or inequality constraints and solves for a feasible trajectory from a given seed \cite{schulman2013finding,kalakrishnan2011stomp,ichnowski2020gomp}.
+\textit{Learned motion generation} approaches---including diffusion-based trajectory models and foundation policies---implicitly encode dynamics through training data and conditioning signals, avoiding runtime constraint evaluation altogether \cite{chi2023diffusionpolicy,carvalho2023motion,saha2024edmp,fishman2023motion,qureshi2020motion}.
+Finally, \textit{hybrid} approaches combine these paradigms, for example using learned initializations to seed optimization or using sampling to guide learning \cite{kuntz2019fast,ichnowski2020deep,huang2024diffusionseeder}.
+Each strategy makes different tradeoffs along four recurring dimensions: modeling burden, problem dimensionality, system integration complexity, and practical usability---the axes that organize the prior work reviewed next.
