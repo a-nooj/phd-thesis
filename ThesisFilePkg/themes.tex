@@ -1,67 +1,154 @@
 \section{This Thesis}
 
-\subsection{Research Themes}
-\label{sec:intro:themes}
-
-This thesis addresses the gap between dynamics-aware and generalizable manipulation through three research themes, each targeting a different aspect of the problem.
-
-\paragraph{RT1: Sampling-Based Kinodynamic Planning.}
-The first theme develops planners that incorporate dynamics directly into the search process through physics simulation and kinodynamic exploration.
-This includes introducing impulsive non-prehensile manipulation primitives, extending kinodynamic planning to settings with coupled robot-object dynamics, and developing multi-query planners that amortize dynamics computation across repeated queries.
-
-\paragraph{RT2: Generative Models for Dynamics-Aware Motion.}
-The second theme reframes motion generation as conditional sampling: a generative model learns to produce trajectories that implicitly satisfy dynamic constraints by conditioning on task-level properties such as payload mass or embodiment configuration.
-This approach achieves constant-time generation without runtime constraint checking and generalizes across failure modes and payload levels.% without task-specific redesign.
-
-\paragraph{RT3: Seeding for Constrained Trajectory Optimization.}
-The third theme closes the loop between generative and optimization-based approaches by developing a task-agnostic trajectory seeding strategy.
-By introducing a novel conditioning mechanism for incorporating arbitrary kinematic and dynamic constraints, this approach provides near-feasible initialization seeds that improve solver convergence and feasibility across diverse tasks without task-specific redesign.
-
-Together, these themes trace a progression from dynamics embedded in search, to dynamics embedded in learned representations, to dynamics embedded in initialization seeds for optimization.
-
-\subsection{Thesis Statement}
+\subsection{Thesis and Approach}
 \label{sec:intro:statement}
 
-\textit{By explicitly incorporating dynamic constraints into the motion generation process---through sampling-based kinodynamic planning, learned generative models, and dynamics-informed trajectory seeding---robots can perform a substantially broader range of manipulation tasks while operating closer to their true physical limits.}
+% This thesis argues that many important manipulation behaviors cannot be generated reliably through geometric reasoning alone.
+% Tasks involving impulsive contact, inertial coupling, payload-induced dynamics, and motion-induced forces require motion generation methods that explicitly account for dynamic constraints throughout the planning process.
 
-This thesis advances robot manipulation by developing a progression of methods that expand the scope of manipulation beyond geometric pick-and-place to include dynamic non-prehensile skills and motions governed by object inertial properties, impulsive contact, and motion-induced forces.
-Across all three research themes, dynamic constraints are treated not as a complexity to be avoided but as structured information to be modeled, learned, and exploited.
+The central thesis of this dissertation is that dynamic constraints should be treated not as secondary feasibility checks, but as structured information to be modeled, learned, and exploited during motion generation.
+\textsl{By explicitly incorporating dynamic constraints into planning and generative modeling, this thesis expands the scope of robotic manipulation beyond geometric pick-and-place
+by incorporating dynamic non-prehensile skills and motions governed by object inertial properties, impulsive contact, and motion-induced forces.} My work provides evidence for this statement across three research themes:
+
+\paragraph{RT1.} Sampling-based kinodynamic planners that incorporate dynamics explicitly through online simulation and control-aware search.
+These methods address increasingly coupled manipulation settings, including impulsive non-prehensile rearrangement, manipulation under joint failures, and spill-free liquid transport.
+
+\paragraph{RT2.} Develops methods for amortizing dynamics computation across repeated planning problems.
+Rather than solving each kinodynamic query independently, reusable control-parameterized motion structures are precomputed and evaluated lazily during planning, substantially reducing repeated computational cost.
+
+\paragraph{RT3.} Explores learned generative models as amortized representations of dynamic feasibility.
+By conditioning trajectory diffusion models on task-level dynamic properties and constraint representations, these methods generate near-feasible motions and optimization seeds in near-constant time across varying payloads, failure conditions, and constraint settings.
+
+% This thesis investigates how dynamic feasibility can be represented, reused, and amortized across different motion-generation paradigms.
+
+% The dissertation begins with 
+
+% The thesis then 
+
+% Finally, the thesis 
+
+Across all stages, the central goal remains the same: enabling robots to reason about and exploit dynamic constraints as part of motion generation rather than avoiding them through predominantly geometric abstractions.
+
+% To investigate this claim, the thesis develops a progression of methods spanning three levels of motion generation.
+
+% First, dynamics are embedded directly into search through sampling-based kinodynamic planning.
+% These methods use physics simulation and control-aware exploration to reason about impulsive non-prehensile manipulation, coupled robot-object dynamics, and repeated-query planning problems.
+
+% Second, dynamics are embedded into learned motion representations through conditional generative models.
+% Rather than enforcing constraints through online search or optimization, these methods learn to generate trajectories conditioned on task-level dynamic properties such as payload mass or embodiment configuration, enabling near-constant-time motion generation.
+
+% Third, dynamics are embedded into optimization initialization through task-agnostic trajectory seeding.
+% These methods represent dynamic constraints as structured conditioning information in order to generate near-feasible initialization seeds for constrained trajectory optimization across diverse tasks.
+
+% Together, these contributions trace a progression from dynamics embedded in search, to dynamics embedded in learned representations, to dynamics embedded in optimization seeds.
+% Across all stages, the goal is the same: expanding robotic manipulation beyond predominantly geometric pick-and-place behavior toward manipulation governed by contact, inertia, and dynamic interaction.
+
+% \section{This Thesis}
+
+% \subsection{Research Themes}
+% \label{sec:intro:themes}
+
+% This thesis addresses the gap between dynamics-aware and generalizable manipulation through three research themes, each targeting a different aspect of the problem.
+
+% \paragraph{RT1: Sampling-Based Kinodynamic Planning.}
+% The first theme develops planners that incorporate dynamics directly into the search process through physics simulation and kinodynamic exploration.
+% This includes introducing impulsive non-prehensile manipulation primitives, extending kinodynamic planning to settings with coupled robot-object dynamics, and developing multi-query planners that amortize dynamics computation across repeated queries.
+
+% \paragraph{RT2: Generative Models for Dynamics-Aware Motion.}
+% The second theme reframes motion generation as conditional sampling: a generative model learns to produce trajectories that implicitly satisfy dynamic constraints by conditioning on task-level properties such as payload mass or embodiment configuration.
+% This approach achieves constant-time generation without runtime constraint checking and generalizes across failure modes and payload levels.% without task-specific redesign.
+
+% \paragraph{RT3: Seeding for Constrained Trajectory Optimization.}
+% The third theme closes the loop between generative and optimization-based approaches by developing a task-agnostic trajectory seeding strategy.
+% By introducing a novel conditioning mechanism for incorporating arbitrary kinematic and dynamic constraints, this approach provides near-feasible initialization seeds that improve solver convergence and feasibility across diverse tasks without task-specific redesign.
+
+% Together, these themes trace a progression from dynamics embedded in search, to dynamics embedded in learned representations, to dynamics embedded in initialization seeds for optimization.
+
+% \subsection{Thesis Statement}
+% \label{sec:intro:statement}
+
+% \textit{By explicitly incorporating dynamic constraints into the motion generation process---through sampling-based kinodynamic planning, learned generative models, and dynamics-informed trajectory seeding---robots can perform a substantially broader range of manipulation tasks while operating closer to their true physical limits. My work expands the scope of robotic manipulation beyond geometric pick-and-place by incorporating dynamic non-prehensile skills and motions governed by object inertial properties, impulsive contact, and motion-induced forces.}
+
+% This thesis advances robot manipulation by developing a progression of methods that expand the scope of manipulation beyond geometric pick-and-place to include dynamic non-prehensile skills and motions governed by object inertial properties, impulsive contact, and motion-induced forces.
+% Across all three research themes, dynamic constraints are treated not as a complexity to be avoided but as structured information to be modeled, learned, and exploited.
 
 \subsection{Contributions}
 \label{sec:intro:contributions}
 
-The contributions of this thesis span the three research themes above.
+This thesis develops methods for representing and exploiting dynamic feasibility across planning, amortized search, and learned motion generation.
 
-\paragraph{Sampling-Based Kinodynamic Planning.}
+\paragraph{Explicit Dynamics in Kinodynamic Planning.}
 \begin{enumerate}
-  \item \textbf{A unifying framework for dynamics-constrained motion generation} (\cref{ch:framework}).
-        A conceptual framework that organizes the landscape of planning approaches along four design axes---modeling burden, dimensionality, integration, and usability---and motivates the design choices made throughout this work.
+  \item \textbf{A design framework for dynamics-aware motion generation} (\cref{ch:framework}).
+        A conceptual framework organizing manipulation methods along four design axes---modeling burden, problem dimensionality, system integration, and usability---providing a unified perspective on the tradeoffs underlying dynamics-aware planning systems.
 
-  \item \textbf{PokeRRT: poking as a dynamic manipulation primitive} (\cref{ch:poking}).
-        A sampling-based kinodynamic planner that uses physics simulation as a forward model to enable non-prehensile object rearrangement via impulsive contact, without requiring explicit contact models.
-        Demonstrated across six scenarios, poking outperforms pushing and grasping baselines in success rate and task time.
+  \item \textbf{PokeRRT: impulsive non-prehensile manipulation through kinodynamic search} (\cref{ch:poking}).
+        A sampling-based kinodynamic planner that uses physics simulation as a forward model for object rearrangement via impulsive contact, without requiring explicit contact models.
+        Across six scenarios, poking achieves higher success rates and lower task completion times than pushing and grasping baselines.
 
-  \item \textbf{Kinodynamic planning for constrained coupled-dynamics settings} (\cref{ch:constrained}).
-        Two extensions of kinodynamic planning to settings with coupled robot-object dynamics: whole-body non-prehensile manipulation under locked multi-joint failures, maintaining up to 92\% of the nominal reachable area; and spill-free liquid container transport in cluttered environments, achieving a 3$\times$ expansion of the feasible solution space over prior methods.
-
-  \item \textbf{LazyBoE: multi-query kinodynamic planning via lazy edge bundles} (\cref{ch:multiquery}).
-        A multi-query kinodynamic planner that pre-computes control-parameterized edge bundles over discretized state and control spaces and applies lazy propagation and collision checking to substantially reduce repeated planning cost.
+  \item \textbf{Kinodynamic planning under coupled robot-object dynamics} (\cref{ch:constrained}).
+        Extensions of kinodynamic planning to manipulation tasks governed by coupled dynamics, including whole-body manipulation under locked multi-joint failures and spill-free liquid transport in cluttered environments.
+        These methods maintain up to 92\% of nominal reachable workspace under failures and expand feasible spill-free solution spaces by up to $3\times$ over prior approaches.
 \end{enumerate}
 
-\paragraph{Generative Models for Dynamics-Aware Motion.}
+\paragraph{Amortized Kinodynamic Planning.}
+\begin{enumerate}
+  \setcounter{enumi}{3}
+  \item \textbf{LazyBoE: multi-query kinodynamic planning via lazy edge bundles} (\cref{ch:multiquery}).
+        A multi-query kinodynamic planner that amortizes dynamics computation across repeated planning problems by precomputing control-parameterized edge bundles over discretized state and control spaces.
+        Lazy propagation and collision checking substantially reduce repeated planning cost while preserving kinodynamic feasibility.
+\end{enumerate}
+
+\paragraph{Learned Dynamic Feasibility Priors.}
 \begin{enumerate}
   \setcounter{enumi}{4}
-  \item \textbf{Planning as conditional sampling} (\cref{ch:generation}).
-        A reframing of dynamics-constrained motion planning as a conditional sampling problem, establishing the conceptual bridge from kinodynamic search to learned generative models.
+  \item \textbf{Motion generation as conditional sampling} (\cref{ch:generation}).
+        A reformulation of dynamics-aware motion generation as conditional trajectory sampling, establishing a conceptual bridge between kinodynamic planning and learned generative models.
 
   \item \textbf{Conditional trajectory diffusion for dynamic constraint satisfaction} (\cref{ch:payload}).
-        A diffusion-based trajectory generator conditioned on payload mass that achieves super-nominal payload manipulation---67.6\% workspace accessibility at $3\times$ rated capacity---in approximately 10\,ms without runtime constraint checking.
-        A case study extends this conditioning principle to fail-active manipulation under actuation failures.
+        A diffusion-based trajectory generator conditioned on task-level dynamic properties such as payload mass and embodiment configuration.
+        The method achieves super-nominal payload manipulation---67.6\% workspace accessibility at $3\times$ rated payload capacity---in approximately 10\,ms without runtime constraint checking, and generalizes to fail-active manipulation under actuation failures.
+
+  \item \textbf{Task-agnostic trajectory seeding for constrained optimization} (\cref{ch:seeding}).
+        A conditioning mechanism that represents kinematic and dynamic constraints as robot state samples in order to generate near-feasible trajectory seeds for constrained optimization.
+        The approach improves solver convergence and feasibility across diverse manipulation tasks without task-specific engineering.
 \end{enumerate}
 
-\paragraph{Seeding for Constrained Trajectory Optimization.}
-\begin{enumerate}
-  \setcounter{enumi}{6}
-  \item \textbf{Task-agnostic seeding for constrained trajectory optimization} (\cref{ch:seeding}).
-        A conditioning mechanism that generates near-feasible trajectory seeds by representing dynamic constraints as robot state samples, improving solver convergence and feasibility across diverse tasks without task-specific engineering.
-\end{enumerate}
+% \subsection{Contributions}
+% \label{sec:intro:contributions}
+
+% The contributions of this thesis span the three research themes above.
+
+% \paragraph{Sampling-Based Kinodynamic Planning.}
+% \begin{enumerate}
+%   \item \textbf{A unifying framework for dynamics-constrained motion generation} (\cref{ch:framework}).
+%         A conceptual framework that organizes the landscape of planning approaches along four design axes---modeling burden, dimensionality, integration, and usability---and motivates the design choices made throughout this work.
+
+%   \item \textbf{PokeRRT: poking as a dynamic manipulation primitive} (\cref{ch:poking}).
+%         A sampling-based kinodynamic planner that uses physics simulation as a forward model to enable non-prehensile object rearrangement via impulsive contact, without requiring explicit contact models.
+%         Demonstrated across six scenarios, poking outperforms pushing and grasping baselines in success rate and task time.
+
+%   \item \textbf{Kinodynamic planning for constrained coupled-dynamics settings} (\cref{ch:constrained}).
+%         Two extensions of kinodynamic planning to settings with coupled robot-object dynamics: whole-body non-prehensile manipulation under locked multi-joint failures, maintaining up to 92\% of the nominal reachable area; and spill-free liquid container transport in cluttered environments, achieving a 3$\times$ expansion of the feasible solution space over prior methods.
+
+%   \item \textbf{LazyBoE: multi-query kinodynamic planning via lazy edge bundles} (\cref{ch:multiquery}).
+%         A multi-query kinodynamic planner that pre-computes control-parameterized edge bundles over discretized state and control spaces and applies lazy propagation and collision checking to substantially reduce repeated planning cost.
+% \end{enumerate}
+
+% \paragraph{Generative Models for Dynamics-Aware Motion.}
+% \begin{enumerate}
+%   \setcounter{enumi}{4}
+%   \item \textbf{Planning as conditional sampling} (\cref{ch:generation}).
+%         A reframing of dynamics-constrained motion planning as a conditional sampling problem, establishing the conceptual bridge from kinodynamic search to learned generative models.
+
+%   \item \textbf{Conditional trajectory diffusion for dynamic constraint satisfaction} (\cref{ch:payload}).
+%         A diffusion-based trajectory generator conditioned on payload mass that achieves super-nominal payload manipulation---67.6\% workspace accessibility at $3\times$ rated capacity---in approximately 10\,ms without runtime constraint checking.
+%         A case study extends this conditioning principle to fail-active manipulation under actuation failures.
+% \end{enumerate}
+
+% \paragraph{Seeding for Constrained Trajectory Optimization.}
+% \begin{enumerate}
+%   \setcounter{enumi}{6}
+%   \item \textbf{Task-agnostic seeding for constrained trajectory optimization} (\cref{ch:seeding}).
+%         A conditioning mechanism that generates near-feasible trajectory seeds by representing dynamic constraints as robot state samples, improving solver convergence and feasibility across diverse tasks without task-specific engineering.
+% \end{enumerate}
