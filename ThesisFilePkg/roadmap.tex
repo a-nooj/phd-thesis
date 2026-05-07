@@ -1,0 +1,16 @@
+\section{Roadmap of the Thesis}
+\label{sec:intro:roadmap}
+
+\cref{ch:framework} establishes a conceptual framework for dynamics-constrained motion generation, organizing the landscape of approaches and motivating the progression of methods developed in subsequent chapters.
+
+Chapters~\ref{ch:poking}--\ref{ch:multiquery} develop sampling-based kinodynamic methods of increasing generality.
+\cref{ch:poking} introduces poking as a dynamic manipulation primitive, using impulsive contact to achieve non-prehensile rearrangement within a sampling-based planner.
+\cref{ch:constrained} extends kinodynamic planning to constrained settings, handling tasks where robot and object dynamics are coupled---such as whole-body contact and liquid-filled container transport.
+\cref{ch:multiquery} addresses the multi-query setting via lazy edge bundles, amortizing planning cost across repeated queries in a shared workspace.
+
+\cref{ch:generation} marks a transition from sampling to generation, reframing motion planning as conditional sampling and establishing the conceptual bridge to the generative methods that follow.
+\cref{ch:payload} develops diffusion-based trajectory generation conditioned on high-level object properties, demonstrating that dynamic constraints can be implicitly encoded through the conditioning signal; a case study extends this principle to fail-active manipulation under actuation failures.
+
+\cref{ch:seeding} shifts focus to constrained trajectory optimization, contributing a task-agnostic seeding strategy that substantially improves solver convergence and feasibility without task-specific design.
+
+\cref{ch:discussion} concludes with a synthesis of the thesis contributions, a discussion of their collective implications for dynamic manipulation, and directions for future work.

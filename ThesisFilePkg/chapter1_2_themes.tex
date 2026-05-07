@@ -9,10 +9,10 @@ This includes introducing impulsive non-prehensile manipulation primitives, exte
 
 \paragraph{RT2: Generative Models for Dynamics-Aware Motion.}
 The second theme reframes motion generation as conditional sampling: a generative model learns to produce trajectories that implicitly satisfy dynamic constraints by conditioning on task-level properties such as payload mass or embodiment configuration.
-This approach achieves constant-time generation without runtime constraint checking and generalizes across failure modes and payload levels without task-specific redesign.
+This approach achieves constant-time generation without runtime constraint checking and generalizes across failure modes and payload levels.% without task-specific redesign.
 
 \paragraph{RT3: Seeding for Constrained Trajectory Optimization.}
 The third theme closes the loop between generative and optimization-based approaches by developing a task-agnostic trajectory seeding strategy.
-By conditioning a diffusion model on robot state samples that satisfy dynamic constraints, this approach provides near-feasible initialization seeds that improve solver convergence and feasibility across diverse tasks without requiring task-specific engineering.
+By introducing a novel conditioning mechanism for incorporating arbitrary kinematic and dynamic constraints, this approach provides near-feasible initialization seeds that improve solver convergence and feasibility across diverse tasks without task-specific redesign.
 
 Together, these themes trace a progression from dynamics embedded in search, to dynamics embedded in learned representations, to dynamics embedded in initialization seeds for optimization.
