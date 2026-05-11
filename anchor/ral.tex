@@ -1,0 +1,111 @@
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+
+\let\proof\relax
+\let\endproof\relax
+\usepackage{amsthm}
+
+\IEEEoverridecommandlockouts                              % This command is only needed if 
+                                                          % you want to use the \thanks command
+
+\overrideIEEEmargins                                      % Needed to meet printer requirements.
+\pdfoutput=1 
+% \usepackage{bm}
+\usepackage{commath}
+\usepackage{textcomp}
+\let\labelindent\relax
+\usepackage{enumitem}
+% \usepackage[ruled,linesnumbered,resetcount,vlined]{algorithm2e}
+\usepackage{graphicx} % for pdf, bitmapped graphics files
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\usepackage{amsmath,amssymb}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\usepackage[style=ieee,sorting=none,backend=biber,giveninits=true]{biblatex}
+\addbibresource{ral.bib}
+
+\usepackage[bookmarks=true]{hyperref}
+\usepackage[capitalize]{cleveref}
+\usepackage{float}
+\usepackage{multirow}
+% \usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage[usenames, dvipsnames, table]{xcolor}
+
+% \colorlet{mylinkcolor}{black}
+% \colorlet{mycitecolor}{black}
+% \colorlet{myurlcolor}{black}
+
+\colorlet{mylinkcolor}{BrickRed}
+\colorlet{mycitecolor}{Green}
+\colorlet{myurlcolor}{NavyBlue}
+
+\hypersetup{
+  linkcolor  = mylinkcolor,
+  citecolor  = mycitecolor,
+  urlcolor   = myurlcolor,
+  colorlinks = true,
+}
+
+% \let\comment=\relax
+% \usepackage[markup=bfit, deletedmarkup=sout, authormarkup=superscript]{changes}
+% \definechangesauthor[name={td}, color=      red] {TODO}
+% \definechangesauthor[name={ar}, color=PineGreen] {AR}
+% \definechangesauthor[name={ap}, color=Purple] {AP}
+% \newcommand{\td}[1]{\added[id=TODO]{#1}}
+% \newcommand{\ar}[1]{\added[id=  AR]{#1}}
+% \newcommand{\ap}[1]{\added[id=  AP]{#1}}
+
+
+\newcommand{\centered}[1]{\begin{tabular}{c} #1 \end{tabular}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\usepackage{subcaption}
+\captionsetup{font=small}
+
+\begin{document}
+
+% \title{\LARGE \bf
+% Towards Super-Nominal Payload Manipulation:\\A Multi-Skill Approach with Diffusion-Based Motion Planning
+% }
+
+\title{\LARGE \bf
+tbd
+}
+
+\author{Anuj Pasricha$^{*}$ and Alessandro Roncone%
+\thanks{$*$ Corresponding author.}%
+\thanks{The authors are with the Department of Computer Science, University of Colorado Boulder, 1111 Engineering Drive, Boulder, CO USA. This work was supported by the Office of Naval Research under Grant N00014-22-1-2482. {\tt\small firstname.lastname@colorado.edu}}%
+}
+
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+
+\begin{abstract}
+Trajectory diffusion models offer a powerful mechanism for generating multimodal robot motion, but their performance depends critically on how environment information is represented for conditioning.
+We propose a constraint-response representation that replaces high-dimensional perceptual inputs with diagnostic trajectory anchors: short motion snippets selected to maximally distinguish training environments by their feasibility under task constraints.
+Each environment is encoded as a binary signature over these anchors, yielding a compact behavioral barcode that captures how the environment constrains motion rather than how it appears perceptually.
+Across three training seeds, anchor-based conditioning outperforms point-cloud, key-configuration, start-goal, and random conditioning baselines, producing higher collision-free rates, fewer collision steps, lower collision fractions, and improved worst-case clearance.
+These results suggest that conditioning trajectory diffusion models on behaviorally informative constraint probes can provide a more task-aligned abstraction for safe trajectory generation than conventional perceptual or hand-designed representations.
+\end{abstract}
+
+\input{1.introduction}
+\input{2.background}
+\input{3.methods}
+\input{4.evaluation}
+\input{5.conclusion}
+
+% \clearpage
+\AtNextBibliography{\footnotesize}
+\printbibliography
+
+
+\end{document}

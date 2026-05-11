@@ -1,0 +1,19 @@
+\section{Introduction}\label{sec:introduction}
+
+Diffusion-based policies can learn expressive motion priors from demonstrations and can enable generalization across tasks.
+In planning settings, generation must be environment-conditioned: the same start and goal can require very different trajectories depending on the constraints imposed by the scene or task.
+This makes the conditioning representation central to the success of the model, since the diffusion model can only generate appropriate trajectories if its condition captures the environment differences that matter for motion.
+Constraint information, including kinematic and dynamic constraints derived from scene, robot embodiment, and task, enter the trajectory denoising model through a learned observation embedding via FiLM, concatenation, or cross-attention.
+\input{figs/first-page.tex}
+A common approach is to condition on high-dimensional perceptual inputs, such as RGB images, depth maps, point clouds, occupancy grids, or learned visual embeddings.
+These representations are intuitively appealing because they preserve scene information, moving from appearance-level information in RGB toward more explicit geometric information in depth or point clouds.
+However, perceptual richness does not guarantee behavioral usefulness: a representation may preserve visual or geometric variation that is irrelevant to planning, while discarding subtle constraint-relevant variation.
+% The key abstraction problem is therefore not ``which sensor modality is most detailed?'' but ``which representation preserves the distinctions that change feasible motion?''
+For trajectory diffusion, two environments should be considered equivalent if they induce the same or similar feasible trajectory distribution, even if they look different perceptually.
+Conversely, two perceptually similar environments should be represented differently if they force different trajectory behavior, for example because a small geometric or dynamic change makes one class of motions infeasible.
+This motivates behavioral equivalence (not perceptual similarity) as the right level of abstraction: the conditioning variable should collapse perceptual variance that does not affect motion, while preserving constraint-induced differences that do.
+This notion is constraint-agnostic: the relevant constraints may be kinematic, geometric, dynamic, torque-based, contact-based, safety-related, or task-specific; the representation only needs to encode how those constraints affect feasible motion.
+The method presented in this paper approximates behavioral equivalence through diagnostic trajectory snippets, where each snippet acts as a probe applied to an environment under the chosen constraint model.
+Each probe produces a binary constraint-response bit, indicating whether that snippet satisfies the environment’s constraints or violates them, regardless of the underlying reason for failure.
+A set of selected snippets therefore assigns each environment a binary feasibility signature, or behavioral barcode, whose coordinates correspond to fixed diagnostic probes evaluated under the relevant constraint model.
+The entropy-style greedy selection algorithm identifies informative anchors by choosing snippets that make these signatures maximally distinguishable, yielding a compact, task-aligned conditioning representation that abstracts away raw perception and preserves the constraint-induced distinctions needed for trajectory diffusion.
