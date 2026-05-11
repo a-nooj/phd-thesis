@@ -1,24 +1,61 @@
 \subsection{Conditional Trajectory Diffusion for Dynamic Constraint Satisfaction}
 \label{sec:discussion:diffusion}
 
-The second thematic area of the thesis (\cref{ch:generation,ch:payload}) reframes motion planning as conditional sampling: rather than searching or optimizing for a trajectory that satisfies constraints, a generative model learns to sample from the distribution of constraint-satisfying trajectories conditioned on task-level properties.
+\cref{ch:generation,ch:payload} shifted from explicit kinodynamic search to learned generative representations of dynamic feasibility.
+Rather than constructing a trajectory online through repeated propagation, collision checking, or constraint evaluation, the approach reframes motion generation as conditional sampling: a model learns the distribution of trajectories that satisfy dynamic constraints under specified task conditions, then samples from that distribution at inference time.
 
-For super-nominal payload manipulation, the conditioning signal is payload mass.
-The model is trained on trajectories generated across the full range of payload-dependent dynamic constraints using multiple planners operating in varied environments, so the diffusion process embeds constraint satisfaction in generation rather than enforcing it post-hoc.
-At inference time, the model generates joint-space trajectories---position, velocity, and acceleration---in approximately 10\,ms, maintaining 67.6\% workspace accessibility at three times the robot's nominal payload rating without runtime constraint checking.
-This establishes that dynamic constraints can be implicitly encoded in a generative model through conditioning alone.
+The primary instantiation of this idea is payload-conditioned trajectory diffusion.
+As payload mass increases, the feasible motion set changes because joint torque, acceleration, and inertial constraints become more restrictive.
+Instead of enforcing these constraints through runtime checking, the diffusion model conditions directly on payload mass and learns to generate joint-space trajectories whose positions, velocities, and accelerations are consistent with the corresponding dynamic limits.
+The result is near-constant-time trajectory generation for super-nominal payload manipulation, maintaining substantial workspace accessibility even at three times the robot's rated payload capacity.
 
-\textit{DEFT} extends this conditioning principle to joint failures.
-Rather than treating each failure configuration as a special case requiring replanning or policy switching, \textit{DEFT} conditions the same diffusion architecture on an embodiment representation encoding the failure configuration.
-A single model generalizes across multiple failure types and motion primitives.
-Real-world experiments demonstrate high task success under previously unseen multi-joint failure combinations with strict joint-limit compliance.
-Together, the payload and failure results show that any structured property of the task or robot state can serve as a conditioning signal for dynamics-constrained trajectory generation.
+The case study on failure-induced embodiments demonstrates that the same conditioning principle extends beyond payload variation.
+In \textit{DEFT}, actuation failures are represented as changes in embodiment, and the diffusion model conditions on the resulting failure configuration when generating trajectories.
+This allows a single model to adapt across multiple joint-failure conditions and motion primitives, treating failure not as an exception requiring a separate controller, but as another structured input to the generative process.
+
+Together, the payload and failure results show that dynamic constraints can be encoded implicitly through conditioning when the conditioning signal captures the physical factors that shape feasibility.
+This marks a conceptual transition in the thesis: dynamic feasibility is no longer evaluated only by a planner or simulator, but represented as a learned conditional distribution over trajectories.
+
+% \subsection{Conditional Trajectory Diffusion for Dynamic Constraint Satisfaction}
+% \label{sec:discussion:diffusion}
+
+% The second thematic area of the thesis (\cref{ch:generation,ch:payload}) reframes motion planning as conditional sampling: rather than searching or optimizing for a trajectory that satisfies constraints, a generative model learns to sample from the distribution of constraint-satisfying trajectories conditioned on task-level properties.
+
+% For super-nominal payload manipulation, the conditioning signal is payload mass.
+% The model is trained on trajectories generated across the full range of payload-dependent dynamic constraints using multiple planners operating in varied environments, so the diffusion process embeds constraint satisfaction in generation rather than enforcing it post-hoc.
+% At inference time, the model generates joint-space trajectories---position, velocity, and acceleration---in approximately 10\,ms, maintaining 67.6\% workspace accessibility at three times the robot's nominal payload rating without runtime constraint checking.
+% This establishes that dynamic constraints can be implicitly encoded in a generative model through conditioning alone.
+
+% \textit{DEFT} extends this conditioning principle to joint failures.
+% Rather than treating each failure configuration as a special case requiring replanning or policy switching, \textit{DEFT} conditions the same diffusion architecture on an embodiment representation encoding the failure configuration.
+% A single model generalizes across multiple failure types and motion primitives.
+% Real-world experiments demonstrate high task success under previously unseen multi-joint failure combinations with strict joint-limit compliance.
+% Together, the payload and failure results show that any structured property of the task or robot state can serve as a conditioning signal for dynamics-constrained trajectory generation.
 
 \subsection{Task-Agnostic Seeding for Constrained Trajectory Optimization}
 \label{sec:discussion:seeding}
 
-The final contribution (\cref{ch:seeding}) addresses the initialization sensitivity of constrained trajectory optimization.
-Existing seeding methods are either task-specific or limited to geometric constraints; when dynamics constraints enter the optimization, poor initialization causes convergence failure or infeasible solutions.
-The proposed approach conditions a diffusion model on samples of robot state---joint angles, velocities, accelerations, and torques---that satisfy task-level dynamic constraints, producing near-feasible trajectory seeds without task-specific engineering.
-By initializing the optimizer near the constraint manifold, the approach substantially improves convergence and feasibility across diverse tasks.
-The deeper contribution is architectural: a single conditioning mechanism, agnostic to the specific task or constraint type, can serve as the initialization front-end for any dynamics-constrained trajectory optimizer.
+\cref{ch:seeding} extended the generative view of dynamic feasibility to constrained trajectory optimization.
+While trajectory optimization provides a powerful framework for enforcing complex kinematic and dynamic constraints, its performance depends heavily on initialization.
+Poor seeds can cause solvers to converge slowly, become trapped in infeasible regions, or fail entirely, especially when the feasible set is narrow or shaped by higher-order dynamic constraints.
+
+The proposed approach uses diffusion not as a final trajectory generator, but as an initialization mechanism.
+Instead of conditioning on a task-specific scalar such as payload mass or an embodiment descriptor such as a failure configuration, the model conditions on informative samples of robot state---joint positions, velocities, accelerations, and torques---that satisfy the relevant constraints.
+These samples provide a task-agnostic representation of the constraint manifold, allowing the model to generate trajectory seeds that begin near dynamically feasible regions of the search space.
+
+% The central contribution is therefore not a new optimizer, but a general interface between learned generation and constrained optimization.
+By translating arbitrary dynamic constraints into state-sample conditioning, this general interface between learned generation and constrained optimization reduces the amount of task-specific engineering required to initialize optimization-based planners.
+Across diverse manipulation tasks, this produces seeds that improve solver convergence and feasibility while preserving the ability of the downstream optimizer to enforce constraints explicitly.
+
+In the broader arc of the thesis, task-agnostic seeding represents the most abstract representation of dynamic feasibility developed here.
+Where earlier chapters evaluate dynamics online, reuse precomputed motion structure, or learn task-conditioned trajectory distributions, this approach learns to generate useful initializations from samples of the feasible set itself.
+It suggests a general strategy for combining learned priors with optimization: use learning to move close to the constraint manifold, then use optimization to refine and certify the final motion.
+
+% \subsection{Task-Agnostic Seeding for Constrained Trajectory Optimization}
+% \label{sec:discussion:seeding}
+
+% The final contribution (\cref{ch:seeding}) addresses the initialization sensitivity of constrained trajectory optimization.
+% Existing seeding methods are either task-specific or limited to geometric constraints; when dynamics constraints enter the optimization, poor initialization causes convergence failure or infeasible solutions.
+% The proposed approach conditions a diffusion model on samples of robot state---joint angles, velocities, accelerations, and torques---that satisfy task-level dynamic constraints, producing near-feasible trajectory seeds without task-specific engineering.
+% By initializing the optimizer near the constraint manifold, the approach substantially improves convergence and feasibility across diverse tasks.
+% The deeper contribution is architectural: a single conditioning mechanism, agnostic to the specific task or constraint type, can serve as the initialization front-end for any dynamics-constrained trajectory optimizer.

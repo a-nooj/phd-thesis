@@ -1,37 +1,92 @@
-
-
-
-
-
-
 \section{What the Arc Reveals: Revisiting the Design Axes}
 \label{sec:discussion:axes}
 
-\cref{ch:framework} identified four design axes that govern dynamics-constrained motion generation: \textit{modeling burden}, \textit{dimensionality and factorization}, \textit{integration and pipeline brittleness}, and \textit{usability}.
-Looking back across the thesis arc, each axis traces a coherent trajectory.
+\cref{ch:prior} introduced four design axes for dynamics-constrained motion generation: \textit{modeling burden}, \textit{dimensionality and factorization}, \textit{integration and pipeline brittleness}, and \textit{usability}.
+% These axes were initially presented as a way to compare planning approaches.
+% Looking back across the thesis, they also describe the trajectory of the work itself.
+Each contribution in this thesis changes not only what kinds of dynamic manipulation tasks can be solved, but also how dynamic feasibility is represented, reused, and exposed, shedding light across each of these axes.
 
 \paragraph{Modeling burden.}
-\textit{PokeRRT} outsourced dynamics modeling entirely to a physics simulator, avoiding the need for analytical contact models at the cost of repeated simulation queries.
-\textit{SFRRT*} replaced explicit liquid modeling with a learned classifier, trading model precision for coverage of complex geometries and obstacle configurations.
-The payload diffusion model absorbed constraint satisfaction into the generation process itself: the ``model'' is the weights of the diffusion network, not a separate physics module.
-Task-agnostic seeding takes this further, eliminating task-specific conditioning by representing constraints as samples from the constraint manifold directly.
-The arc is a consistent progression from explicit simulation to specialized learned models to task-agnostic constraint representations.
+The earliest systems in this thesis rely on explicit or semi-explicit models of dynamic interaction.
+\textit{PokeRRT} avoids analytical contact modeling by using physics simulation as a forward model, shifting modeling burden from hand-derived equations to simulator fidelity.
+The whole-body failure planner similarly uses simulation and precomputed motion structure to reason about altered robot embodiments.
+\textit{SFRRT*} moves one step further by replacing explicit liquid modeling with a learned spill-free classifier, allowing the planner to reason about fluid safety without deriving a tractable analytical model of sloshing.
+
+The generative methods reduce this burden in a different way.
+Payload-conditioned diffusion does not expose torque, acceleration, or inertial constraints as explicit runtime checks; instead, their effects are absorbed into the learned trajectory distribution through conditioning.
+The task-agnostic seeding method abstracts the process further by conditioning on samples from the feasible state manifold rather than on a hand-designed task descriptor.
+Across the thesis, the modeling burden therefore shifts from explicit physics, to learned task-specific feasibility models, to increasingly general learned representations of constraint structure.
 
 \paragraph{Dimensionality and factorization.}
-Kinodynamic planning in joint-velocity-acceleration space is fundamentally high-dimensional.
-\textit{PokeRRT} manages this through random tree exploration; \textit{LazyBoE} manages it through pre-computation and lazy evaluation.
-Diffusion-based methods sidestep the search problem entirely, compressing high-dimensional constraint spaces into learned latent representations and generating solutions directly.
-The progression illustrates a shift from managing dimensionality through clever search to avoiding it through representation.
+Dynamics-constrained manipulation is difficult in part because feasibility depends on high-dimensional state transitions rather than static configurations alone.
+Sampling-based kinodynamic planners confront this dimensionality directly by exploring state-control spaces through propagation.
+\textit{PokeRRT} uses this strategy to discover useful impulsive interactions, while the constrained manipulation systems extend it to coupled robot-object dynamics.
+\textit{LazyBoE} introduces a different response: instead of repeatedly searching the same high-dimensional local structure, it factorizes planning into reusable control-parameterized edge bundles and query-specific lazy evaluation.
+
+The diffusion-based methods change the role of dimensionality more substantially.
+Rather than managing the search space through exploration or precomputation, they learn a distribution over feasible trajectories and sample from it directly.
+This does not eliminate the underlying high-dimensionality of the problem, but it changes where that complexity is paid: from online search to offline training and representation learning.
+The arc illustrates a shift from managing dimensionality through planner design to compressing it into learned feasibility priors.
 
 \paragraph{Integration and pipeline brittleness.}
-Each kinodynamic system required carefully engineered components: a planner, a simulator, a failure model or liquid classifier, a time parameterizer, and their interfaces.
-The diffusion-based systems collapsed multiple pipeline stages---the generator absorbs constraint checking, trajectory parameterization, and task adaptation simultaneously.
-Task-agnostic seeding goes furthest: the same generator feeds into any downstream optimizer, eliminating the need for task-specific pipeline design entirely.
+Dynamics-aware systems often require multiple tightly coupled components: simulators, planners, classifiers, time parameterizers, controllers, failure models, and task-specific constraint checkers.
+The sampling-based systems in this thesis inherit much of this complexity.
+Their strength is modularity and interpretability, but their weakness is that errors can accumulate at component interfaces, and each new task often requires careful system integration.
+
+The learned methods reduce some of this brittleness by collapsing multiple stages of the pipeline into a single generation process.
+In payload-conditioned diffusion, task adaptation, trajectory generation, and implicit dynamic feasibility are handled by one conditional model.
+In \textit{DEFT}, changes in actuation capability are represented through an embodiment-conditioning signal rather than a separate failure-specific planning pipeline.
+The seeding method takes a hybrid position: it does not replace optimization, but provides a general learned front-end that can be paired with many constrained optimizers.
+This suggests that the most robust systems may not be purely modular or purely learned, but hybrid architectures in which learned models provide strong priors and classical solvers provide explicit refinement.
 
 \paragraph{Usability.}
-\textit{PokeRRT} required hand-tuning of planner parameters and scenario-specific design.
-The whole-body and liquid systems required substantial per-task engineering.
-Payload diffusion reduced the task specification to a single scalar.
-\textit{DEFT} reduced it to an embodiment encoding.
-Task-agnostic seeding reduces it to a set of constraint-satisfying state samples, which can be generated automatically from any robot dynamics model.
-Each step along the axis reduces the expertise required to deploy a dynamics-constrained planner on a new task.
+The final axis concerns the expertise required to deploy a method on a new manipulation problem.
+The early kinodynamic systems require substantial task-specific design: selecting action parameterizations, tuning planner parameters, configuring simulators, and defining task-specific feasibility checks.
+This level of control is valuable for understanding and debugging a system, but it limits transfer to new tasks and users.
+
+Later methods reduce the burden on the user by changing the interface through which dynamics enter the planner.
+Payload diffusion reduces dynamic task specification to a scalar conditioning variable.
+\textit{DEFT} reduces failure adaptation to an embodiment descriptor.
+Task-agnostic seeding reduces the interface further to samples of states satisfying the relevant constraints, which can in principle be generated from any robot model or constraint evaluator.
+The trend is therefore toward interfaces that expose less task-specific machinery while preserving access to dynamic feasibility.
+
+% Taken together, the four axes reveal the central framing of the thesis.
+% The work begins with planners that explicitly evaluate dynamic interactions online, then introduces methods that reuse dynamic structure across queries, and finally develops learned models that condition on compact or task-agnostic representations of feasibility.
+% This progression does not remove the need for physics; rather, it changes how physics is represented computationally.
+% Dynamics move from being an external constraint checked by the planner to an internal structure encoded in reusable graphs, learned distributions, and optimization seeds.
+
+
+
+
+
+% \section{What the Arc Reveals: Revisiting the Design Axes}
+% \label{sec:discussion:axes}
+
+% \cref{ch:framework} identified four design axes that govern dynamics-constrained motion generation: \textit{modeling burden}, \textit{dimensionality and factorization}, \textit{integration and pipeline brittleness}, and \textit{usability}.
+% Looking back across the thesis arc, each axis traces a coherent trajectory.
+
+% \paragraph{Modeling burden.}
+% \textit{PokeRRT} outsourced dynamics modeling entirely to a physics simulator, avoiding the need for analytical contact models at the cost of repeated simulation queries.
+% \textit{SFRRT*} replaced explicit liquid modeling with a learned classifier, trading model precision for coverage of complex geometries and obstacle configurations.
+% The payload diffusion model absorbed constraint satisfaction into the generation process itself: the ``model'' is the weights of the diffusion network, not a separate physics module.
+% Task-agnostic seeding takes this further, eliminating task-specific conditioning by representing constraints as samples from the constraint manifold directly.
+% The arc is a consistent progression from explicit simulation to specialized learned models to task-agnostic constraint representations.
+
+% \paragraph{Dimensionality and factorization.}
+% Kinodynamic planning in joint-velocity-acceleration space is fundamentally high-dimensional.
+% \textit{PokeRRT} manages this through random tree exploration; \textit{LazyBoE} manages it through pre-computation and lazy evaluation.
+% Diffusion-based methods sidestep the search problem entirely, compressing high-dimensional constraint spaces into learned latent representations and generating solutions directly.
+% The progression illustrates a shift from managing dimensionality through clever search to avoiding it through representation.
+
+% \paragraph{Integration and pipeline brittleness.}
+% Each kinodynamic system required carefully engineered components: a planner, a simulator, a failure model or liquid classifier, a time parameterizer, and their interfaces.
+% The diffusion-based systems collapsed multiple pipeline stages---the generator absorbs constraint checking, trajectory parameterization, and task adaptation simultaneously.
+% Task-agnostic seeding goes furthest: the same generator feeds into any downstream optimizer, eliminating the need for task-specific pipeline design entirely.
+
+% \paragraph{Usability.}
+% \textit{PokeRRT} required hand-tuning of planner parameters and scenario-specific design.
+% The whole-body and liquid systems required substantial per-task engineering.
+% Payload diffusion reduced the task specification to a single scalar.
+% \textit{DEFT} reduced it to an embodiment encoding.
+% Task-agnostic seeding reduces it to a set of constraint-satisfying state samples, which can be generated automatically from any robot dynamics model.
+% Each step along the axis reduces the expertise required to deploy a dynamics-constrained planner on a new task.

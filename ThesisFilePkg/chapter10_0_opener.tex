@@ -1,8 +1,19 @@
-Robot manipulation research has long defaulted to a geometric view of the problem: plan a collision-free path through configuration space, close the gripper, and move the object to its goal.
-This is computationally convenient---once an object is under grasp, its state becomes predictable and control straightforward.
-But grasping is inherently limited by robot reachability, end-effector design, and the physical properties of the objects themselves.
-More broadly, the full range of tasks that manipulation actually requires---poking objects into position, transporting liquid-filled containers without spilling, operating with a damaged joint, handling payloads beyond rated capacity---depends critically on understanding and exploiting the dynamics of the task, not just its geometry.
+Robot manipulation is often framed as a geometric reasoning problem: identify a grasp, plan a collision-free path through configuration space, and move the object to its goal. 
+This abstraction has been enormously productive because it converts manipulation into problems that are comparatively well understood---reachability, collision avoidance, grasp stability, and trajectory tracking. 
+Yet it also hides much of what makes physical interaction powerful.
+However, many useful manipulation behaviors are defined
+% Many useful manipulation behaviors are not defined by static configurations alone, but
+by dynamically feasible transitions between them: an object displaced by an impulsive contact, a liquid surface stabilized during transport, a damaged robot arm repurposed for whole-body contact, or a heavy payload moved near the limits of actuation.
 
-This thesis has argued that explicitly incorporating dynamic constraints into the motion generation process allows robots to perform a substantially broader range of manipulation tasks while operating closer to their true physical limits.
-The work spans three thematic areas: \textit{sampling-based kinodynamic planning}, which integrates dynamics directly into the search process through physics simulation; \textit{generative models for dynamics-aware motion}, which encode dynamic constraints implicitly through conditioning; and \textit{dynamics-informed trajectory seeding}, which improves the convergence of constrained optimization by initializing near the constraint manifold.
-This chapter summarizes what each contribution established, reflects on the collective arc through the lens of the four design axes introduced in \cref{ch:framework}, and identifies the most promising directions for future work.
+This thesis has argued that these behaviors require treating dynamics not as a residual artifacts to be corrected, but as structured information to be represented, reused, and exploited during motion generation. 
+Across the chapters that follow from this argument, dynamic feasibility is represented at increasingly amortized levels: first through online kinodynamic search with physics simulation, then through reusable motion structure for multi-query planning, and finally through learned conditional models that generate dynamically informed trajectories and optimization seeds. 
+This chapter summarizes the main contributions, revisits them through the four design axes introduced in \cref{ch:framework}, and identifies open directions for building manipulation systems that operate closer to the physical limits of their embodiments.
+
+% Robot manipulation research has long defaulted to a geometric view of the problem: plan a collision-free path through configuration space, close the gripper, and move the object to its goal.
+% This is computationally convenient---once an object is under grasp, its state becomes predictable and control straightforward.
+% But grasping is inherently limited by robot reachability, end-effector design, and the physical properties of the objects themselves.
+% More broadly, the full range of tasks that manipulation actually requires---poking objects into position, transporting liquid-filled containers without spilling, operating with a damaged joint, handling payloads beyond rated capacity---depends critically on understanding and exploiting the dynamics of the task, not just its geometry.
+
+% This thesis has argued that explicitly incorporating dynamic constraints into the motion generation process allows robots to perform a substantially broader range of manipulation tasks while operating closer to their true physical limits.
+% The work spans three thematic areas: \textit{sampling-based kinodynamic planning}, which integrates dynamics directly into the search process through physics simulation; \textit{generative models for dynamics-aware motion}, which encode dynamic constraints implicitly through conditioning; and \textit{dynamics-informed trajectory seeding}, which improves the convergence of constrained optimization by initializing near the constraint manifold.
+% This chapter summarizes what each contribution established, reflects on the collective arc through the lens of the four design axes introduced in \cref{ch:framework}, and identifies the most promising directions for future work.

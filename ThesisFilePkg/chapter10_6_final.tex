@@ -1,20 +1,23 @@
-
-
 \section{Closing Reflection}
 \label{sec:discussion:closing}
 
-The four design axes---modeling burden, dimensionality, integration, and usability---were introduced in \cref{ch:framework} as a way to organize the landscape of dynamics-constrained motion generation.
-Looking back, they also describe the trajectory of this thesis.
-Each contribution pushed one or more axes in the direction of less burden, lower effective dimensionality, less pipeline complexity, and lower deployment expertise.
-The endpoint---task-agnostic seeding conditioned on constraint-satisfying dynamics samples---represents a point on that trajectory where the gap between a new manipulation task and a dynamics-aware plan is measured in minutes rather than months.
+The central argument of this thesis is that manipulation should not be limited to the motions that are easiest to describe geometrically. Geometry remains essential for reasoning about reachability, collision avoidance, and grasping, but many useful behaviors arise from the dynamics of physical interaction: contact, inertia, force limits, liquid motion, and changing embodiment. The methods developed here show that these dynamics can be represented in multiple ways---through online kinodynamic search, amortized motion structure, learned conditional trajectory distributions, and constraint-informed optimization seeds. Taken together, they suggest a path toward manipulation systems that operate not only within the limits of geometric feasibility, but closer to the physical limits of what their bodies can do.
 
-The broader argument this thesis has made is that physics is a resource to be exploited, not a complexity to be avoided.
-Grasping avoids the complexity of object dynamics by eliminating it: once grasped, the object is part of the robot.
-The methods developed here take the opposite posture---treating impulsive contact forces, inertial loads, joint failure configurations, and liquid dynamics not as complications to be engineered around, but as structured information that can be modeled, learned, and conditioned upon to generate richer and more capable manipulation behaviors.
+% \section{Closing Reflection}
+% \label{sec:discussion:closing}
 
-Much remains to be done.
-The gap between demonstration in simulation and reliable deployment in unstructured real-world environments is large.
-Formal safety guarantees for learned dynamics systems do not yet exist in practical form.
-The data and computation requirements for training dynamics-aware generative models at scale remain unclear.
-But the path from sampling-based kinodynamic planning through learned generative models to task-agnostic constrained optimization seeding represents genuine progress toward robotic manipulation that operates at the physical limits of what the hardware can do---rather than the limits of what geometry alone can reason about.
-The confluence of search, optimization, and inference as organizing paradigms for dynamics-constrained motion generation is the frontier, and this thesis has taken several steps toward it.
+% The four design axes---modeling burden, dimensionality, integration, and usability---were introduced in \cref{ch:framework} as a way to organize the landscape of dynamics-constrained motion generation.
+% Looking back, they also describe the trajectory of this thesis.
+% Each contribution pushed one or more axes in the direction of less burden, lower effective dimensionality, less pipeline complexity, and lower deployment expertise.
+% The endpoint---task-agnostic seeding conditioned on constraint-satisfying dynamics samples---represents a point on that trajectory where the gap between a new manipulation task and a dynamics-aware plan is measured in minutes rather than months.
+
+% The broader argument this thesis has made is that physics is a resource to be exploited, not a complexity to be avoided.
+% Grasping avoids the complexity of object dynamics by eliminating it: once grasped, the object is part of the robot.
+% The methods developed here take the opposite posture---treating impulsive contact forces, inertial loads, joint failure configurations, and liquid dynamics not as complications to be engineered around, but as structured information that can be modeled, learned, and conditioned upon to generate richer and more capable manipulation behaviors.
+
+% Much remains to be done.
+% The gap between demonstration in simulation and reliable deployment in unstructured real-world environments is large.
+% Formal safety guarantees for learned dynamics systems do not yet exist in practical form.
+% The data and computation requirements for training dynamics-aware generative models at scale remain unclear.
+% But the path from sampling-based kinodynamic planning through learned generative models to task-agnostic constrained optimization seeding represents genuine progress toward robotic manipulation that operates at the physical limits of what the hardware can do---rather than the limits of what geometry alone can reason about.
+% The confluence of search, optimization, and inference as organizing paradigms for dynamics-constrained motion generation is the frontier, and this thesis has taken several steps toward it.

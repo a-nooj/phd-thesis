@@ -1,7 +1,22 @@
 \subsection{Multi-Query Planning via Lazy Edge Bundles}
 \label{sec:discussion:multiquery}
 
-A practical bottleneck for deploying kinodynamic planners is that repeated queries over a shared workspace each incur the full cost of dynamics propagation and collision checking.
-\textit{LazyBoE} (\cref{ch:multiquery}) addresses this by pre-computing a graph of control-parameterized edge bundles over discretized state and control spaces, then applying lazy evaluation: deferring propagation and collision checking until an edge is actually required for a solution.
-Across multi-query manipulation benchmarks, \textit{LazyBoE} reduces average planning time and achieves higher success rates than existing baselines by exploring a wider range of solutions without paying the full propagation cost upfront.
-The broader takeaway is that for kinodynamic planning to be practically deployable---rather than a one-off demonstration---amortizing cost across queries is at least as important as reducing per-query complexity.
+\cref{ch:multiquery} addressed a practical limitation of simulation-based kinodynamic planning: dynamic feasibility is expensive to evaluate repeatedly.
+In single-query planners, each new problem typically requires propagating candidate controls, checking collisions, and constructing feasible motion structure from scratch.
+This is acceptable for isolated demonstrations, but limits deployment in settings where a robot must solve many related planning problems in the same workspace.
+
+\textit{LazyBoE} shifts part of this computation offline by precomputing control-parameterized edge bundles over discretized state and control spaces.
+These bundles encode reusable local motion structure, while lazy propagation and collision checking defer expensive evaluations until they are needed for a candidate solution.
+The resulting planner preserves the flexibility of kinodynamic search while amortizing repeated dynamics computation across queries.
+
+The broader contribution is a change in how dynamic feasibility is represented.
+Rather than treating every planning query as an independent search through continuous dynamics, \textit{LazyBoE} stores reusable structure that can be selectively activated at planning time.
+This makes multi-query kinodynamic planning more practical and establishes an intermediate point in the thesis arc: dynamics are no longer only evaluated online through search, but are partially represented, reused, and amortized across related problems.
+
+% \subsection{Multi-Query Planning via Lazy Edge Bundles}
+% \label{sec:discussion:multiquery}
+
+% A practical bottleneck for deploying kinodynamic planners is that repeated queries over a shared workspace each incur the full cost of dynamics propagation and collision checking.
+% \textit{LazyBoE} (\cref{ch:multiquery}) addresses this by pre-computing a graph of control-parameterized edge bundles over discretized state and control spaces, then applying lazy evaluation: deferring propagation and collision checking until an edge is actually required for a solution.
+% Across multi-query manipulation benchmarks, \textit{LazyBoE} reduces average planning time and achieves higher success rates than existing baselines by exploring a wider range of solutions without paying the full propagation cost upfront.
+% The broader takeaway is that for kinodynamic planning to be practically deployable---rather than a one-off demonstration---amortizing cost across queries is at least as important as reducing per-query complexity.

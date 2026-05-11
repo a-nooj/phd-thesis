@@ -1,8 +1,9 @@
 \section{The State of Robot Manipulation Today}
 \label{sec:intro:landscape}
 
-Robot manipulation systems now operate in environments that were long considered beyond the reach of automation.
-Robots sort and transport goods through warehouses, assemble products on factory lines, assist in surgical and healthcare settings, prepare food, and execute tasks in hazardous and remote environments.
+% Robot manipulation systems now operate in environments that were long considered beyond the reach of automation.
+Robotic manipulation has moved from structured factory floors into increasingly complex, variable, and human-centered environments.
+Robots routinely sort and transport goods through warehouses, assemble products on factory lines, assist in surgical and healthcare settings, prepare food, and execute tasks in hazardous and remote environments.
 At the same time, the field has expanded beyond rigid industrial automation toward increasingly general-purpose manipulation capabilities: robots are now expected not only to repeat fixed motions reliably, but also to adapt to novel objects, changing environments, and unforeseen task conditions.
 The technological progress enabling this expansion has followed two largely separate but equally influential trajectories.
 
@@ -10,7 +11,7 @@ The technological progress enabling this expansion has followed two largely sepa
 In industry, manipulation is deployed through modular pipelines: a perception module localizes objects, a planner sequences motions, and a controller executes them.
 This architecture underpins robots operating across warehouses and fulfillment centers \cite{CensusSurveyRobotic2022}, factory assembly and welding lines \cite{factory_efficiency_2020}, surgical and assistive healthcare settings \cite{Kyrarini2021}, chemical and pharmaceutical processing \cite{chem1,chem2}, food service and meal preparation \cite{meal1,assistfeed1,assistfeed2}, and space and extreme-environment operations \cite{papadopoulos2021robotic,gaines2016productivity}.
 The defining properties of these systems are reliability and debuggability: each module is maintained by specialists who understand its failure modes, and performance improves through engineering effort accumulated over many deployment cycles.
-The result is highly capable systems within their operational envelopes---systems trusted with production-scale throughput and human safety.
+The result is highly capable systems that enable production-scale throughput and human safety within their operational envelopes.
 
 \header{General-purpose learned policies}
 In parallel, a different paradigm has emerged in academia and is now entering industry.
@@ -23,7 +24,7 @@ Despite their apparent differences, both paradigms share a set of fundamental li
 Both require substantial engineering effort to robustify against real-world variability: pipeline systems need task-specific tuning and edge-case handling at every component; learned systems require careful dataset curation, sim-to-real transfer, and distribution coverage to avoid brittle failures \cite{billard2019trends}.
 Both exhibit brittleness at component interfaces---errors between perception and planning, and between planning and control, propagate in ways that are difficult to anticipate or recover from \cite{abderezaei2024clutter,briscoe2024exploring}.
 % Both rely on simplified models of physics: classical pipelines use analytical models with bounded validity, while learned policies treat dynamics as an implicit property of demonstrated trajectories rather than as an explicit constraint \cite{yin2021modeling}.
-In both paradigms, dynamics are typically treated as secondary: classical pipelines approximate them through simplified analytical models, while learned policies absorb them implicitly through demonstrated behavior rather than representing them as explicit constraints \cite{yin2021modeling}.
+And most importantly, in both paradigms, dynamics are typically treated as secondary: classical pipelines approximate them through simplified analytical models, while learned policies absorb them implicitly through demonstrated behavior rather than representing them as explicit constraints \cite{yin2021modeling}.
 And neither generalizes readily to task contexts substantially different from those encountered during development or training \cite{o2024open}.
 
 \header{The geometric assumption}
