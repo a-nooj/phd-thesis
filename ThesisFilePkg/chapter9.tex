@@ -12,11 +12,11 @@ Diffusion-based policies can learn expressive motion priors from demonstrations 
 In planning settings, generation must be environment-conditioned: the same start and goal can require very different trajectories depending on the constraints imposed by the scene or task.
 This makes the conditioning representation central to the success of the model, since the diffusion model can only generate appropriate trajectories if its condition captures the environment differences that matter for motion.
 Constraint information, including kinematic and dynamic constraints derived from scene, robot embodiment, and task, enter the trajectory denoising model through a learned observation embedding via FiLM, concatenation, or cross-attention.
-\begin{figure}
-  \centering
-    \includegraphics[width=\columnwidth,height=0.75\columnwidth]{example-image-a}
-  \caption{A graphical presentation of your approach. Place first thing in the second column of the first page. Refer to this image in your text.}\label{fig:first-page}
-\end{figure}
+% \begin{figure}
+%   \centering
+%     \includegraphics[width=\columnwidth,height=0.75\columnwidth]{example-image-a}
+%   \caption{A graphical presentation of your approach. Place first thing in the second column of the first page. Refer to this image in your text.}\label{fig:first-page}
+% \end{figure}
 A common approach is to condition on high-dimensional perceptual inputs, such as RGB images, depth maps, point clouds, occupancy grids, or learned visual embeddings.
 These representations are intuitively appealing because they preserve scene information, moving from appearance-level information in RGB toward more explicit geometric information in depth or point clouds.
 However, perceptual richness does not guarantee behavioral usefulness: a representation may preserve visual or geometric variation that is irrelevant to planning, while discarding subtle constraint-relevant variation.
