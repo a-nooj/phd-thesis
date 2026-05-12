@@ -37,47 +37,18 @@
 
 \abstract{  \OnePageChapter	% remove \OnePageChapter once the abstract grows past a page.
 
-% Humans routinely exploit physical intuition to interact with the surrounding world---pushing heavy objects, sliding items across surfaces, or redirecting motion without establishing stable grasps.
-Humans routinely exploit the dynamics of objects, contact, and motion when interacting with the surrounding world: sliding objects across surfaces, carrying containers without spilling, and adjusting their motion when handling heavy or unbalanced loads.
-% This capability enables efficient manipulation in constrained environments where direct grasping is infeasible or suboptimal.
-% In contrast, the dominant paradigm in robotic manipulation relies on prehensile grasping, which simplifies state estimation and control by enforcing rigid contact, but fundamentally limits interaction by reachability, end-effector geometry, and payload capacity.
-In contrast, the dominant paradigm in robotic manipulation relies on geometric reasoning---grasp synthesis, collision avoidance, and reachability---because rigid contact simplifies estimation and control.
-While effective for structured pick-and-place tasks, this paradigm fundamentally limits manipulation by end-effector geometry, payload capacity, and quasi-static assumptions.
+Humans carry implicit knowledge of what motions are physically permissible: how to slide a heavy object without tipping it, how to carry a liquid-filled container without spilling, how to adjust effort when a load is unexpectedly heavy.
+Robotic systems must represent that knowledge explicitly---and the dominant paradigm, which organizes manipulation around geometric reasoning, grasp synthesis, and collision avoidance, makes that representation implicit in the algorithm itself rather than treating it as a first-class design concern.
+The result is a class of manipulation behaviors---impulsive non-prehensile rearrangement, high-payload handling, liquid transport, operation under actuator failure---that geometric abstractions cannot reliably plan for, because the constraints that determine feasibility are dynamic, not kinematic.
 
+This thesis argues that knowledge of dynamic feasibility---what motions are physically possible given a robot's constraints and the task physics---should be treated as a design object.
+Where that knowledge resides in a robotic system, what computational form it takes, and at what point in the planning process it is evaluated are primary decisions that determine what manipulation behaviors become possible.
+By presenting three different answers to these questions, this thesis makes it possible to design manipulation systems in which feasibility is not an implicit consequence of the chosen algorithm, but an explicit object of representation, reuse, and learning.
 
-This thesis argues that
-% robots must reason about and exploit dynamic constraints rather than avoid them.
-by explicitly incorporating dynamics into motion generation, robots can perform a broader class of manipulation behaviors while operating closer to their true physical limits. It does so by 1) introducing sampling-based kinodynamic planners that use physics simulation and control-aware search to reason about impulsive contact and coupled robot-object dynamics, enabling non-prehensile rearrangement, manipulation under joint failures, and spill-free liquid transport in cluttered environments; 2) developing amortized multi-query kinodynamic planning methods that reuse precomputed motion structure to reduce repeated planning cost; 3) reframing motion generation as conditional sampling through diffusion-based trajectory generation conditioned on task-level dynamic properties such as payload mass and embodiment variation, enabling manipulation beyond nominal actuation limits without runtime constraint checking; and, 4) developing a task-agnostic conditioning mechanism for constrained trajectory optimization that generates near-feasible trajectory seeds across diverse dynamic manipulation tasks.
-% without task-specific engineering.
-% The thesis develops methods spanning three progressively amortized representations of dynamic feasibility.
-Together, these contributions establish a progression from explicit online dynamics reasoning, to reusable kinodynamic structure, to learned priors over dynamically feasible motion.
-
-% First, it 
-% Second, it develops amortized multi-query kinodynamic planning methods that reuse precomputed motion structure to reduce repeated planning cost.
-% Third, it 
-% Finally, the thesis 
-
-
-
-% As a result, robots struggle to operate effectively in real-world settings where contacts are intermittent, dynamics are complex, and tasks extend beyond quasi-static assumptions.
-
-% To bridge this gap, robots must reason about and exploit dynamics rather than avoid them.
-% I argue that explicitly incorporating dynamic constraints into motion generation enables robots to act beyond quasi-static regimes and operate closer to their true physical limits.
-
-% These methods are analyzed through a unifying set of design axes capturing modeling burden, dimensionality and factorization, integration and pipeline brittleness, and usability across diverse manipulation settings.
-% The resulting framework enables more efficient, robust, and physically capable manipulation across a range of challenging scenarios, including non-prehensile interaction, operation beyond nominal limits such as payload constraints and actuation failures, and tasks involving complex, non-linear dynamics.
-% This thesis introduces methods that allow robots to: 1) rearrange objects in obstacle-rich environments by reasoning about impulsive contact and coupled dynamics; 2) operate beyond nominal actuation limits by leveraging learned generative models that implicitly encode dynamic constraints arising from payloads and embodiment changes; and 3) generalize constrained trajectory optimization across diverse tasks through task-agnostic, dynamics-informed seeding, eliminating the need for task-specific engineering. 
-% Together, these contributions establish a systemic progression of methods for dynamics-constrained motion generation---from sampling-based kinodynamic planning, to amortized multi-query approaches, to conditional generative models that reframe planning as sampling from distributions over dynamically feasible trajectories.
-% Together, these contributions establish a systematic progression from search-based to amortized and generative approaches for dynamics-constrained motion generation, opening a new frontier in robotic manipulation where physics is actively exploited as a resource rather than treated as a limitation.
-
-% Humans routinely exploit physical intuition to interact with the surrounding world---pushing heavy objects, sliding items across tables, or carrying full containers without spilling.
-% These actions rely on an implicit understanding of forces, inertia, and momentum, allowing us to achieve goals through dynamic interaction.
-% In contrast, the dominant paradigm in robotic manipulation has long been prehensile grasping.
-% While holding an object makes its state predictable and control straightforward, grasping is inherently limited by reachability, end-effector geometry, and robot payload capacities.
-% To bridge the gap between human dexterity and robotic capabilities, robots must master the vast space of non-prehensile, dynamics-aware manipulation.
-
-% I argue that by explicitly incorporating dynamic constraints into the motion generation process---through sampling-based kinodynamic planning, learned generative models, and dynamics-informed seeding for trajectory optimization---robots can perform a substantially broader range of manipulation tasks while operating closer to their true physical limits.
-% This thesis advances robot manipulation by developing dynamics-constrained motion generation methods that enable robots to: 1) rearrange objects non-prehensily in obstacle-rich environments by reasoning about impulsive contact and coupled dynamics; 2) manipulate payloads beyond their nominal capacity by implicitly encoding dynamic constraints into a learned generative model; and 3) seed constrained trajectory optimization across diverse tasks without task-specific engineering. Together, these contributions establish a systematic path from sampling-based to generative approaches for dynamics-constrained motion generation, opening a broader frontier for robotic manipulation where physics is a resource to be exploited, not a complexity to be avoided.
+The first part places constraint knowledge online, in the forward model of a physics-simulation-based kinodynamic planner, enabling non-prehensile rearrangement via impulsive contact, whole-body manipulation under joint failures, and spill-free liquid transport.
+The second part amortizes that knowledge into reusable precomputed motion structures, reducing repeated planning cost while preserving physical grounding.
+The third part absorbs constraint knowledge into learned conditional trajectory distributions---diffusion-based generators conditioned on payload mass and embodiment configuration---and extends this representation to near-feasible seed generation for constrained trajectory optimization.
+Together, these contributions demonstrate that model-based and learning-based approaches to manipulation are not competing paradigms but different mechanisms for placing constraint knowledge, and that choosing among them is itself a consequential design decision.
 	}
 
 \dedication[Dedication]{	% NEVER use \OnePageChapter here.

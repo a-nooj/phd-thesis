@@ -6,28 +6,25 @@
 % This thesis argues that many important manipulation behaviors cannot be generated reliably through geometric reasoning alone.
 % Tasks involving impulsive contact, inertial coupling, payload-induced dynamics, and motion-induced forces require motion generation methods that explicitly account for dynamic constraints throughout the planning process.
 
-The central thesis of this dissertation is that dynamic constraints should be treated not as secondary feasibility checks, but as structured information to be modeled, learned, and exploited during motion generation.
-\textsl{By explicitly incorporating dynamic constraints into planning and generative modeling, this thesis expands the scope of robotic manipulation beyond geometric pick-and-place
-by incorporating dynamic non-prehensile skills and motions governed by object inertial properties, impulsive contact, and motion-induced forces.} My work provides evidence for this statement across three research themes:
+The central thesis of this dissertation is that knowledge of dynamic feasibility---what motions are physically admissible under a robot's constraints and task physics---should be treated as a design object.
+\textsl{Where that knowledge resides in a robotic system, what computational form it takes, and at what point in the planning process it is evaluated are not incidental implementation choices but primary decisions that determine what manipulation behaviors become possible.}
+This thesis develops three families of methods in which constraint knowledge is placed differently:
 
-\paragraph{RT1.} Sampling-based kinodynamic planners that incorporate dynamics explicitly through online simulation and control-aware search.
-These methods address increasingly coupled manipulation settings, including impulsive non-prehensile rearrangement, manipulation under joint failures, and spill-free liquid transport.
+\paragraph{Part I: Online Constraint Evaluation.}
+Physics simulation serves as a forward model that evaluates feasibility explicitly at every planning query.
+This part develops kinodynamic planners for impulsive non-prehensile rearrangement, whole-body manipulation under joint failures, and spill-free liquid transport.
+The cost is high per-query, but feasibility is exact and directly grounded in the current geometry, contacts, and dynamics of the task.
 
-\paragraph{RT2.} Develops methods for amortizing dynamics computation across repeated planning problems.
-Rather than solving each kinodynamic query independently, reusable control-parameterized motion structures are precomputed and evaluated lazily during planning, substantially reducing repeated computational cost.
+\paragraph{Part II: Amortized Feasibility via Reusable Motion Structure.}
+Rather than recomputing feasibility from scratch at each query, constraint knowledge is moved upstream into precomputed control-parameterized motion structures.
+These structures are selectively validated at query time, exploiting prior feasibility computation across related problems while preserving physical grounding.
 
-\paragraph{RT3.} Explores learned generative models as amortized representations of dynamic feasibility.
-By conditioning trajectory diffusion models on task-level dynamic properties and constraint representations, these methods generate near-feasible motions and optimization seeds in near-constant time across varying payloads, failure conditions, and constraint settings.
+\paragraph{Part III: Amortized Feasibility via Learned Generative Models.}
+Constraint knowledge is absorbed into the parameters of conditional generative models during training.
+These models rapidly produce trajectories conditioned on task-level dynamic properties such as payload mass and embodiment configuration; feasibility is never evaluated at runtime but is implicit in the learned distribution.
+This part further extends the same representation to near-feasible seed generation for constrained trajectory optimization.
 
-% This thesis investigates how dynamic feasibility can be represented, reused, and amortized across different motion-generation paradigms.
-
-% The dissertation begins with 
-
-% The thesis then 
-
-% Finally, the thesis 
-
-Across all stages, the central goal remains the same: enabling robots to reason about and exploit dynamic constraints as part of motion generation rather than avoiding them through predominantly geometric abstractions.
+Across all three parts, the goal remains the same: enabling robots to reason about and exploit dynamic constraints rather than deferring to geometric abstractions---and making the representation of that knowledge an explicit design decision.
 
 % To investigate this claim, the thesis develops a progression of methods spanning three levels of motion generation.
 
@@ -75,9 +72,9 @@ Across all stages, the central goal remains the same: enabling robots to reason 
 \subsection{Contributions}
 \label{sec:intro:contributions}
 
-This thesis develops methods for representing and exploiting dynamic feasibility across planning, amortized search, and learned motion generation.
+This thesis develops methods in which constraint knowledge is placed at three different points in the motion generation process: online in the planner's forward model, amortized into reusable precomputed structures, and absorbed into learned conditional models.
 
-\paragraph{Explicit Dynamics in Kinodynamic Planning.}
+\paragraph{Online Constraint Evaluation: Kinodynamic Planning.}
 \begin{enumerate}
   \item \textbf{A design framework for dynamics-aware motion generation} (\cref{ch:prior}).
         A conceptual framework organizing manipulation methods along four design axes---modeling burden, problem dimensionality, system integration, and usability---providing a unified perspective on the tradeoffs underlying dynamics-aware planning systems.
@@ -91,7 +88,7 @@ This thesis develops methods for representing and exploiting dynamic feasibility
         These methods maintain up to 92\% of nominal reachable workspace under failures and expand feasible spill-free solution spaces by up to $3\times$ over prior approaches.
 \end{enumerate}
 
-\paragraph{Amortized Kinodynamic Planning.}
+\paragraph{Amortized Feasibility via Reusable Motion Structure.}
 \begin{enumerate}
   \setcounter{enumi}{3}
   \item \textbf{LazyBoE: multi-query kinodynamic planning via lazy edge bundles} (\cref{ch:multiquery}).
@@ -99,7 +96,7 @@ This thesis develops methods for representing and exploiting dynamic feasibility
         Lazy propagation and collision checking substantially reduce repeated planning cost while preserving kinodynamic feasibility.
 \end{enumerate}
 
-\paragraph{Learned Dynamic Feasibility Priors.}
+\paragraph{Amortized Feasibility via Learned Generative Models.}
 \begin{enumerate}
   \setcounter{enumi}{4}
   \item \textbf{Motion generation as conditional sampling} (\cref{ch:generation}).

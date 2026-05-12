@@ -1,7 +1,16 @@
 \section{Closing Reflection}
 \label{sec:discussion:closing}
 
-The central argument of this thesis is that manipulation should not be limited to the motions that are easiest to describe geometrically. Geometry remains essential for reasoning about reachability, collision avoidance, and grasping, but many useful behaviors arise from the dynamics of physical interaction: contact, inertia, force limits, liquid motion, and changing embodiment. The methods developed here show that these dynamics can be represented in multiple ways---through online kinodynamic search, amortized motion structure, learned conditional trajectory distributions, and constraint-informed optimization seeds. Taken together, they suggest a path toward manipulation systems that operate not only within the limits of geometric feasibility, but closer to the physical limits of what their bodies can do.
+The central argument of this thesis is that knowledge of dynamic feasibility---what motions are physically possible given a robot's constraints and the task at hand---is a design object, not a background condition.
+When that knowledge is evaluated online, it enables exact reasoning about novel dynamics at the cost of per-query computation.
+When it is amortized into reusable structures, repeated queries become cheaper while physical grounding is preserved.
+When it is absorbed into learned models, generation becomes nearly instantaneous but depends on the quality and coverage of training.
+Each representation entails a different set of tradeoffs, and none dominates the others across all settings.
+
+This perspective also reframes the relationship between model-based and learning-based approaches to manipulation.
+These are not competing paradigms fighting for the same design space.
+They are different mechanisms for placing constraint knowledge within a system, each suited to different operating conditions, data regimes, and latency requirements.
+The methods developed here suggest that progress in manipulation will come not from choosing one paradigm over the other, but from understanding which representation of constraint knowledge is appropriate for a given task---and from building systems capable of moving between them.
 
 % \section{Closing Reflection}
 % \label{sec:discussion:closing}

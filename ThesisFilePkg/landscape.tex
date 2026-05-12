@@ -26,6 +26,7 @@ Both exhibit brittleness at component interfaces---errors between perception and
 % Both rely on simplified models of physics: classical pipelines use analytical models with bounded validity, while learned policies treat dynamics as an implicit property of demonstrated trajectories rather than as an explicit constraint \cite{yin2021modeling}.
 And most importantly, in both paradigms, dynamics are typically treated as secondary: classical pipelines approximate them through simplified analytical models, while learned policies absorb them implicitly through demonstrated behavior rather than representing them as explicit constraints \cite{yin2021modeling}.
 And neither generalizes readily to task contexts substantially different from those encountered during development or training \cite{o2024open}.
+In both cases, the representation of constraint knowledge---what physical conditions govern feasible behavior and where that knowledge is expressed in the system---is treated as secondary to the choice of algorithm or policy architecture.
 
 \header{The geometric assumption}
 Underlying both paradigms is a shared assumption that has shaped manipulation research for decades: that manipulation is fundamentally a geometric problem.
@@ -40,6 +41,12 @@ A broad class of manipulation tasks is not adequately captured by geometry alone
 Non-prehensile rearrangement through impulsive contact \cite{pasricha2022pokerrt,mason2018toward}, transport of liquid-filled containers \cite{abderezaei2024clutter}, high-speed inertial transport \cite{ichnowski2022gomp,zeng2020tossingbot}, operation near or beyond rated payload capacity, and adaptation to mid-task mechanical failures \cite{briscoe2024exploring} all fall into this category.
 These tasks involve two distinct kinds of dynamic constraint: \textit{higher-order robot constraints}---bounds on velocity, acceleration, jerk, and torque that arise from the robot's own kinematics and actuator limits \cite{pham2018new,berscheid2021jerk}---and \textit{task-induced dynamic constraints} that arise from the physics of robot-object interaction, including contact mechanics, inertial coupling, and motion-induced phenomena such as sloshing.
 Non-prehensile manipulation, which encompasses this class of behaviors, has received comparatively little attention relative to grasping \cite{ruggiero2018nonprehensile,mason2018toward}, and the gap between what current systems can do and what these tasks demand is consequential.
+
+\header{Constraint knowledge as a design object}
+The two-paradigm landscape and the dynamic gap it produces share a common root: both paradigms treat the representation of constraint knowledge as an incidental consequence of the chosen algorithm rather than as a primary design decision.
+This thesis takes a different view.
+It asks not only whether a robot should reason about dynamic constraints, but where that reasoning should reside---evaluated online at each planning query, amortized into reusable precomputed structures, or absorbed into learned generative models.
+Each answer entails a different set of tradeoffs, and making that choice deliberately is the organizing principle of the work that follows.
 
 % \header{The argument}
 % The central claim of this thesis is that accessing the full range of manipulation capability afforded by modern robot embodiments---beyond the kinematic behaviors that dominate current systems---requires explicitly modeling and integrating dynamic constraints into the motion generation process.
