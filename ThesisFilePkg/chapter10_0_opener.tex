@@ -1,12 +1,15 @@
-Robot manipulation is often framed as a geometric reasoning problem: identify a grasp, plan a collision-free path through configuration space, and move the object to its goal.
-This abstraction has been enormously productive because it converts manipulation into problems that are comparatively well understood---reachability, collision avoidance, grasp stability, and trajectory tracking.
-Yet it also hides much of what makes physical interaction powerful.
-Many useful manipulation behaviors are defined by dynamically feasible transitions between states: an object displaced by an impulsive contact, a liquid surface stabilized during transport, a damaged robot arm repurposed for whole-body contact, or a heavy payload moved near the limits of actuation.
+Robot manipulation is often framed around the algorithm that generates motion: a planner searches a feasible set, an optimizer improves a trajectory, a controller tracks a reference, or a policy maps observations to actions. In each case, physical constraints appear as conditions that the method must satisfy. Yet before a constraint can guide motion generation, it must be represented computationally. Reachability, contact geometry, friction, actuation limits, object inertia, failures, and hidden environmental properties can be encoded explicitly, cached from prior computation, absorbed into learned models, or inferred through interaction. The choice of representation determines not only computational cost, but also what behaviors can be generated, when feasibility can be trusted, and how the system adapts when physical conditions change.
+This thesis has studied dynamic manipulation through this representational lens. Across the three parts---online kinodynamic search, amortized reusable motion structure, and learned conditional generative models---it asks where knowledge of admissible motion should reside, what form it should take, and how that choice shapes downstream motion generation.
 
-This thesis has approached this gap by asking not only whether a robotic system should reason about dynamics, but where that reasoning should reside.
-The methods developed here treat the representation of dynamic feasibility as a design choice rather than a background assumption.
-That choice, made differently in each part of the thesis, determines what computational resources are spent at planning time, what generalization is possible, and what manipulation behaviors become accessible.
-Across the three parts---online kinodynamic search, amortized reusable motion structure, and learned conditional generative models---the same underlying question is answered differently: where should knowledge of what motions are physically possible be placed in the system?
+% Robot manipulation is often framed as a geometric reasoning problem: identify a grasp, plan a collision-free path through configuration space, and move the object to its goal.
+% This abstraction has been enormously productive because it converts manipulation into problems that are comparatively well understood---reachability, collision avoidance, grasp stability, and trajectory tracking.
+% Yet it also hides much of what makes physical interaction powerful.
+% Many useful manipulation behaviors are defined by dynamically feasible transitions between states: an object displaced by an impulsive contact, a liquid surface stabilized during transport, a damaged robot arm repurposed for whole-body contact, or a heavy payload moved near the limits of actuation.
+
+% This thesis has approached this gap by asking not only whether a robotic system should reason about dynamics, but where that reasoning should reside.
+% The methods developed here treat the representation of dynamic feasibility as a design choice rather than a background assumption.
+% That choice, made differently in each part of the thesis, determines what computational resources are spent at planning time, what generalization is possible, and what manipulation behaviors become accessible.
+% Across the three parts---online kinodynamic search, amortized reusable motion structure, and learned conditional generative models---the same underlying question is answered differently: where should knowledge of what motions are physically possible be placed in the system?
 
 This chapter summarizes the main contributions, revisits them through the four design axes introduced in \cref{ch:prior}, and identifies open directions for building manipulation systems that operate closer to the physical limits of their embodiments.
 It also reflects on how the three representations of constraint knowledge developed here relate to each other and to broader trends in robot manipulation.

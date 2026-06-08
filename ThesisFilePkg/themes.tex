@@ -11,20 +11,34 @@ The central thesis of this dissertation is that knowledge of dynamic feasibility
 This thesis develops three families of methods in which constraint knowledge is placed differently:
 
 \paragraph{Part I: Online Constraint Evaluation.}
-Physics simulation serves as a forward model that evaluates feasibility explicitly at every planning query.
-This part develops kinodynamic planners for impulsive non-prehensile rearrangement, whole-body manipulation under joint failures, and spill-free liquid transport.
-The cost is high per-query, but feasibility is exact and directly grounded in the current geometry, contacts, and dynamics of the task.
+% Physics simulation serves as a forward model that evaluates feasibility explicitly at every planning query.
+% This part develops kinodynamic planners for impulsive non-prehensile rearrangement, whole-body manipulation under joint failures, and spill-free liquid transport.
+% The cost is high per-query, but feasibility is exact and directly grounded in the current geometry, contacts, and dynamics of the task.
+The first part of the thesis examines the case where admissibility is evaluated online.
+It develops dynamics-aware planning methods that exploit physical constraints directly through kinodynamic primitives and simulation-based forward reasoning.
+In this setting, the planner maintains an explicit connection between sampled actions and dynamically feasible outcomes, but pays the cost of physics-based reasoning during each planning query. (Connect to: If admissibility is evaluated online through planning and simulation, feasibility can be assessed directly with respect to the current geometry, contacts, dynamics, and task conditions, but may incur a substantial computation cost at every query.)
 
 \paragraph{Part II: Amortized Feasibility via Reusable Motion Structure.}
-Rather than recomputing feasibility from scratch at each query, constraint knowledge is moved upstream into precomputed control-parameterized motion structures.
-These structures are selectively validated at query time, exploiting prior feasibility computation across related problems while preserving physical grounding.
+% Rather than recomputing feasibility from scratch at each query, constraint knowledge is moved upstream into precomputed control-parameterized motion structures.
+% These structures are selectively validated at query time, exploiting prior feasibility computation across related problems while preserving physical grounding.
+The second part investigates how repeated admissibility computation can be amortized without discarding explicit feasibility structure.
+It develops lazy reusable planning representations that preserve dynamically feasible motion while reducing the online cost of solving related manipulation problems.
+Here, physical admissibility is not fully relearned or recomputed from scratch; instead, prior feasibility computation is stored in a reusable structure and selectively validated when needed.
+(Connect to: If it resides in a reusable planning structure, prior feasibility computation can be exploited across related problems but must be validated when conditions shift.)
+
 
 \paragraph{Part III: Amortized Feasibility via Learned Generative Models.}
-Constraint knowledge is absorbed into the parameters of conditional generative models during training.
-These models rapidly produce trajectories conditioned on task-level dynamic properties such as payload mass and embodiment configuration; feasibility is never evaluated at runtime but is implicit in the learned distribution.
-This part further extends the same representation to near-feasible seed generation for constrained trajectory optimization.
+% Constraint knowledge is absorbed into the parameters of conditional generative models during training.
+% These models rapidly produce trajectories conditioned on task-level dynamic properties such as payload mass and embodiment configuration; feasibility is never evaluated at runtime but is implicit in the learned distribution.
+% This part further extends the same representation to near-feasible seed generation for constrained trajectory optimization.
+The third part studies a more aggressive form of amortization, where admissibility knowledge is transferred into conditional generative models.
+These models rapidly sample trajectories conditioned on task, environment, and physical parameters such as payloads or failures.
+(Connect to: If it resides in the parameters of a learned generator, motion generation is fast but the constraint is no longer separable from the model: it cannot be inspected, swapped, or audited independently of the behavior it produces.)
+The thesis further considers settings in which perception alone is insufficient to identify the relevant physical constraints.
+(this needs to be broadened; not about perception only but about reframing constraint representation in terms of induced behavior) 
+In these cases, targeted constraint probes are used to construct compact behavioral signatures that expose hidden differences between environments with similar appearance but different admissible behaviors.
 
-Across all three parts, the goal remains the same: enabling robots to reason about and exploit dynamic constraints rather than deferring to geometric abstractions---and making the representation of that knowledge an explicit design decision.
+% Across all three parts, the goal remains the same: enabling robots to reason about and exploit dynamic constraints rather than deferring to geometric abstractions---and making the representation of that knowledge an explicit design decision.
 
 % To investigate this claim, the thesis develops a progression of methods spanning three levels of motion generation.
 

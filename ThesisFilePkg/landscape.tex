@@ -1,52 +1,78 @@
-\section{The State of Robot Manipulation Today}
+\section{Motivation}
 \label{sec:intro:landscape}
 
 % Robot manipulation systems now operate in environments that were long considered beyond the reach of automation.
 Robotic manipulation has moved from structured factory floors into increasingly complex, variable, and human-centered environments.
 Robots routinely sort and transport goods through warehouses, assemble products on factory lines, assist in surgical and healthcare settings, prepare food, and execute tasks in hazardous and remote environments.
 At the same time, the field has expanded beyond rigid industrial automation toward increasingly general-purpose manipulation capabilities: robots are now expected not only to repeat fixed motions reliably, but also to adapt to novel objects, changing environments, and unforeseen task conditions.
-The technological progress enabling this expansion has followed two largely separate but equally influential trajectories.
+Meeting this expectation requires robots to generate actions that are not only task-directed, but also executable under the kinematic and dynamic (define) constraints imposed by the robot-world system.
+For instance, a manipulator asked to slide a heavy object across a cluttered table must respect reachability, contact geometry, friction, actuation limits, and the inertial response of the object once contact is broken.
+These constraints are therefore not peripheral to manipulation; they determine which states are reachable, which transitions are physically realizable, and which regions of the motion space are worth exploring at all.
+The technological progress enabling modern manipulation systems has followed two largely separate but equally influential trajectories.
+(citations)
 
 \header{Engineered pipelines at scale}
-In industry, manipulation is deployed through modular pipelines: a perception module localizes objects, a planner sequences motions, and a controller executes them.
-This architecture underpins robots operating across warehouses and fulfillment centers \cite{CensusSurveyRobotic2022}, factory assembly and welding lines \cite{factory_efficiency_2020}, surgical and assistive healthcare settings \cite{Kyrarini2021}, chemical and pharmaceutical processing \cite{chem1,chem2}, food service and meal preparation \cite{meal1,assistfeed1,assistfeed2}, and space and extreme-environment operations \cite{papadopoulos2021robotic,gaines2016productivity}.
-The defining properties of these systems are reliability and debuggability: each module is maintained by specialists who understand its failure modes, and performance improves through engineering effort accumulated over many deployment cycles.
-The result is highly capable systems that enable production-scale throughput and human safety within their operational envelopes.
+% In industry, manipulation is deployed through modular pipelines: a perception module localizes objects, a planner sequences motions, and a controller executes them.
+% This architecture underpins robots operating across warehouses and fulfillment centers \cite{CensusSurveyRobotic2022}, factory assembly and welding lines \cite{factory_efficiency_2020}, surgical and assistive healthcare settings \cite{Kyrarini2021}, chemical and pharmaceutical processing \cite{chem1,chem2}, food service and meal preparation \cite{meal1,assistfeed1,assistfeed2}, and space and extreme-environment operations \cite{papadopoulos2021robotic,gaines2016productivity}.
+% The defining properties of these systems are reliability and debuggability: each module is maintained by specialists who understand its failure modes, and performance improves through engineering effort accumulated over many deployment cycles.
+% The result is highly capable systems that enable production-scale throughput and human safety within their operational envelopes.
+Industrial manipulation systems are typically organized as engineered pipelines: perception localizes objects, planning produces motions, and control executes them.
+These systems have enabled reliable deployment across warehouses, factories, surgical and assistive settings, chemical and pharmaceutical processing, food service, and extreme environments.
+Their strength lies in modularity, debuggability, and the accumulation of engineering effort over repeated deployment cycles.
+However, the physical constraints that govern feasible behavior are distributed across modules and encoded in the forms required by the chosen pipeline: collision models, grasp metrics, reachability checks, controller limits, safety margins, and task-specific heuristics.
 
 \header{General-purpose learned policies}
-In parallel, a different paradigm has emerged in academia and is now entering industry.
-General-purpose robot policies trained on large, diverse demonstration datasets have demonstrated impressive generalization: a single policy can handle novel objects, environmental variation, and modest task variation without per-task redesign \cite{chi2023diffusionpolicy,team2024octo,o2024open,zitkovich2023rt}.
-Reinforcement learning has pushed further still, enabling dexterous in-hand manipulation of unprecedented complexity by training entirely in simulation \cite{andrychowicz2018learning}.
-The aspiration of this line of work is human-level dexterity accessible through learned behavior---reducing the per-task engineering burden and enabling continuous improvement as deployment data accumulates.
+A parallel line of work seeks to reduce this engineering burden through general-purpose learned policies trained on large and diverse datasets.
+These systems can generalize across objects, scenes, and modest task variation without hand-designing a new pipeline for every setting.
+In this case, however, constraint knowledge is often represented implicitly in the data distribution and the learned model parameters.
+The system may produce behavior that respects the constraints present during training, but the physical assumptions under which that behavior remains admissible are difficult to inspect, modify, or validate independently.
+% In parallel, a different paradigm has emerged in academia and is now entering industry.
+% General-purpose robot policies trained on large, diverse demonstration datasets have demonstrated impressive generalization: a single policy can handle novel objects, environmental variation, and modest task variation without per-task redesign \cite{chi2023diffusionpolicy,team2024octo,o2024open,zitkovich2023rt}.
+% Reinforcement learning has pushed further still, enabling dexterous in-hand manipulation of unprecedented complexity by training entirely in simulation \cite{andrychowicz2018learning}.
+% The aspiration of this line of work is human-level dexterity accessible through learned behavior---reducing the per-task engineering burden and enabling continuous improvement as deployment data accumulates.
 
-\header{Shared limitations}
-Despite their apparent differences, both paradigms share a set of fundamental limitations.
-Both require substantial engineering effort to robustify against real-world variability: pipeline systems need task-specific tuning and edge-case handling at every component; learned systems require careful dataset curation, sim-to-real transfer, and distribution coverage to avoid brittle failures \cite{billard2019trends}.
-Both exhibit brittleness at component interfaces---errors between perception and planning, and between planning and control, propagate in ways that are difficult to anticipate or recover from \cite{abderezaei2024clutter,briscoe2024exploring}.
-% Both rely on simplified models of physics: classical pipelines use analytical models with bounded validity, while learned policies treat dynamics as an implicit property of demonstrated trajectories rather than as an explicit constraint \cite{yin2021modeling}.
-And most importantly, in both paradigms, dynamics are typically treated as secondary: classical pipelines approximate them through simplified analytical models, while learned policies absorb them implicitly through demonstrated behavior rather than representing them as explicit constraints \cite{yin2021modeling}.
-And neither generalizes readily to task contexts substantially different from those encountered during development or training \cite{o2024open}.
-In both cases, the representation of constraint knowledge---what physical conditions govern feasible behavior and where that knowledge is expressed in the system---is treated as secondary to the choice of algorithm or policy architecture.
+% \header{Shared limitations}
+% Despite their apparent differences, both paradigms share a set of fundamental limitations.
+% Both require substantial engineering effort to robustify against real-world variability: pipeline systems need task-specific tuning and edge-case handling at every component; learned systems require careful dataset curation, sim-to-real transfer, and distribution coverage to avoid brittle failures \cite{billard2019trends}.
+% Both exhibit brittleness at component interfaces---errors between perception and planning, and between planning and control, propagate in ways that are difficult to anticipate or recover from \cite{abderezaei2024clutter,briscoe2024exploring}.
+% % Both rely on simplified models of physics: classical pipelines use analytical models with bounded validity, while learned policies treat dynamics as an implicit property of demonstrated trajectories rather than as an explicit constraint \cite{yin2021modeling}.
+% And most importantly, in both paradigms, dynamics are typically treated as secondary: classical pipelines approximate them through simplified analytical models, while learned policies absorb them implicitly through demonstrated behavior rather than representing them as explicit constraints \cite{yin2021modeling}.
+% And neither generalizes readily to task contexts substantially different from those encountered during development or training \cite{o2024open}.
+% In both cases, the representation of constraint knowledge---what physical conditions govern feasible behavior and where that knowledge is expressed in the system---is treated as secondary to the choice of algorithm or policy architecture.
 
-\header{The geometric assumption}
-Underlying both paradigms is a shared assumption that has shaped manipulation research for decades: that manipulation is fundamentally a geometric problem.
-The dominant objects of reasoning are collision clearance, grasp pose, reachability, and singularity avoidance---broadly, kinematic constraints on robot configuration.
-This assumption is not arbitrary.
-Grasping has attracted disproportionate research attention \cite{billard2019trends,bohg2013data,mahler2017dex} precisely because form-closure reduces object state to a geometry problem: once an object is secured, its state is predictable and planning reduces to obstacle avoidance \cite{mason1986mechanics,bullock2011classifying}.
-Recent years have brought dramatic improvements to geometric planning infrastructure---GPU-parallelized collision checking and forward kinematics \cite{sundaralingam2023curobo,thomason2024motions}, large-scale motion datasets \cite{o2024open}, and high-fidelity simulation environments \cite{coumans2021}---but the underlying planning abstraction has remained largely geometric.
+% Despite their differences, engineered pipelines and learned policies for robotic manipulation are typically organized around the motion generation algorithm: the planner, optimizer, controller, or policy that produces behavior under a specified set of kinematic and dynamic constraints.
+% Under this organization, constraints define the feasible set, while methods are compared by how effectively they search, optimize, approximate, or sample within that set.
+% This organization is useful, but it leaves implicit a second, equally consequential design decision: a physical constraint must first be represented computationally before it can shape motion generation.
 
-\header{The dynamic gap}
-The cost of this assumption becomes visible at the boundary of kinematic behaviors.
-A broad class of manipulation tasks is not adequately captured by geometry alone: tasks where joint torques, object inertia, contact impulses, and fluid dynamics jointly determine the outcome.
-Non-prehensile rearrangement through impulsive contact \cite{pasricha2022pokerrt,mason2018toward}, transport of liquid-filled containers \cite{abderezaei2024clutter}, high-speed inertial transport \cite{ichnowski2022gomp,zeng2020tossingbot}, operation near or beyond rated payload capacity, and adaptation to mid-task mechanical failures \cite{briscoe2024exploring} all fall into this category.
-These tasks involve two distinct kinds of dynamic constraint: \textit{higher-order robot constraints}---bounds on velocity, acceleration, jerk, and torque that arise from the robot's own kinematics and actuator limits \cite{pham2018new,berscheid2021jerk}---and \textit{task-induced dynamic constraints} that arise from the physics of robot-object interaction, including contact mechanics, inertial coupling, and motion-induced phenomena such as sloshing.
-Non-prehensile manipulation, which encompasses this class of behaviors, has received comparatively little attention relative to grasping \cite{ruggiero2018nonprehensile,mason2018toward}, and the gap between what current systems can do and what these tasks demand is consequential.
+\header{Central Idea}
+Despite their differences, engineered pipelines and learned policies for robotic manipulation are typically organized around the motion generation algorithm: the planner, optimizer, controller, or policy that produces behavior under a specified set of kinematic and dynamic constraints.
+Under this organization, constraints define the feasible set, while methods are compared by how effectively they search, optimize, approximate, or sample within that set.
+This organization is useful, but it leaves implicit a second, equally consequential design decision: a physical constraint must first be represented computationally before it can shape motion generation.
 
-\header{Constraint knowledge as a design object}
-The two-paradigm landscape and the dynamic gap it produces share a common root: both paradigms treat the representation of constraint knowledge as an incidental consequence of the chosen algorithm rather than as a primary design decision.
-This thesis takes a different view.
-It asks not only whether a robot should reason about dynamic constraints, but where that reasoning should reside---evaluated online at each planning query, amortized into reusable precomputed structures, or absorbed into learned generative models.
-Each answer entails a different set of tradeoffs, and making that choice deliberately is the organizing principle of the work that follows.
+From this perspective, progress in robot manipulation depends not only on better algorithms for searching, optimizing, or learning behavior, but also on better ways of expressing the constraints that define what behavior is physically possible.
+This motivates the central question of this thesis: where should knowledge of admissible motion reside in a robotic system, what computational form should it take, and how does that choice shape downstream motion generation?
+By presenting multiple answers to these questions, this thesis makes it possible to design manipulation systems in which feasibility is not an implicit consequence of the chosen algorithm, but an explicit object of representation, reuse, amortization, and discovery.
+
+
+% \header{The geometric assumption}
+% Underlying both paradigms is a shared assumption that has shaped manipulation research for decades: that manipulation is fundamentally a geometric problem.
+% The dominant objects of reasoning are collision clearance, grasp pose, reachability, and singularity avoidance---broadly, kinematic constraints on robot configuration.
+% This assumption is not arbitrary.
+% Grasping has attracted disproportionate research attention \cite{billard2019trends,bohg2013data,mahler2017dex} precisely because form-closure reduces object state to a geometry problem: once an object is secured, its state is predictable and planning reduces to obstacle avoidance \cite{mason1986mechanics,bullock2011classifying}.
+% Recent years have brought dramatic improvements to geometric planning infrastructure---GPU-parallelized collision checking and forward kinematics \cite{sundaralingam2023curobo,thomason2024motions}, large-scale motion datasets \cite{o2024open}, and high-fidelity simulation environments \cite{coumans2021}---but the underlying planning abstraction has remained largely geometric.
+
+% \header{The dynamic gap}
+% The cost of this assumption becomes visible at the boundary of kinematic behaviors.
+% A broad class of manipulation tasks is not adequately captured by geometry alone: tasks where joint torques, object inertia, contact impulses, and fluid dynamics jointly determine the outcome.
+% Non-prehensile rearrangement through impulsive contact \cite{pasricha2022pokerrt,mason2018toward}, transport of liquid-filled containers \cite{abderezaei2024clutter}, high-speed inertial transport \cite{ichnowski2022gomp,zeng2020tossingbot}, operation near or beyond rated payload capacity, and adaptation to mid-task mechanical failures \cite{briscoe2024exploring} all fall into this category.
+% These tasks involve two distinct kinds of dynamic constraint: \textit{higher-order robot constraints}---bounds on velocity, acceleration, jerk, and torque that arise from the robot's own kinematics and actuator limits \cite{pham2018new,berscheid2021jerk}---and \textit{task-induced dynamic constraints} that arise from the physics of robot-object interaction, including contact mechanics, inertial coupling, and motion-induced phenomena such as sloshing.
+% Non-prehensile manipulation, which encompasses this class of behaviors, has received comparatively little attention relative to grasping \cite{ruggiero2018nonprehensile,mason2018toward}, and the gap between what current systems can do and what these tasks demand is consequential.
+
+% \header{Constraint knowledge as a design object}
+% The two-paradigm landscape and the dynamic gap it produces share a common root: both paradigms treat the representation of constraint knowledge as an incidental consequence of the chosen algorithm rather than as a primary design decision.
+% This thesis takes a different view.
+% It asks not only whether a robot should reason about dynamic constraints, but where that reasoning should reside---evaluated online at each planning query, amortized into reusable precomputed structures, or absorbed into learned generative models.
+% Each answer entails a different set of tradeoffs, and making that choice deliberately is the organizing principle of the work that follows.
 
 % \header{The argument}
 % The central claim of this thesis is that accessing the full range of manipulation capability afforded by modern robot embodiments---beyond the kinematic behaviors that dominate current systems---requires explicitly modeling and integrating dynamic constraints into the motion generation process.

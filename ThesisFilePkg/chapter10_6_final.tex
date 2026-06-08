@@ -1,16 +1,39 @@
-\section{Closing Reflection}
+\section{Broader Impact}
 \label{sec:discussion:closing}
+Treating constraint knowledge as a design object changes manipulation from a problem of selecting a motion generation algorithm to a problem of deciding how feasibility information should be represented, reused, learned, and updated across the robotic system.
+Rather than choosing a planner, optimizer, controller, or policy first and then encoding constraints in the form required by that method, a designer can begin with a constraint inventory: the physical conditions that govern feasible behavior, how those conditions vary across problem instances, and what computational role each condition should play.
+Different constraints may then call for different placements.
+Safety-critical, highly instance-specific, or rapidly changing constraints may need to remain explicit at runtime.
+Constraints that recur across related tasks may be stored in reusable planning structures.
+Regularities over a task family may be amortized into learned generative models.
+Constraints that are not directly observable from perception alone may need to be identified through interaction.
 
-The central argument of this thesis is that knowledge of dynamic feasibility---what motions are physically possible given a robot's constraints and the task at hand---is a design object, not a background condition.
-When that knowledge is evaluated online, it enables exact reasoning about novel dynamics at the cost of per-query computation.
-When it is amortized into reusable structures, repeated queries become cheaper while physical grounding is preserved.
-When it is absorbed into learned models, generation becomes nearly instantaneous but depends on the quality and coverage of training.
-Each representation entails a different set of tradeoffs, and none dominates the others across all settings.
+This shift also changes how manipulation systems should be evaluated.
+The relevant question is not only whether the robot completes the task, or how efficiently it does so, but whether it recognizes when the feasibility structure of the task has changed and adapts its motion generation process accordingly.
+It also suggests a way to combine model-based and learning-based manipulation without reducing one to the other.
+Model-based systems preserve explicit feasibility structure, but often recompute it at high cost.
+Learned systems amortize feasibility over data, but often obscure the physical assumptions under which their outputs remain valid.
+A constraint-centric architecture can separate these concerns by deciding which parts of feasibility should be explicit, which should be cached, which should be learned, and which should be actively inferred.
+In this view, planning, reuse, generative modeling, and probing are not competing paradigms; they are different mechanisms for placing constraint knowledge within a manipulation system.
 
-This perspective also reframes the relationship between model-based and learning-based approaches to manipulation.
-These are not competing paradigms fighting for the same design space.
-They are different mechanisms for placing constraint knowledge within a system, each suited to different operating conditions, data regimes, and latency requirements.
-The methods developed here suggest that progress in manipulation will come not from choosing one paradigm over the other, but from understanding which representation of constraint knowledge is appropriate for a given task---and from building systems capable of moving between them.
+This perspective is especially relevant as robots are expected to operate across broader families of embodiments, tasks, objects, and environments.
+In such settings, physical feasibility cannot be treated as a static property of a single robot-task pair.
+The constraints that determine feasible behavior may vary with morphology, payload, contact conditions, actuator limits, object mass, friction, failures, and unobserved environmental properties.
+A manipulation system must therefore decide not only how to generate behavior, but how to represent, reuse, adapt, and recover the constraint knowledge on which that behavior depends.
+
+% \section{Closing Reflection}
+% \label{sec:discussion:closing}
+
+% The central argument of this thesis is that knowledge of dynamic feasibility---what motions are physically possible given a robot's constraints and the task at hand---is a design object, not a background condition.
+% When that knowledge is evaluated online, it enables exact reasoning about novel dynamics at the cost of per-query computation.
+% When it is amortized into reusable structures, repeated queries become cheaper while physical grounding is preserved.
+% When it is absorbed into learned models, generation becomes nearly instantaneous but depends on the quality and coverage of training.
+% Each representation entails a different set of tradeoffs, and none dominates the others across all settings.
+
+% This perspective also reframes the relationship between model-based and learning-based approaches to manipulation.
+% These are not competing paradigms fighting for the same design space.
+% They are different mechanisms for placing constraint knowledge within a system, each suited to different operating conditions, data regimes, and latency requirements.
+% The methods developed here suggest that progress in manipulation will come not from choosing one paradigm over the other, but from understanding which representation of constraint knowledge is appropriate for a given task---and from building systems capable of moving between them.
 
 % \section{Closing Reflection}
 % \label{sec:discussion:closing}
