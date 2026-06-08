@@ -1,0 +1,103 @@
+\section{Lessons and Open Questions}
+\label{sec:discussion:lessons}
+
+The contributions summarized above span very different mechanisms---online search, precomputed structure, and learned generation---but share a common motivation: that dynamic feasibility is a structured resource for manipulation, not a complication to be engineered around.
+Across the thesis, the main lessons fall into three classes.
+The first concerns how constraints shape system design.
+The second concerns the capabilities that dynamic, non-prehensile interaction unlocks beyond geometric skills.
+The third concerns the scope and limits of statistical learning as a representation of dynamic feasibility.
+Each class is paired below with the open questions it raises.
+
+\subsection{Constraints and System Design}
+\label{sec:discussion:constraints}
+
+\paragraph{Kinematic and dynamic feasibility are coupled.}
+A recurring result across the thesis is that geometric feasibility alone is not enough to characterize what a robot can do.
+A path may be collision-free and geometrically valid yet remain dynamically unsuitable: the same trajectory traced through free space may be infeasible when the robot carries a high payload, operates near actuator limits, or interacts through contact.
+\cref{ch:poking,ch:constrained,ch:payload} each show that ignoring this coupling either eliminates feasible behaviors or causes plans to fail at execution.
+
+\paragraph{The standard modular pipeline breaks down.}
+A traditional manipulation pipeline separates geometric planning, time parameterization, and feasibility or constraint checking into sequential stages.
+This decomposition is convenient when constraints are mild perturbations of the geometric problem, but it is too weak for dynamic and non-prehensile manipulation, where geometry, timing, contact, and force constraints interact directly.
+For many problems studied in this thesis, dynamic feasibility cannot be a post-processing step.
+It must be part of the planning problem itself, whether through simulation-in-the-loop search, precomputed kinodynamic structure, or generative models that condition on dynamic constraints.
+
+\paragraph{Constraint representation determines algorithm choice.}
+The kind of constraint information available strongly shapes which algorithms are appropriate.
+A binary collision or feasibility checker limits the system to sampling-based methods, because gradient-based optimization has no signal to follow.
+Differentiable or structurally richer constraints make optimization, learning, and constraint-injection methods viable.
+This choice cascades downstream into sampling strategies, optimization formulations, inference procedures, modularity boundaries, retraining requirements, and the difficulty of transferring a method across domains.
+A central design decision in any dynamics-constrained system is therefore not only what constraints to enforce, but in what computational form to expose them.
+
+\paragraph{Open question: tightly coupled kinodynamic planning.}
+High-dimensional geometric search has become less of a bottleneck thanks to CPU- and GPU-accelerated planning libraries, but the corresponding implications for tightly coupled kinodynamic planning remain unclear.
+Dynamic planning typically requires simulation inside the planning loop, and the cost structure of GPU-accelerated simulation differs substantially from that of geometric collision checking.
+\textit{Open question: can advances in accelerated planning and parallel simulation make tightly coupled kinodynamic planning practical for real, contact-rich manipulation systems---and if so, what algorithmic structures best exploit that parallelism?}
+
+\paragraph{Open question: machine learning as a unifying system-design tool.}
+Machine learning may serve as a unifying tool for traditional robotics pipelines, but not necessarily by replacing them with monolithic end-to-end policies.
+Instead of rigidly decomposing perception, segmentation, grasp proposal, trajectory generation, and control, learning can consolidate selected modules to reduce interface complexity and compounding errors.
+A promising middle ground is hybrid systems in which learned components adapt or tune classical ones: a vision--language model could infer planner hyperparameters, task-level constraints, or environment context for a downstream optimizer or kinodynamic planner.
+\textit{Open question: where in the classical manipulation pipeline does learned adaptation provide the largest gains, and how should structured planners be designed to consume learned hints reliably?}
+
+\subsection{Multimodal Capabilities Beyond Geometric Skills}
+\label{sec:discussion:capabilities}
+
+\paragraph{Dynamics expand capability in two distinct ways.}
+The contributions in this thesis point to two broad reasons to look beyond geometric skills.
+The first is efficiency: dynamic skills can replace slower geometric solutions even when both are feasible.
+Poking, throwing, sliding, and scooping can substantially increase throughput when precise grasping is unnecessary, as \cref{ch:poking} shows for object rearrangement in clutter.
+The second is coverage: dynamic skills can enable tasks that are otherwise infeasible---manipulation under high payloads, joint failures, limited grasp access, or tightly cluttered environments---as \cref{ch:constrained,ch:payload,ch:generation} show across different failure and load conditions.
+Dynamics are therefore not only a source of complication; they are a source of capability.
+
+\paragraph{Non-prehensile motion enables imprecise manipulation.}
+Non-prehensile manipulation allows robots to act on objects without requiring exact grasps or precise placement, broadening the design space from precise object handling to flexible, task-level interaction.
+Poking, caging, scooping, sliding, throwing, and batting are all useful when the task objective tolerates imprecision in where and how the object ultimately settles.
+Imprecision in this sense is not a failure mode; it is a feature that the planner or policy can exploit to reach behaviors that strict pick-and-place excludes.
+
+\paragraph{Open question: what is a ``skill''?}
+The notion of a manipulation ``skill'' remains a fuzzy abstraction.
+It is unclear whether the field should construct models for many atomic skills individually, or whether broader systems---vision--language--action policies, for instance---should learn transitions between them implicitly.
+Human manipulation highlights this ambiguity: people fluidly transition between poking, pulling, caging, grasping, sliding, and reorienting without clean boundaries between named skills.
+\textit{Open question: what is the right abstraction for a manipulation skill, and how should a library of skills relate to broader generative policies that absorb skill transitions into a single model?}
+
+\paragraph{Open question: embodiment matters more in dynamic settings.}
+Current data collection and augmentation approaches, including hand-held interface methods such as UMI-style data capture, have been productive for manipulation learning that depends primarily on end-effector trajectories.
+It is unclear how well they extend to dynamic settings in which the full robot embodiment matters: success may depend not only on the end-effector path but also on robot inertia, joint limits, actuator bandwidth, compliance, contact timing, whole-body motion, and momentum transfer.
+\textit{Open question: how should data collection and augmentation methods change when dynamics and embodiment are central to task success, and what minimal embodiment information must demonstrations carry to remain useful across platforms?}
+
+\subsection{Scope and Limits of Statistical Learning}
+\label{sec:discussion:learning}
+
+\paragraph{Diffusion does not replace planning.}
+A claim worth resisting is that diffusion models supplant traditional planning.
+The diffusion-based methods in \cref{ch:payload,ch:generation,ch:seeding} are better understood as mechanisms for amortizing and reusing constraint reasoning: they learn from examples of feasible behavior and absorb constraint satisfaction into the generation process, but they do not eliminate the need for explicit constraints, feasibility checking, or planning structure.
+Diffusion is useful precisely because it complements classical machinery, not because it replaces it.
+
+\paragraph{Open question: can diffusion compose beyond the dataset?}
+A natural extrapolation of recent diffusion-policy results is that the model composes between dataset trajectories to generate genuinely new constraint-satisfying behaviors.
+This is an attractive possibility but is difficult to defend strongly without further evidence.
+A more conservative reading is that diffusion performs well when it can interpolate within the structure of its training data, and less well when it must invent new constraint-satisfying strategies from scratch.
+\textit{Open question: under what conditions, if any, does diffusion compose meaningfully beyond its training distribution, and how should training data be designed to enable rather than mask such composition?}
+
+\paragraph{Data design is often the dominant lever.}
+Across the experiments in this thesis, the largest performance differences appear to come from dataset design rather than architectural choices: the coverage of relevant constraints, the inclusion of collision-avoidance examples, the use of constraint-compliant demonstrations, and the augmentation strategy applied during training.
+These factors typically matter more than the exact constraint-injection pathway or the specific generative architecture.
+For dynamics-aware robot learning systems, the data distribution may be a more important design object than the model.
+
+\paragraph{Open question: visual encoders dominate computational cost.}
+In vision--language--action and other visual policy systems, much of the training and inference cost is spent in the visual encoder rather than the action head.
+This raises the question of what abstraction the policy should consume in the first place: RGB images, point clouds, signed distance fields, object-centric state, constraint descriptors, learned embeddings, or hybrid geometric--visual representations.
+\textit{Open question: what representation offers the right balance between generality, computational efficiency, and constraint awareness for dynamics-constrained manipulation?}
+
+\paragraph{Caution: diffusion may behave like a lookup table.}
+There is some evidence that diffusion policies behave like powerful lookup tables over the training distribution.
+If so, then the often-reported progression from RGB to point clouds to signed distance fields can be more of a narrative progression than a mechanistic one.
+The important question is not only which representation sounds more structured, but whether it actually improves generalization, constraint satisfaction, and behavior composition in measurable ways.
+Evaluation discipline---probing for out-of-distribution generalization rather than only in-distribution success---is essential if statistical claims about learned planners are to remain honest.
+
+\paragraph{Open question: diffusion as a local planner inside a global framework.}
+A promising direction is to use diffusion not as a complete planner but as a local planner inside a larger framework.
+Some skills, such as poking, are well captured analytically or through simulation-in-the-loop search; others are more naturally learned from demonstrations.
+A global planner, such as an RRT variant, could sequence across heterogeneous skills, while diffusion proposes locally feasible short-horizon transitions between them.
+\textit{Open question: how should classical planning frameworks and learned local policies be combined to plan multi-skill dynamic manipulation strategies, and what interface between them preserves the strengths of each?}
