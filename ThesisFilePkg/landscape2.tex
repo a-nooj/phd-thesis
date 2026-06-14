@@ -1,0 +1,43 @@
+\section{Motivation}
+\label{sec:intro:landscape}
+
+% Robot manipulation systems now operate in environments that were long considered beyond the reach of automation.
+Robotic manipulation has moved from structured factory floors into increasingly complex, variable, and human-centered environments.
+Robots routinely sort and transport goods through warehouses, assemble products on factory lines, assist in surgical and healthcare settings, prepare food, and execute tasks in hazardous and remote environments.
+At the same time, the field has expanded beyond rigid industrial automation toward increasingly general-purpose manipulation capabilities: robots are now expected not only to repeat fixed motions reliably, but also to adapt to novel objects, changing environments, and unforeseen task conditions.
+Meeting this expectation requires robots to generate actions that are not only task-directed, but also executable under the kinematic and dynamic (define) constraints imposed by the robot-world system.
+For instance, a manipulator asked to slide a heavy object across a cluttered table must respect reachability, contact geometry, friction, actuation limits, and the inertial response of the object once contact is broken.
+These constraints are therefore not peripheral to manipulation; they determine which states are reachable, which transitions are physically realizable, and which regions of the motion space are worth exploring at all.
+The technological progress enabling modern manipulation systems has followed two largely separate but equally influential trajectories.
+(citations)
+
+\header{Engineered pipelines at scale}
+Industrial manipulation systems are typically organized as engineered pipelines: perception localizes objects, planning produces motions, and control executes them.
+These systems have enabled reliable deployment across warehouses, factories, surgical and assistive settings, chemical and pharmaceutical processing, food service, and extreme environments.
+Their strength lies in modularity, debuggability, and the accumulation of engineering effort over repeated deployment cycles.
+
+\header{General-purpose learned policies}
+A parallel line of work seeks to reduce this engineering burden through general-purpose learned policies trained on large and diverse datasets.
+These systems can generalize across objects, scenes, and modest task variation without hand-designing a new pipeline for every setting.
+
+\header{Prehensile manipulation and the geometric paradigm}
+Underlying both paradigms is a shared assumption that has shaped manipulation research for decades: that manipulation is fundamentally a geometric problem.
+The dominant objects of reasoning are collision clearance, grasp pose, reachability, and singularity avoidance---broadly, kinematic constraints on robot configuration.
+This assumption is not arbitrary.
+Grasping has attracted disproportionate research attention \cite{billard2019trends,bohg2013data,mahler2017dex} precisely because form-closure reduces object state to a geometry problem: once an object is secured, its state is predictable and planning reduces to obstacle avoidance \cite{mason1986mechanics,bullock2011classifying}.
+Recent years have brought substantial improvements to geometric planning infrastructure---GPU-parallelized collision checking and forward kinematics \cite{sundaralingam2023curobo,thomason2024motions}, large-scale motion datasets \cite{o2024open}, and high-fidelity simulation environments \cite{coumans2021}---but the underlying planning abstraction has remained largely geometric.
+
+\header{Behaviors beyond geometric planning}
+The cost of this assumption becomes visible at the boundary of kinematic behaviors.
+A broad class of manipulation tasks is not adequately captured by geometry alone: tasks where joint torques, object inertia, contact impulses, and fluid dynamics jointly determine the outcome.
+Non-prehensile rearrangement through impulsive contact \cite{pasricha2022pokerrt,mason2018toward}, transport of liquid-filled containers \cite{abderezaei2024clutter}, high-speed inertial transport \cite{ichnowski2022gomp,zeng2020tossingbot}, operation near or beyond rated payload capacity, and adaptation to mid-task mechanical failures \cite{briscoe2024exploring} all fall into this category.
+These behaviors require robot control to reason over contact, to model relevant physics, and to search over a higher-dimensional space than kinematic planning allows.
+
+\header{Expanding manipulation capability}
+Accessing the full range of manipulation capability afforded by modern robot embodiments---beyond the kinematic behaviors that dominate current systems---requires explicitly modeling and integrating dynamic constraints into the motion generation process.
+Tasks involving complex object interactions, unstructured environments, and high-speed or high-load operations cannot be adequately planned or controlled using geometry alone.
+Expanding manipulation capability requires moving beyond kinematic behaviors to model and plan under dynamic constraints, enabling robots to reason about their available embodiment and complex object interactions.
+
+The constraints governing robot manipulation decompose into two families.
+\textit{Kinematic constraints}---joint angle limits, self-collision avoidance, environmental obstacle clearance, singularity avoidance, and reachability---define the geometry of feasible motion.
+\textit{Dynamic constraints} govern the physics of motion and arise from two sources: \textit{higher-order robot constraints}---bounds on velocity, acceleration, jerk, and torque that arise from the robot's own kinematics and actuator limits \cite{pham2018new,berscheid2021jerk}---and \textit{task-induced dynamic constraints} that arise from the physics of robot-object interaction, including contact mechanics, inertial coupling, end-effector acceleration limits, and motion-induced phenomena such as sloshing.
