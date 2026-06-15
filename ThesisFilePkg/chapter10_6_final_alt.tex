@@ -1,15 +1,40 @@
 \section{Final Synthesis}
 \label{sec:discussion:synthesis}
 
-The broader conclusion of this thesis is that robotic manipulation should move beyond a purely geometric view of action.
-Dynamic and non-prehensile interactions are not edge cases at the periphery of an otherwise geometric problem.
-They expose fundamental limitations in how robotic systems are designed, how manipulation skills are represented, and how learning-based methods are evaluated.
+% The broader conclusion of this thesis is that robotic manipulation should move beyond a purely geometric view of action.
+% Dynamic and non-prehensile interactions are not edge cases at the periphery of an otherwise geometric problem.
+% They expose fundamental limitations in how robotic systems are designed, how manipulation skills are represented, and how learning-based methods are evaluated.
 
-The next generation of manipulation systems will likely require coupled reasoning over geometry, timing, contact, and dynamics rather than sequential pipelines that treat each in isolation.
-It will require better abstractions for skills and constraints than the atomic-skill libraries and ad hoc constraint encodings used today.
-It will require hybrid system architectures that combine learning with structured planning, so that strong priors and explicit feasibility refinement can coexist.
-It will require data collection methods that account for embodiment and dynamics, rather than only end-effector trajectories.
-And it will require honest evaluation of what statistical learning can and cannot generalize beyond its training distribution.
+% The next generation of manipulation systems will likely require coupled reasoning over geometry, timing, contact, and dynamics rather than sequential pipelines that treat each in isolation.
+% It will require better abstractions for skills and constraints than the atomic-skill libraries and ad hoc constraint encodings used today.
+% It will require hybrid system architectures that combine learning with structured planning, so that strong priors and explicit feasibility refinement can coexist.
+% It will require data collection methods that account for embodiment and dynamics, rather than only end-effector trajectories.
+% And it will require honest evaluation of what statistical learning can and cannot generalize beyond its training distribution.
 
-Dynamics complicate manipulation, but they also expand what robots can do.
-The central opportunity is to design robotic systems that treat dynamics not as a disturbance to be avoided, but as a resource to be modeled, planned with, and exploited.
+% Dynamics complicate manipulation, but they also expand what robots can do.
+% The central opportunity is to design robotic systems that treat dynamics not as a disturbance to be avoided, but as a resource to be modeled, planned with, and exploited.
+
+The broader conclusion of this thesis is that robotic manipulation cannot be fully understood through a purely geometric view of action.
+Geometric reasoning remains essential: robots must still satisfy reachability, collision avoidance, grasp validity, and configuration-space constraints.
+However, many of the behaviors that expand manipulation capability are governed by quantities that geometry alone does not capture.
+Contact, inertia, timing, actuation limits, payload variation, fluid motion, and momentum transfer can determine not only whether a motion succeeds, but what kinds of motions are available in the first place.
+Dynamic and non-prehensile interactions are therefore not edge cases at the boundary of manipulation.
+They expose fundamental questions about how robotic systems represent feasibility, how skills are defined, how planners and learned models should interact, and how physical generalization should be evaluated.
+
+The systems developed in this thesis address these questions from several directions.
+Simulation-in-the-loop planning shows that dynamic interactions such as poking and whole-body contact can expose useful behaviors that are difficult to specify geometrically.
+Reusable kinodynamic structure shows that dynamic feasibility can be amortized across related planning queries rather than recomputed from scratch.
+Conditional generative models show that learned trajectory distributions can absorb information about payloads, failures, and constraint manifolds, enabling fast motion generation when the relevant physical parameters are made explicit.
+Together, these results suggest that the next generation of manipulation systems should not treat geometry, timing, contact, dynamics, and learning as isolated components in a sequential pipeline.
+They should instead expose these factors through interfaces that allow planners, optimizers, simulators, and learned models to share responsibility for physical admissibility.
+
+This view also clarifies several requirements for future work.
+Manipulation systems will need better abstractions for skills: abstractions that can represent not only grasping and transport, but also transitions among pushing, poking, sliding, caging, throwing, whole-body contact, and other dynamic interactions.
+They will need better representations of constraints, so that dynamic feasibility can be searched, optimized, learned, reused, and checked at the appropriate level of the system.
+They will need data collection methods that preserve the embodiment-dependent quantities that matter for dynamic behavior, rather than reducing demonstrations to end-effector trajectories alone.
+They will also need evaluation protocols that distinguish interpolation within a training distribution from genuine generalization across new constraints, embodiments, and physical regimes.
+
+Dynamics complicate manipulation because they make feasibility depend on motion history, contact conditions, timing, and the physical properties of both the robot and the world.
+But those same dependencies expand the space of possible behaviors.
+They allow robots to move objects without grasping them, exploit momentum rather than avoid it, adapt to altered embodiments, and operate in regimes where geometric pick-and-place is inefficient or impossible.
+The central opportunity is therefore to design robotic systems that treat dynamics not as a disturbance to be suppressed after planning, but as structure to be represented, planned with, learned from, and exploited.
