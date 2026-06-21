@@ -136,7 +136,7 @@ The open question is where learned adaptation provides the largest gains, and ho
 \subsection{Multimodal Capabilities Beyond Geometric Skills}
 \label{sec:discussion:skills}
 
-The contributions in this thesis point to two reasons to reason beyond geometric manipulation skills.
+The contributions in this thesis suggest two motivations for moving beyond purely geometric manipulation skills.
 The first is efficiency.
 Dynamic interactions can sometimes replace slower geometric solutions even when both are feasible.
 Poking, throwing, sliding, scooping, and related behaviors can increase throughput when precise grasping is unnecessary, because they allow the robot to exploit contact, momentum, and object motion rather than rigidly controlling the object throughout the entire trajectory.
@@ -145,7 +145,7 @@ In \cref{ch}, for example, poking enables object rearrangement in clutter by usi
 The second reason is coverage.
 Dynamic skills can make tasks feasible that are difficult or impossible under a purely prehensile or geometric abstraction.
 Manipulation under high payloads, joint failures, limited grasp access, cluttered reachability, sustained contact, and coupled robot-object dynamics all require reasoning about more than collision-free motion.
-The results in \cref{ch,ch,ch} show that when the planner or generator accounts for these constraints, the robot can recover capabilities that would otherwise be excluded from the feasible motion space.
+The results in \cref{ch,ch,ch} show that when the planner or generator accounts for these constraints, the robot can demonstrate capabilities that would otherwise be excluded from the feasible motion space.
 Dynamics are therefore not only a source of modeling difficulty; they are a source of manipulation capability.
 
 Non-prehensile interaction also changes the precision assumptions built into the task.
@@ -175,8 +175,11 @@ This creates an open question for robot learning: how should demonstrations repr
 \label{sec:discussion:learning}
 
 The learning-based chapters of this thesis use diffusion models to represent dynamically feasible motion, but they do not imply that diffusion replaces planning.
-A more precise interpretation is that diffusion amortizes parts of the planning problem.
-The model learns from examples of feasible trajectories and absorbs regularities in the constraint structure, allowing it to generate candidate motions rapidly at inference time.
+A more precise interpretation is that diffusion provides fast candidate motions by learning from prior planning examples.
+% A more precise interpretation is that diffusion amortizes parts of the planning problem.
+The model observes feasible trajectories during training and learns recurring patterns in how constraints shape motion, allowing it to generate useful trajectory proposals at inference time.
+% The model learns from examples of feasible trajectories and absorbs regularities in the constraint structure, allowing it to generate candidate motions rapidly at inference time.
+These proposals can then be checked, refined, or optimized by a downstream planning system.
 This is useful because repeated feasibility reasoning can be expensive, especially when constraints depend on payloads, failures, higher-order robot limits, or task-specific dynamic effects.
 However, the generated motion is still meaningful only because it is tied to explicit notions of feasibility: the data must contain feasible behavior, the conditioning variables must describe the relevant physical regime, and downstream checking or optimization may still be required.
 Diffusion is therefore most valuable as a complement to planning, not as a substitute for it.

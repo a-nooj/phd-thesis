@@ -11,24 +11,25 @@
 Diffusion-based policies can learn expressive motion priors from demonstrations and can enable generalization across tasks.
 In planning settings, generation must be environment-conditioned: the same start and goal can require very different trajectories depending on the constraints imposed by the scene or task.
 This makes the conditioning representation central to the success of the model, since the diffusion model can only generate appropriate trajectories if its condition captures the environment differences that matter for motion.
+
 Constraint information, including kinematic and dynamic constraints derived from scene, robot embodiment, and task, enter the trajectory denoising model through a learned observation embedding via FiLM, concatenation, or cross-attention.
-% \begin{figure}
-%   \centering
-%     \includegraphics[width=\columnwidth,height=0.75\columnwidth]{example-image-a}
-%   \caption{A graphical presentation of your approach. Place first thing in the second column of the first page. Refer to this image in your text.}\label{fig:first-page}
-% \end{figure}
 A common approach is to condition on high-dimensional perceptual inputs, such as RGB images, depth maps, point clouds, occupancy grids, or learned visual embeddings.
 These representations are intuitively appealing because they preserve scene information, moving from appearance-level information in RGB toward more explicit geometric information in depth or point clouds.
+
 However, perceptual richness does not guarantee behavioral usefulness: a representation may preserve visual or geometric variation that is irrelevant to planning, while discarding subtle constraint-relevant variation.
 % The key abstraction problem is therefore not ``which sensor modality is most detailed?'' but ``which representation preserves the distinctions that change feasible motion?''
 For trajectory diffusion, two environments should be considered equivalent if they induce the same or similar feasible trajectory distribution, even if they look different perceptually.
 Conversely, two perceptually similar environments should be represented differently if they force different trajectory behavior, for example because a small geometric or dynamic change makes one class of motions infeasible.
 This motivates behavioral equivalence (not perceptual similarity) as the right level of abstraction: the conditioning variable should collapse perceptual variance that does not affect motion, while preserving constraint-induced differences that do.
 This notion is constraint-agnostic: the relevant constraints may be kinematic, geometric, dynamic, torque-based, contact-based, safety-related, or task-specific; the representation only needs to encode how those constraints affect feasible motion.
-The method presented in this paper approximates behavioral equivalence through diagnostic trajectory snippets, where each snippet acts as a probe applied to an environment under the chosen constraint model.
-Each probe produces a binary constraint-response bit, indicating whether that snippet satisfies the environment's constraints or violates them, regardless of the underlying reason for failure.
-A set of selected snippets therefore assigns each environment a binary feasibility signature, or behavioral barcode, whose coordinates correspond to fixed diagnostic probes evaluated under the relevant constraint model.
-The entropy-style greedy selection algorithm identifies informative anchors by choosing snippets that make these signatures maximally distinguishable, yielding a compact, task-aligned conditioning representation that abstracts away raw perception and preserves the constraint-induced distinctions needed for trajectory diffusion.
+Figure~\ref{fig:anchor_selection} illustrates the anchor-selection process and the construction of binary environment signatures from diagnostic feasibility probes.
+
+% The method presented in this paper approximates behavioral equivalence through diagnostic trajectory snippets, where each snippet acts as a probe applied to an environment under the chosen constraint model.
+% Each probe produces a binary constraint-response bit, indicating whether that snippet satisfies the environment's constraints or violates them, regardless of the underlying reason for failure.
+% A set of selected snippets therefore assigns each environment a binary feasibility signature, or behavioral barcode, whose coordinates correspond to fixed diagnostic probes evaluated under the relevant constraint model.
+% The entropy-style greedy selection algorithm identifies informative anchors by choosing snippets that make these signatures maximally distinguishable, yielding a compact, task-aligned conditioning representation that abstracts away raw perception and preserves the constraint-induced distinctions needed for trajectory diffusion.
+
+This chapter introduces behavioral anchor conditioning, a method for constructing compact environment codes for trajectory diffusion from binary feasibility responses to diagnostic trajectory snippets. Each snippet acts as a fixed motion probe, and each environment is represented by the vector of feasibility outcomes produced by evaluating those probes under the environment's constraint model. The resulting signature is not intended to reconstruct the scene. Instead, it is designed to preserve distinctions that affect feasible motion. In the empirical evaluation, this chapter studies the collision-avoidance setting, where the feasibility oracle is a geometric collision checker. The broader formulation is compatible with other binary constraint oracles, but the quantitative results in this chapter focus on collision-aware trajectory generation.
 
 
 % ── 2. Related Work ───────────────────────────────────────────────────────────
@@ -36,7 +37,7 @@ The entropy-style greedy selection algorithm identifies informative anchors by c
 \begin{figure*}
   \centering
     \includegraphics[width=\textwidth]{../anchor/figs/explanatory.png}
-  \caption{A graphical presentation of your approach. Place first thing in the second column of the first page. Refer to this image in your text.}\label{fig:first-page}
+  \caption{Diagnostic anchor selection. Candidate trajectory snippets are evaluated across environments using a binary feasibility oracle. Snippets that produce the same response in every environment provide little information, while snippets that split currently indistinguishable environments refine the behavioral signature. The selected anchors define a compact binary code for each environment, where environments with identical signatures are treated as equivalent by the downstream trajectory diffusion model.}\label{fig:anchor_selection}
 \end{figure*}
 
 \section{Related Work}\label{sec:related-work}
@@ -55,480 +56,224 @@ Our work is closest in spirit to representation-learning approaches that define 
 
 \section{Methods}\label{sec:methods}
 
-In this section, we present our method for conditioning trajectory diffusion models using compact constraint-response signatures. We first formalize environment-conditioned trajectory generation and describe where conditioning enters the diffusion model. We then introduce diagnostic trajectory snippets, which act as constraint probes for an environment. Finally, we describe an entropy-based greedy procedure for selecting anchor snippets that produce maximally informative environment signatures.
+This section introduces behavioral anchor conditioning for trajectory diffusion. The method constructs a compact environment representation by evaluating selected diagnostic trajectory snippets under an environment-specific feasibility oracle. The resulting binary signature is then used as the environment-conditioning input to the trajectory denoising model.
 
 \subsection{Problem Setup}
 
-Let $\mathcal{E}=\{e_1,\ldots,e_N\}$ denote a set of training environments. Each environment specifies a constraint model under which robot trajectories are evaluated. These constraints may include geometric collision constraints, joint-limit constraints, kinematic reachability constraints, torque or dynamic feasibility constraints, contact constraints, or any task-specific validity criterion. We assume access to a constraint oracle
+Let $\mathcal{E}=\{e_1,\ldots,e_N\}$ denote a set of training environments. Each environment defines a constraint model under which robot trajectories can be evaluated. In this chapter's experiments, these constraints are geometric collision constraints, but the formulation allows any binary feasibility criterion. We assume access to a constraint oracle
 %
 \begin{equation}
-    \Phi(e,\tau) \in \{0,1\},
+\Phi(e,\tau) \in \{0,1\},
 \end{equation}
 %
-where $\Phi(e,\tau)=1$ indicates that trajectory $\tau$ satisfies the constraints of environment $e$, and $\Phi(e,\tau)=0$ indicates that at least one constraint is violated. This abstraction deliberately does not require the constraint oracle to expose the reason for failure. The same representation can therefore be used whether infeasibility is caused by obstacle collision, excessive torque, violation of a velocity bound, or any other constraint encoded by the environment.
+where $\Phi(e,\tau)=1$ indicates that trajectory $\tau$ satisfies the constraints of environment $e$, and $\Phi(e,\tau)=0$ indicates that at least one constraint is violated.
 
-We consider trajectories in robot configuration space. A trajectory is represented as
+A trajectory is represented in robot configuration space as
 %
 \begin{equation}
-    \tau = (q_0,q_1,\ldots,q_T), \qquad q_t\in\mathbb{R}^{d},
+\tau=(q_0,q_1,\ldots,q_T), \qquad q_t\in\mathbb{R}^{d},
 \end{equation}
 %
-where $d$ is the number of robot degrees of freedom. The objective is to learn a conditional generative model that samples trajectories from a distribution
+where $d$ is the number of robot degrees of freedom. The goal is to learn a conditional generative model that samples trajectories from
 %
 \begin{equation}
-    p(\tau \mid q_{\mathrm{start}}, q_{\mathrm{goal}}, z(e)),
+p(\tau \mid q_{\mathrm{start}}, q_{\mathrm{goal}}, z(e)),
 \end{equation}
 %
-where $q_{\mathrm{start}}$ and $q_{\mathrm{goal}}$ specify the planning query and $z(e)$ is an environment representation used to condition generation. The central question addressed by this work is how to construct $z(e)$. Rather than using a high-dimensional perceptual representation of the scene, we construct a compact behavioral representation that captures how the environment constrains motion.
+where $q_{\mathrm{start}}$ and $q_{\mathrm{goal}}$ define the planning query and $z(e)$ is the environment representation. The central question is how to construct $z(e)$ so that it preserves the environment differences that matter for feasible motion.
 
 \subsection{Conditional Trajectory Diffusion}
 
-We model trajectory generation using a denoising diffusion model over trajectories. Given a clean trajectory $\tau_0$, the forward diffusion process gradually corrupts the trajectory with Gaussian noise:
+We use a denoising diffusion model over trajectories. Given a clean trajectory $\tau_0$, the forward process corrupts it with Gaussian noise:
 %
 \begin{equation}
-    q(\tau_t \mid \tau_0)
-    =
-    \mathcal{N}
-    \left(
-        \sqrt{\bar{\alpha}_t}\tau_0,
-        (1-\bar{\alpha}_t)I
-    \right),
+q(\tau_t \mid \tau_0)
+=
+\mathcal{N}
+\left(
+\sqrt{\bar{\alpha}_t}\tau_0,
+(1-\bar{\alpha}_t)I
+\right),
 \end{equation}
 %
-where $t\in\{1,\ldots,T_d\}$ is the diffusion timestep and $\bar{\alpha}_t$ is determined by the noise schedule. A neural denoiser $\epsilon_\theta$ is trained to predict the noise added at timestep $t$, conditioned on the planning query and environment representation:
+where $t\in\{1,\ldots,T_d\}$ is the diffusion timestep and $\bar{\alpha}_t$ is determined by the noise schedule. A neural denoiser $\epsilon_\theta$ is trained to predict the added noise conditioned on the noisy trajectory, diffusion timestep, planning query, and environment code:
 %
 \begin{equation}
-    \epsilon_\theta
-    =
-    \epsilon_\theta(
-        \tau_t,
-        t,
-        q_{\mathrm{start}},
-        q_{\mathrm{goal}},
-        z(e)
-    ).
+\epsilon_\theta
+=
+\epsilon_\theta(
+\tau_t,
+t,
+q_{\mathrm{start}},
+q_{\mathrm{goal}},
+z(e)
+).
 \end{equation}
 %
 The training objective is the standard noise-prediction loss
 %
 \begin{equation}
 \begin{split}
-    \mathcal{L}(\theta)
-    =
-    \mathbb{E}_{\tau_0,t,\epsilon}
-    \big[
-    \big\|
-        \epsilon -
-        \epsilon_\theta(
-            \tau_t,
-            t,
-            q_{\mathrm{start}},
-            q_{\mathrm{goal}},
-            z(e)
-        )
-    \big\|_2^2
-    \big],
+\mathcal{L}(\theta)
+=
+\mathbb{E}_{\tau_0,t,\epsilon}
+\big[
+\big\|
+\epsilon -
+\epsilon_\theta(
+\tau_t,
+t,
+q_{\mathrm{start}},
+q_{\mathrm{goal}},
+z(e)
+)
+\big\|_2^2
+\big],
 \end{split}
 \end{equation}
 %
-where $\epsilon\sim\mathcal{N}(0,I)$. During inference, trajectories are generated by iterative denoising from random noise while conditioning on the start state, goal state, and environment code.
+where $\epsilon\sim\mathcal{N}(0,I)$. During inference, trajectories are generated by iterative denoising from random noise while conditioning on the start state, goal state, and environment representation.
 
-This formulation places strong importance on the conditioning representation $z(e)$. If $z(e)$ fails to distinguish environments that require different motion behavior, then the denoising process receives insufficient information to generate the appropriate trajectory distribution. Conversely, if $z(e)$ preserves perceptual variation that does not affect feasible motion, then the diffusion model must learn to ignore nuisance variation. We therefore seek a representation that is aligned with behavioral equivalence: environments should be represented similarly when they induce similar feasible trajectory distributions, and differently when they impose different constraints on motion.
+This formulation makes the choice of $z(e)$ critical. If two environments require different motion behavior but receive the same or similar conditioning input, the denoising model has insufficient information to generate environment-appropriate trajectories. Conversely, if the representation preserves irrelevant perceptual variation, the model must learn to ignore it. Behavioral anchor conditioning addresses this by constructing $z(e)$ from feasibility responses to diagnostic motion probes.
 
-\subsection{Diagnostic Trajectory Snippets}
+\subsection{Diagnostic Anchor Signatures}
 
 We approximate behavioral equivalence using a finite set of diagnostic trajectory snippets. A snippet is a short contiguous segment extracted from a demonstrated or planned trajectory. Given a trajectory $\tau=(q_0,\ldots,q_T)$, a snippet of horizon $H$ starting at index $a$ is
 %
 \begin{equation}
-    s = (q_a,q_{a+1},\ldots,q_{a+H-1}).
+s=(q_a,q_{a+1},\ldots,q_{a+H-1}).
 \end{equation}
 %
-Let $\mathcal{S}=\{s_1,\ldots,s_M\}$ denote the set of candidate snippets extracted from the training trajectories. Each snippet acts as a binary constraint probe. For environment $e_j$, define
+Let $\mathcal{S}=\{s_1,\ldots,s_M\}$ denote the set of candidate snippets extracted from the training trajectories. Each candidate snippet acts as a constraint probe. Evaluating snippet $s_i$ in environment $e_j$ gives a binary response
 %
 \begin{equation}
-    b_i(e_j) = \Phi(e_j,s_i) \in \{0,1\},
+B_{ij} = \Phi(e_j,s_i),
+\qquad
+B\in\{0,1\}^{M\times N}.
 \end{equation}
 %
-where $b_i(e_j)=1$ indicates that snippet $s_i$ satisfies the constraints in environment $e_j$, and $b_i(e_j)=0$ indicates that it violates at least one constraint. Evaluating all snippets in all training environments produces a binary constraint-response matrix
-%
-\begin{equation}
-    B\in\{0,1\}^{M\times N},
-    \qquad
-    B_{ij}=b_i(e_j).
-\end{equation}
-%
-Each row of $B$ describes the feasibility pattern of one snippet across the training environments. Each column describes the response of one environment to all candidate snippets. The goal of anchor selection is to choose a subset of snippets whose response patterns are maximally informative for distinguishing environments according to their constraint-induced behavior.
+Each row of $B$ describes the feasibility pattern of one snippet across environments, and each column describes how one environment responds to all candidate snippets.
 
-Given an anchor set $A=\{a_1,\ldots,a_K\}\subseteq \{1,\ldots,M\}$, we encode an environment $e_j$ by the binary signature
+Given an anchor set $A=\{a_1,\ldots,a_K\}\subseteq \{1,\ldots,M\}$, environment $e_j$ is encoded by the selected feasibility responses:
 %
 \begin{equation}
-    z_A(e_j)
-    =
-    \left[
-        B_{a_1j},
-        B_{a_2j},
-        \ldots,
-        B_{a_Kj}
-    \right]
-    \in\{0,1\}^{K}.
+z_A(e_j)
+=
+\left[
+B_{a_1j},
+B_{a_2j},
+\ldots,
+B_{a_Kj}
+\right]
+\in\{0,1\}^{K}.
 \end{equation}
 %
-The signature $z_A(e_j)$ is a behavioral barcode: it records how the environment responds to a fixed set of diagnostic motion probes. Importantly, this code is not intended to reconstruct the environment. It is intended to preserve the distinctions among environments that are relevant to constraint satisfaction and trajectory generation.
+The signature $z_A(e_j)$ is a behavioral code rather than a reconstruction of the scene. It records how the environment responds to selected motion probes, preserving distinctions that affect feasibility while discarding variation that is irrelevant to the chosen constraint model.
 
 \subsection{Entropy-Based Anchor Selection}
 
-A useful anchor is not simply a snippet that is feasible in many environments. A snippet that is feasible in every environment, or infeasible in every environment, provides little information for conditioning because it does not separate environments. Instead, an anchor is informative when its constraint-response pattern refines the current grouping of environments into more distinguishable signature classes.
+The goal of anchor selection is to choose snippets whose feasibility responses distinguish environments according to their constraint-induced behavior. A snippet that is feasible in every environment, or infeasible in every environment, provides no information because it does not separate environments. Informative snippets are those that split groups of environments that are currently indistinguishable under the anchors selected so far.
 
-Let $A_m$ denote the set of anchors selected after $m$ greedy iterations, and let
+Let $A_m$ denote the anchors selected after $m$ greedy iterations, and let
 %
 \begin{equation}
-    C_m(e_j)=z_{A_m}(e_j)
+C_m(e_j)=z_{A_m}(e_j)
 \end{equation}
 %
-be the current signature assigned to environment $e_j$. The current signatures induce a partition of the training environments into equivalence classes
+be the current signature assigned to environment $e_j$. These signatures induce a partition of the training environments into groups
 %
 \begin{equation}
-    \mathcal{G}_m = \{G_c : c \in \mathrm{range}(C_m)\},
+\mathcal{G}_m = \{G_c : c \in \mathrm{range}(C_m)\},
+\qquad
+G_c = \{e_j \in \mathcal{E} : C_m(e_j)=c\}.
 \end{equation}
 %
-where
+Within each group $G_c$, all environments are indistinguishable under the selected anchors.
+
+For an unselected candidate snippet $s_i\notin A_m$, define the empirical probability that the snippet is feasible within group $G_c$:
 %
 \begin{equation}
-    G_c = \{e_j \in \mathcal{E} : C_m(e_j)=c\}.
+p_{i,c}
+=
+\frac{1}{|G_c|}
+\sum_{e_j\in G_c} B_{ij}.
 \end{equation}
 %
-Within each group $G_c$, all environments are indistinguishable under the anchors selected so far. A candidate snippet is informative if it splits these existing groups into smaller subgroups.
-
-We formalize this using conditional entropy. For a candidate snippet $s_i\notin A_m$, define the empirical probability that the snippet is feasible within group $G_c$:
+The informativeness of the candidate within that group is measured by binary entropy,
 %
 \begin{equation}
-    p_{i,c}
-    =
-    \frac{1}{|G_c|}
-    \sum_{e_j\in G_c} B_{ij}.
+h(p_{i,c})
+=
+-p_{i,c}\log_2 p_{i,c}
+-(1-p_{i,c})\log_2(1-p_{i,c}),
 \end{equation}
 %
-The uncertainty of the candidate response within group $G_c$ is measured by binary entropy:
+with $h(0)=h(1)=0$. The conditional entropy gain of candidate snippet $s_i$ is
 %
 \begin{equation}
-    h(p_{i,c})
-    =
-    -p_{i,c}\log_2 p_{i,c}
-    -(1-p_{i,c})\log_2(1-p_{i,c}),
+\Delta H(s_i\mid A_m)
+=
+\sum_{G_c\in\mathcal{G}_m}
+\frac{|G_c|}{N}
+h(p_{i,c}).
 \end{equation}
 %
-with $h(0)=h(1)=0$. The entropy gain of candidate snippet $s_i$ conditioned on the current anchor set is
+This score is high when a snippet produces balanced feasibility outcomes inside large groups of environments that are not yet distinguished. At each iteration, the next anchor is selected as
 %
 \begin{equation}
-    \Delta H(s_i\mid A_m)
-    =
-    \sum_{G_c\in\mathcal{G}_m}
-    \frac{|G_c|}{N}
-    h(p_{i,c}).
+a_{m+1}
+=
+\arg\max_{i\notin A_m}
+\Delta H(s_i\mid A_m),
 \end{equation}
 %
-This score is high when a snippet produces uncertain, balanced feasibility outcomes inside large groups of environments that are currently indistinguishable. It is zero if the snippet has the same outcome for every environment within each current group, since such a snippet would not refine the existing signatures. At each iteration, we select the candidate snippet with maximum conditional entropy:
+and the anchor set is updated:
 %
 \begin{equation}
-    a_{m+1}
-    =
-    \arg\max_{i\notin A_m}
-    \Delta H(s_i\mid A_m).
+A_{m+1}=A_m\cup\{a_{m+1}\}.
 \end{equation}
 %
-The selected snippet is appended to the anchor set,
+The procedure terminates when $K$ anchors have been selected, when the maximum entropy gain falls below a threshold, or when the resulting signatures are sufficiently discriminative for the downstream task.
+
+This greedy objective can be interpreted as selecting the next feasibility query that provides the most information about the environment identity conditioned on the queries already selected. More importantly for planning, it selects probes that expose constraint-relevant variation not captured by previous anchors.
+
+\subsection{Behavioral Equivalence and Encoding New Environments}
+
+The selected anchor set defines a finite approximation to behavioral equivalence. Two environments are equivalent under anchor set $A$ if they produce the same constraint-response signature:
 %
 \begin{equation}
-    A_{m+1}=A_m\cup\{a_{m+1}\},
+e_i \sim_A e_j
+\quad\Longleftrightarrow\quad
+z_A(e_i)=z_A(e_j).
 \end{equation}
 %
-and every environment signature is updated by appending the corresponding feasibility bit. The procedure terminates when $K$ anchors have been selected, when the maximum entropy gain falls below a threshold, or when the current signatures are sufficiently discriminative for the downstream task.
+This equivalence relation does not require the environments to be visually or geometrically identical. It only requires them to respond identically to the selected diagnostic motion probes. Conversely, visually similar environments can receive different signatures if they permit and forbid different anchor snippets.
 
-This objective can be interpreted as greedily maximizing the information provided by the next constraint probe about the environment identity, conditioned on the probes already selected. Equivalently, the method chooses the snippet whose binary response is most uncertain within the current signature classes. As a result, anchors are selected to expose constraint-relevant variation that has not yet been captured by earlier probes.
-
-\paragraph{Anchor selection procedure.}
-Given training environments $\mathcal{E}=\{e_1,\ldots,e_N\}$, candidate snippets $\mathcal{S}=\{s_1,\ldots,s_M\}$, a constraint oracle $\Phi$, and a desired maximum number of anchors $K$, we construct the anchor set as follows:
-Rather than presenting anchor identification as a planner-specific subroutine, we view it as a representation construction procedure. The procedure greedily refines a probe-induced partition of the training environments.
-
-\begin{enumerate}
-    \item \textbf{Construct constraint responses.}
-    Evaluate every candidate snippet in every training environment to form the binary constraint-response matrix
-    %
-    \begin{equation}
-        B_{ij} = \Phi(e_j,s_i),
-        \qquad
-        B\in\{0,1\}^{M\times N}.
-    \end{equation}
-    %
-    Each row of $B$ corresponds to the feasibility pattern of a snippet across environments.
-
-    \item \textbf{Initialize signatures.}
-    Set the anchor set to $A=\emptyset$ and assign every environment the empty signature,
-    %
-    \begin{equation}
-        z_A(e_j) = [\ ],
-        \qquad \forall e_j\in\mathcal{E}.
-    \end{equation}
-
-    \item \textbf{Form current equivalence classes.}
-    At greedy iteration $m$, group environments by their current signatures. This induces a partition
-    %
-    \begin{equation}
-        \mathcal{G}_m = \{G_c : c \in \mathrm{range}(z_A)\},
-    \end{equation}
-    %
-    where
-    %
-    \begin{equation}
-        G_c = \{e_j\in\mathcal{E}: z_A(e_j)=c\}.
-    \end{equation}
-    %
-    Environments in the same group are indistinguishable under the anchors selected so far.
-
-    \item \textbf{Score candidate anchors.}
-    For each unselected snippet $s_i\notin A$, compute the empirical probability that the snippet is feasible within each current group:
-    %
-    \begin{equation}
-        p_{i,c}
-        =
-        \frac{1}{|G_c|}
-        \sum_{e_j\in G_c} B_{ij}.
-    \end{equation}
-    %
-    The conditional entropy gain of snippet $s_i$ is then
-    %
-    \begin{equation}
-        \Delta H(s_i\mid A)
-        =
-        \sum_{G_c\in\mathcal{G}_m}
-        \frac{|G_c|}{N}
-        h(p_{i,c}),
-    \end{equation}
-    %
-    where
-    %
-    \begin{equation}
-        h(p)=-p\log_2 p-(1-p)\log_2(1-p),
-    \end{equation}
-    %
-    with $h(0)=h(1)=0$.
-
-    \item \textbf{Select the most informative snippet.}
-    Choose the candidate snippet with maximum conditional entropy gain:
-    %
-    \begin{equation}
-        a^\star
-        =
-        \arg\max_{s_i\notin A}
-        \Delta H(s_i\mid A).
-    \end{equation}
-    %
-    This selects the snippet whose constraint-response pattern most strongly refines the current environment partition.
-
-    \item \textbf{Update anchor set and signatures.}
-    Add the selected snippet to the anchor set,
-    %
-    \begin{equation}
-        A \leftarrow A\cup\{a^\star\},
-    \end{equation}
-    %
-    and append its response bit to every environment signature:
-    %
-    \begin{equation}
-        z_A(e_j)
-        \leftarrow
-        [z_A(e_j), B_{a^\star j}],
-        \qquad \forall e_j\in\mathcal{E}.
-    \end{equation}
-
-    \item \textbf{Terminate.}
-    Repeat Steps 3--6 until $K$ anchors have been selected or the maximum conditional entropy gain falls below a threshold $\eta$.
-\end{enumerate}
-
-% \begin{algorithm}[t]
-% \caption{Entropy-Based Diagnostic Anchor Selection}
-% \label{alg:anchor_selection_abstract}
-% \begin{algorithmic}[1]
-% \Require Training environments $\mathcal{E}=\{e_1,\ldots,e_N\}$, candidate snippets $\mathcal{S}=\{s_1,\ldots,s_M\}$, constraint oracle $\Phi$, maximum anchors $K$, entropy threshold $\eta$
-% \Ensure Anchor set $A$ and environment signatures $\{z_A(e_j)\}_{j=1}^{N}$
-
-% \State Construct the constraint-response matrix
-% \[
-%     B_{ij} = \Phi(e_j,s_i), \qquad
-%     B\in\{0,1\}^{M\times N}.
-% \]
-
-% \State Initialize the anchor set $A\gets\emptyset$ and assign each environment the empty signature:
-% \[
-%     z_A(e_j) \gets [\ ], \qquad \forall e_j\in\mathcal{E}.
-% \]
-
-% \For{$m=0$ to $K-1$}
-
-%     \State Let $\mathcal{G}_m$ be the partition of environments induced by the current signatures:
-%     \[
-%         e_i,e_j \in G_c
-%         \quad \Longleftrightarrow \quad
-%         z_A(e_i)=z_A(e_j)=c.
-%     \]
-
-%     \State For each unselected candidate snippet $s_i\notin A$, compute its conditional entropy gain:
-%     \[
-%         \Delta H(s_i\mid A)
-%         =
-%         \sum_{G_c\in\mathcal{G}_m}
-%         \frac{|G_c|}{N}
-%         h\!\left(
-%             \frac{1}{|G_c|}
-%             \sum_{e_j\in G_c} B_{ij}
-%         \right),
-%     \]
-%     where
-%     \[
-%         h(p)=-p\log_2 p-(1-p)\log_2(1-p).
-%     \]
-
-%     \State Select the most informative snippet:
-%     \[
-%         a^\star
-%         =
-%         \arg\max_{s_i\notin A}
-%         \Delta H(s_i\mid A).
-%     \]
-
-%     \If{$\Delta H(a^\star\mid A)<\eta$}
-%         \State \textbf{break}
-%     \EndIf
-
-%     \State Add the selected snippet to the anchor set:
-%     \[
-%         A\gets A\cup\{a^\star\}.
-%     \]
-
-%     \State Update each environment signature by appending the selected response bit:
-%     \[
-%         z_A(e_j)
-%         \gets
-%         \left[
-%             z_A(e_j), B_{a^\star j}
-%         \right],
-%         \qquad \forall e_j\in\mathcal{E}.
-%     \]
-
-% \EndFor
-
-% \State \Return $A,\{z_A(e_j)\}_{j=1}^{N}$
-
-% \end{algorithmic}
-% \end{algorithm}
-
-% \begin{algorithm}[t]
-% \caption{Entropy-Based Diagnostic Anchor Selection}
-% \label{alg:anchor_selection}
-% \begin{algorithmic}[1]
-% \Require Training environments $\mathcal{E}=\{e_1,\ldots,e_N\}$, candidate snippets $\mathcal{S}=\{s_1,\ldots,s_M\}$, constraint oracle $\Phi$, maximum anchors $K$, entropy threshold $\eta$
-% \Ensure Anchor set $A$, environment signatures $\{z_A(e_j)\}_{j=1}^{N}$
-
-% \State Initialize $B\in\{0,1\}^{M\times N}$
-% \For{$i=1$ to $M$}
-%     \For{$j=1$ to $N$}
-%         \State $B_{ij} \gets \Phi(e_j,s_i)$
-%     \EndFor
-% \EndFor
-
-% \State $A \gets \emptyset$
-% \For{$j=1$ to $N$}
-%     \State $z_A(e_j) \gets [\ ]$
-% \EndFor
-
-% \For{$m=0$ to $K-1$}
-%     \State Construct groups $\mathcal{G}_m$ induced by current signatures $\{z_A(e_j)\}_{j=1}^{N}$
-%     \State $\Delta H^\star \gets -\infty$
-%     \State $a^\star \gets \mathrm{None}$
-
-%     \For{$i=1$ to $M$}
-%         \If{$i\in A$}
-%             \State \textbf{continue}
-%         \EndIf
-
-%         \State $\Delta H_i \gets 0$
-
-%         \ForAll{$G_c\in\mathcal{G}_m$}
-%             \State $p_{i,c} \gets \frac{1}{|G_c|}\sum_{e_j\in G_c} B_{ij}$
-%             \If{$p_{i,c}=0$ or $p_{i,c}=1$}
-%                 \State $h_{i,c} \gets 0$
-%             \Else
-%                 \State $h_{i,c} \gets -p_{i,c}\log_2 p_{i,c}-(1-p_{i,c})\log_2(1-p_{i,c})$
-%             \EndIf
-%             \State $\Delta H_i \gets \Delta H_i + \frac{|G_c|}{N}h_{i,c}$
-%         \EndFor
-
-%         \If{$\Delta H_i > \Delta H^\star$}
-%             \State $\Delta H^\star \gets \Delta H_i$
-%             \State $a^\star \gets i$
-%         \EndIf
-%     \EndFor
-
-%     \If{$a^\star=\mathrm{None}$ or $\Delta H^\star < \eta$}
-%         \State \textbf{break}
-%     \EndIf
-
-%     \State $A \gets A\cup\{a^\star\}$
-%     \For{$j=1$ to $N$}
-%         \State $z_A(e_j) \gets [z_A(e_j), B_{a^\star j}]$
-%     \EndFor
-% \EndFor
-
-% \State \Return $A,\{z_A(e_j)\}_{j=1}^{N}$
-% \end{algorithmic}
-% \end{algorithm}
-
-\subsection{Probe-Induced Behavioral Equivalence}
-
-The selected anchor set defines a finite approximation to behavioral equivalence. Two environments $e_i$ and $e_j$ are equivalent under anchor set $A$ if they produce the same constraint-response signature:
+After the anchors have been selected, a new environment $e_{\mathrm{new}}$ is encoded by evaluating the same anchors under its constraint oracle:
 %
 \begin{equation}
-    e_i \sim_A e_j
-    \quad\Longleftrightarrow\quad
-    z_A(e_i)=z_A(e_j).
+z_A(e_{\mathrm{new}})
+=
+\left[
+\Phi(e_{\mathrm{new}},s_{a_1}),
+\ldots,
+\Phi(e_{\mathrm{new}},s_{a_K})
+\right].
 \end{equation}
 %
-This equivalence relation does not require the environments to be perceptually or geometrically similar. Instead, it groups environments according to their response to diagnostic motion probes. Environments with the same signature may differ in appearance or raw geometry, but they are indistinguishable with respect to the selected constraint queries. Conversely, environments that are perceptually similar may be assigned different signatures if they impose different feasibility outcomes on the anchors.
-
-This representation is therefore aligned with the needs of trajectory generation. The diffusion model does not require a complete description of the environment; it requires a conditioning signal that distinguishes environments when their feasible trajectory distributions differ. The anchor signature serves as a compact index into this space of constraint-induced motion behavior.
-
-\subsection{Encoding New Environments}
-
-After the anchor set $A$ has been selected, encoding a new environment $e_{\mathrm{new}}$ requires no retraining of the anchor selection procedure. We evaluate the same anchor snippets under the constraint oracle of the new environment:
-%
-\begin{equation}
-    z_A(e_{\mathrm{new}})
-    =
-    \left[
-        \Phi(e_{\mathrm{new}},s_{a_1}),
-        \ldots,
-        \Phi(e_{\mathrm{new}},s_{a_K})
-    \right].
-\end{equation}
-%
-The resulting binary vector has the same dimension and coordinate semantics as the training signatures. It can therefore be used directly as the environment-conditioning input for the trajectory diffusion model. If the selected anchors capture recurring modes of constraint variation in the training distribution, then new environments with similar constraint-response structure will map to nearby signatures, even when their raw perceptual descriptions differ.
-
-The same procedure applies regardless of the underlying constraint type. For collision-only planning, $\Phi$ may check whether each configuration in the snippet is collision-free. For dynamic planning, $\Phi$ may additionally check velocity, acceleration, torque, or contact constraints. For task-constrained motion, $\Phi$ may encode semantic or operational requirements. In all cases, the anchor selection algorithm operates only on the binary constraint-response matrix and is therefore agnostic to the implementation of the constraint oracle.
-
-\subsection{Algorithm Summary}
-
-The full anchor construction procedure is summarized in Algorithm~\ref{alg:anchor_selection}. The method first extracts candidate snippets from feasible training trajectories and evaluates every snippet in every training environment to form the constraint-response matrix $B$. It then initializes all environments with the empty signature and greedily adds snippets that maximize the conditional entropy of the candidate response within current signature groups. The resulting signatures provide compact environment codes for diffusion conditioning. Unlike sensory representations, these codes are explicitly constructed to preserve constraint-induced behavioral distinctions rather than perceptual detail.
-
+The resulting binary vector has the same coordinate semantics as the training signatures and can be used directly as the environment-conditioning input for the diffusion model. For the collision-avoidance experiments in this chapter, each bit records whether the corresponding anchor snippet is collision-free in the environment. More generally, the same interface can be used with any constraint oracle that maps trajectory snippets to binary feasibility outcomes.
 
 % ── 4. Evaluation ────────────────────────────────────────────────────────────
 
 \section{Evaluation}\label{sec:evaluation}
 
-We evaluate whether diagnostic anchor conditioning provides a more task-aligned representation for trajectory diffusion than conventional perceptual or hand-designed conditioning inputs. Our evaluation is organized around two case studies. The first considers collision avoidance, where the environment constraints are purely geometric. The second considers a richer constraint setting in which generated trajectories must satisfy both kinematic and dynamic constraints, including collision avoidance and payload-induced torque limits. Together, these studies test whether the proposed constraint-response representation remains useful when the notion of feasibility changes from simple geometric validity to a more general constraint-satisfaction problem.
+This section evaluates whether diagnostic anchor conditioning provides a more task-aligned environment representation for collision-aware trajectory diffusion. The empirical study focuses on geometric collision constraints, where the feasibility oracle evaluates whether trajectory snippets and generated trajectories remain collision-free in a given environment. Although the anchor construction is formulated for arbitrary binary constraint oracles, the quantitative results in this chapter are limited to the collision-avoidance setting. The broader constraint-agnostic interpretation is discussed separately as an extension of the interface rather than as an empirically validated result.
+
+The main experimental question is whether conditioning on binary anchor signatures improves the quality of generated trajectory initializations compared with perceptual, hand-designed, environment-agnostic, and random conditioning baselines. We evaluate this question using collision-free rate, collision fraction, collision steps, and worst-case clearance metrics across three training seeds.
 
 \subsection{Experimental Setup}
 
-We compare trajectory diffusion models that share the same denoising architecture and training procedure, but differ in the representation used for environment conditioning. The proposed method, denoted \textit{Anchor Traj}, conditions the model on binary constraint-response signatures induced by the selected diagnostic anchor snippets. These anchors are chosen using the entropy-based procedure described in Section~III, which greedily selects snippets whose feasibility outcomes maximally refine the current partition of training environments.
+We compare trajectory diffusion models that share the same denoising architecture and training procedure, but differ in the representation used for environment conditioning. The proposed method, denoted \textit{Anchor Traj}, conditions the model on binary constraint-response signatures induced by the selected diagnostic anchor snippets. These anchors are chosen using the entropy-based procedure described in Section~\ref{sec:methods}, which greedily selects snippets whose feasibility outcomes maximally refine the current partition of training environments.
 
 We compare against four conditioning baselines. \textit{Point Cloud} conditions the diffusion model on a point-cloud representation of the environment using a standard PointNet++ encoder. \textit{Key Config} conditions on key robot configurations produced by PRESTO. \textit{Start-Goal} provides only the planning query and does not condition on environment information. \textit{Random} assigns random vectors as environment codes, testing whether performance gains arise merely from providing distinct identifiers rather than behaviorally meaningful structure. We also report \textit{VAMP} as an oracle-like upper bound. VAMP is not intended as a directly comparable learned conditioning method; rather, it indicates the approximate performance ceiling achievable by the underlying planner or trajectory source.
 
@@ -538,53 +283,81 @@ All learned models are trained using three random training seeds. Error bars ind
 
 We evaluate generated trajectories using four collision-related metrics. The \textit{collision-free rate} measures the fraction of generated trajectories that satisfy collision constraints over the full trajectory. The \textit{collision steps} metric counts the number of states along a trajectory that are in collision. The \textit{collision fraction} normalizes this quantity by trajectory length, measuring the proportion of the trajectory that violates collision constraints. Finally, we compute worst-case clearance metrics over trajectories that are mostly collision-free. The \textit{mean worst-case clearance} measures the average minimum clearance along generated trajectories, while the \textit{tail worst-case clearance} reports the fifth percentile of worst-case clearance, capturing rare but severe constraint violations.
 
-For the payload-handling case study, we additionally evaluate dynamic feasibility using torque-related metrics. In particular, we measure whether generated trajectories remain within torque limits induced by the manipulated payload and report both aggregate feasibility and worst-case torque-margin statistics. This allows us to test whether the anchor construction remains effective when feasibility depends not only on geometry, but also on dynamic constraints.
+% For the payload-handling case study, we additionally evaluate dynamic feasibility using torque-related metrics. In particular, we measure whether generated trajectories remain within torque limits induced by the manipulated payload and report both aggregate feasibility and worst-case torque-margin statistics. This allows us to test whether the anchor construction remains effective when feasibility depends not only on geometry, but also on dynamic constraints.
 
 \begin{figure*}
   \centering
-    \includegraphics[width=\textwidth]{../anchor/figs/eval.png}
-  \caption{Collision-avoidance evaluation across three training seeds. Anchor Traj denotes the proposed diagnostic anchor conditioning method. VAMP is shown as an oracle-like upper bound rather than a learned conditioning baseline. Point Cloud uses a PointNet++ environment encoder, Key Config uses PRESTO key configurations, Start-Goal does not condition on environment information, and Random uses random environment codes. Anchor Traj achieves the strongest learned-model performance across collision-free rate, collision steps, collision fraction, and worst-case clearance metrics.}\label{fig:eval}
+    \includegraphics[width=\textwidth]{ThesisFilePkg/figs/charts-anchor.pdf}
+  \caption{Collision-avoidance evaluation across three training seeds. Anchor Traj denotes the proposed diagnostic anchor conditioning method. VAMP is shown as an oracle-like upper bound rather than a learned conditioning baseline. Point Cloud uses a PointNet++ environment encoder, Key Config uses PRESTO key configurations, Start-Goal does not condition on environment information, and Random uses random environment codes. Anchor Traj provides the strongest overall learned-model performance, with the clearest improvements appearing in collision-severity and worst-case-clearance metrics.}\label{fig:eval}
 \end{figure*}
 
-\subsection{Case Study 1: Collision Avoidance}
+\subsection{Collision-Avoidance Results}
 
-Figure~\ref{fig:collision_results} summarizes the collision-avoidance results. Anchor Traj achieves the best learned-model performance across the primary collision metrics. While VAMP provides the expected upper bound in collision-free rate, Anchor Traj produces the highest collision-free rate among learned conditioning methods. In contrast, Point Cloud and Random conditioning obtain lower success rates, while Key Config and Start-Goal perform substantially worse. This suggests that explicitly encoding constraint-response behavior provides a more useful conditioning signal than either raw geometric perception or environment-agnostic conditioning.
+Figure~\ref{fig:eval} summarizes the collision-avoidance results across the learned conditioning methods and the VAMP reference ceiling. The main result is that anchor conditioning improves the quality of generated trajectory initializations. While the collision-free rate provides a useful binary success measure, the clearest advantage of Anchor Traj appears in the violation-severity metrics: collision fraction, collision steps, and worst-case clearance. These metrics are especially important in this setting because the diffusion model is used to generate trajectory candidates that may be passed to a downstream planner or optimizer. A trajectory that is not fully feasible but has fewer and less severe collisions is a better initialization than one that penetrates obstacles deeply or remains in collision for a large portion of the rollout.
 
-Anchor Traj also substantially reduces the severity of constraint violations. In terms of collision steps, Anchor Traj produces fewer colliding states than Point Cloud, Key Config, Start-Goal, and Random conditioning. The same trend is reflected in collision fraction, where Anchor Traj has the lowest fraction of trajectory states in collision among learned methods. These results indicate that the proposed representation does not merely improve binary success rate; it also shifts failed trajectories closer to feasibility by reducing the amount of time spent in violation.
+\subsubsection{Collision-Free Rate}
 
-The clearance results further support this trend. Among trajectories that are mostly collision-free, Anchor Traj produces the best worst-case clearance behavior of the learned methods. Both the mean worst-case clearance and the lower-tail clearance are improved relative to Point Cloud, Key Config, Start-Goal, and Random conditioning. This is especially important because worst-case clearance captures whether a generated trajectory merely avoids collision by a small margin or maintains a safer separation from obstacles throughout execution. The improved tail clearance suggests that Anchor Traj reduces rare but severe near-collision failures.
+Anchor Traj achieves the strongest collision-free rate among the learned diffusion-based conditioning methods. VAMP remains the reference ceiling, as expected, because it represents the performance of the underlying trajectory source rather than a learned conditioning baseline. Among the learned methods, Anchor Traj outperforms Point Cloud, Key Config, Start-Goal, and Random conditioning on average.
 
-These results support the central hypothesis of this work: the most useful environment representation for trajectory diffusion is not necessarily the one that most explicitly describes scene geometry, but the one that best preserves constraint-induced behavioral distinctions. Point Cloud conditioning provides direct geometric information about obstacles, yet it must learn from data which geometric variations matter for trajectory feasibility. Anchor Traj instead exposes this information through diagnostic feasibility probes, providing the diffusion model with a compact code aligned with the obstacle-avoidance task.
+The comparison with Start-Goal shows that environment information is necessary: conditioning only on the planning query is insufficient when the same start and goal can require different motions in different environments. The comparison with Point Cloud shows that providing geometric information alone does not guarantee the best planning behavior, since the diffusion model must still learn which geometric distinctions are relevant for feasibility. The comparison with Random is also informative. Random environment codes can sometimes help because they give the model a way to distinguish environments, but they do not encode how each environment constrains motion. Anchor signatures provide a more structured conditioning signal because each bit corresponds to the feasibility response of a diagnostic trajectory probe.
 
-\subsection{Case Study 2: Collision Avoidance with Payload-Induced Dynamic Constraints}
+At the same time, the collision-free-rate improvement should not be overstated. The margin over some baselines is moderate, and Random conditioning performs competitively in some seeds. This suggests that binary success rate alone does not fully capture the benefit of the proposed representation. For that reason, the remaining metrics are important for understanding how anchor conditioning changes the quality of the generated trajectories.
 
-The second case study evaluates whether the proposed representation extends beyond geometric collision avoidance to settings involving both kinematic and dynamic constraints. In this setting, generated trajectories must remain collision-free while also satisfying payload-dependent torque constraints. This case study is designed to test the constraint-agnostic nature of the anchor selection procedure. Since anchors are selected from binary feasibility outcomes, the same procedure can be applied regardless of whether a snippet fails due to obstacle collision, kinematic infeasibility, excessive torque, or a combination of constraints.
+\subsubsection{Collision Fraction and Collision Steps}
+
+Collision fraction and collision steps measure the severity of constraint violation rather than only whether a trajectory is completely collision-free. These metrics show a clearer advantage for Anchor Traj. Compared with the other learned conditioning methods, Anchor Traj produces trajectories with a smaller fraction of waypoints in collision and fewer collision steps along the trajectory.
+
+This result is important because diffusion-generated trajectories are often used as initial guesses. A failed trajectory with a small number of colliding waypoints is much closer to feasibility than a failed trajectory that remains in collision for a large part of its duration. In this sense, Anchor Traj improves not only the probability of producing a fully feasible sample, but also the quality of infeasible samples. The generated trajectories are shifted closer to the feasible set, which should reduce the amount of correction required from a downstream optimizer or trajectory-repair procedure.
+
+This supports the central motivation for behavioral anchor conditioning. The anchor signature does not attempt to reconstruct the full scene geometry. Instead, it exposes how the environment responds to representative motion probes. The resulting code appears to provide the denoising model with information that is directly relevant to avoiding constraint violations.
+
+\subsubsection{Worst-Case Clearance}
+
+Worst-case clearance provides another measure of trajectory quality. It evaluates the minimum clearance along a trajectory, making it sensitive to rare but severe obstacle penetrations. Negative clearance values indicate penetration into obstacles, so values closer to zero from below indicate less severe collision when a trajectory is not fully collision-free.
+
+Anchor Traj achieves the best worst-case clearance behavior among the learned conditioning methods. Both the mean worst-case clearance and the lower-tail clearance improve relative to Point Cloud, Key Config, Start-Goal, and Random conditioning. The tail metric is particularly important because it captures severe failure cases. A method that occasionally produces deeply penetrating trajectories may be difficult for a downstream optimizer to repair, even if its average performance appears reasonable.
+
+The clearance results therefore strengthen the conclusion from the collision-fraction metrics. Anchor conditioning does not merely improve binary feasibility. It also reduces the severity of the remaining failures. This is the strongest empirical evidence that the proposed representation provides better trajectory initializations for constrained generation.
+
+\subsection{Discussion of Results}
+
+Overall, the collision-avoidance results support the hypothesis that behaviorally defined environment codes can be more useful for trajectory diffusion than purely perceptual or hand-designed conditioning inputs. Point Cloud conditioning provides direct geometric information, but the model must learn from data which geometric features matter for feasible motion. Key Config conditioning provides a more structured representation, but it may not preserve all distinctions that affect the generated trajectory distribution. Start-Goal conditioning confirms that the planning query alone is insufficient, and Random conditioning shows that simply assigning different identifiers to environments does not consistently capture the structure needed for feasibility.
+
+The main advantage of Anchor Traj is that its conditioning signal is constructed from constraint responses. Each bit in the signature records whether a selected diagnostic trajectory snippet is feasible in the environment. As a result, environments are distinguished when they impose different feasibility outcomes on representative motions. This gives the diffusion model a compact input that is aligned with the downstream planning objective.
+
+The most important interpretation of the results is that Anchor Traj produces better initial guesses. Collision-free rate is useful, but it is a strict binary metric. Collision fraction, collision steps, and worst-case clearance show how close generated trajectories are to feasibility when they fail. On these measures, anchor conditioning provides a clearer improvement. This matters because trajectory diffusion is often used not as a final planner by itself, but as a generator of candidate trajectories that can be refined, optimized, or checked by a downstream planning system.
+
+These results should be interpreted within the scope of the experiment. The empirical evaluation in this chapter validates anchor conditioning for geometric collision avoidance. The formulation is compatible with other binary constraint oracles, but the experiments here do not yet demonstrate improved performance for dynamic, torque, contact, or task-specific constraints.
+
+\section{Discussion}
+
+\subsection{Extension to Other Constraint Oracles}
+
+The anchor-conditioning interface is not specific to collision checking. The only requirement is access to a binary feasibility oracle that evaluates whether a trajectory snippet satisfies the constraints associated with an environment. In the collision-avoidance experiments above, this oracle checks geometric validity. However, the same construction could be applied with a different oracle that incorporates dynamic feasibility, torque limits, contact constraints, visibility constraints, or task-specific rules.
+
+Under this broader view, the semantics of the constraint checker may change, but the representation interface remains the same. A fixed set of anchors is evaluated in each environment, and the resulting binary responses form a signature used to condition the trajectory diffusion model. For example, a geometric oracle would produce a signature indicating which anchor snippets are collision-free, while a dynamics-aware oracle could produce a signature indicating which snippets satisfy both collision and torque constraints.
+
+The experiments in this chapter validate the approach only for geometric collision constraints. Extending the empirical evaluation to richer constraint models remains future work. Nevertheless, the formulation suggests that diagnostic anchor conditioning can be understood as a general method for converting arbitrary feasibility queries into compact behavioral environment codes.
 
 
-For this experiment, we redefine the constraint oracle as a joint feasibility test:
-%
-\begin{equation}
-    \Phi(e,\tau)=1
-    \quad \Longleftrightarrow \quad
-    \begin{aligned}
-        &\tau \text{ satisfies collision, kinematic,}\\
-        &\text{and torque constraints in } e.
-    \end{aligned}
-\end{equation}
-%
-The anchor selection procedure is then run on the resulting joint constraint-response matrix. This produces anchors that are informative with respect to the combined feasibility model rather than collision alone. As a result, the selected probes are expected to capture not only where obstacles constrain motion, but also which motions become infeasible under payload-induced torque limits.
+\subsection{Limitations}
 
-We will evaluate this case study using the same collision metrics described above, together with torque-specific feasibility metrics. The key comparison is whether Anchor Traj continues to outperform perceptual, key-configuration, start-goal, and random conditioning when the source of infeasibility is no longer purely geometric. Strong performance in this setting would indicate that the proposed representation is not specialized to collision avoidance, but instead provides a general mechanism for constructing task-aligned conditioning inputs from arbitrary constraint models.
+The first limitation is that the empirical evaluation in this chapter focuses on geometric collision avoidance. The anchor-conditioning formulation is written in terms of a general binary feasibility oracle, and the same interface could be used for dynamic, torque, contact, visibility, or task-specific constraints. However, the results presented here only validate the method for collision constraints. Demonstrating the same benefits for richer constraint models remains future work.
 
-\subsection{Discussion}
+Second, the method assumes access to a constraint oracle that can evaluate anchor snippets in each environment. In the collision-avoidance setting, this oracle is a collision checker. In other settings, the oracle may require dynamics simulation, torque computation, contact reasoning, or task-level feasibility checks. The usefulness of the method therefore depends on whether these feasibility queries are cheaper or easier than solving the full planning problem.
 
-Across the collision-avoidance case study, Anchor Traj consistently provides the strongest learned conditioning representation. The improvement over Start-Goal confirms that environment information is necessary for constrained trajectory generation. The improvement over Random shows that the benefit is not simply due to assigning distinct identifiers to environments. The improvement over Point Cloud and Key Config suggests that high-dimensional geometric or hand-designed representations may not be sufficient unless they are aligned with the downstream feasibility objective.
+Third, the binary signature discards information about the reason and severity of failure. A snippet that barely violates a clearance threshold and a snippet that deeply penetrates an obstacle both receive the same infeasible label. This binary abstraction is useful because it provides a simple and constraint-agnostic interface, but it may lose information that could help the diffusion model distinguish mild violations from severe ones. Future versions of the method could use multi-valued or continuous anchor responses, such as clearance, penetration depth, torque margin, or constraint residuals.
 
-The oracle-like VAMP results provide useful context. VAMP indicates the performance ceiling of the underlying trajectory source and is therefore not expected to be matched exactly by learned diffusion models. However, the gap between Anchor Traj and VAMP is smaller than the corresponding gap for the other learned conditioning approaches across the collision metrics, suggesting that diagnostic anchors preserve more of the task-relevant structure needed for feasible generation.
+Fourth, the representation is limited by the selected anchor set. Two environments with identical anchor signatures are treated as equivalent by the downstream diffusion model, even if they differ in ways that are not tested by the selected probes. Increasing the number of anchors can reduce this ambiguity, but it also increases the dimensionality of the conditioning code and the cost of encoding new environments. The quality of the representation therefore depends on whether the candidate snippet library contains probes that expose the constraint variations relevant to the test environments.
 
-The expected payload-handling results will further test the generality of the approach. If the same anchor selection framework improves performance when torque constraints are included, this would support the claim that diagnostic anchor selection is constraint-agnostic. In that case, the method should be understood not as a collision-specific representation, but as a general procedure for constructing behavioral environment codes from arbitrary feasibility queries.
+Fifth, the current evaluation uses a small number of training seeds. The reported trends suggest that anchor conditioning improves trajectory quality, especially in terms of collision severity and clearance, but additional runs would provide a stronger estimate of variability. More extensive ablations over the number of anchors, the snippet horizon, the candidate snippet source, and random anchor selection would further clarify which parts of the method are most important.
 
+Finally, the chapter argues that better collision fraction and clearance should make generated trajectories better initializations for downstream optimization. This interpretation is supported by the fact that Anchor Traj produces trajectories closer to feasibility, but a complete evaluation should directly measure downstream planner performance, including optimization iterations, repair success rate, and total planning time.
 
-% ── 5. Conclusion ────────────────────────────────────────────────────────────
+\section{Conclusion}\label{sec:anchor-conclusion}
 
-\section{Conclusion}\label{sec:future-work}
+This chapter presented behavioral anchor conditioning for environment-conditioned trajectory diffusion. The central idea is to represent an environment not by its raw perceptual or geometric description, but by its binary responses to a selected set of diagnostic trajectory snippets. These responses form a compact feasibility signature that approximates behavioral equivalence: environments are distinguished when they permit or forbid different representative motions.
+
+In collision-avoidance experiments, anchor conditioning produced stronger learned-model performance than point-cloud, key-configuration, start-goal-only, and random conditioning baselines. The clearest benefit was not only an improvement in collision-free rate, but a reduction in the severity of failed samples. Anchor-conditioned trajectories had lower collision fraction and improved worst-case clearance, indicating that they are closer to feasibility and therefore better suited as initial guesses for downstream planning or trajectory optimization.
+
+The formulation is more general than the collision checker used in this evaluation. Any constraint model that can produce binary feasibility responses for trajectory snippets can, in principle, be used to construct anchor signatures. However, the empirical validation in this chapter is limited to geometric collision avoidance. Extending the evaluation to dynamic, torque, contact, and task-specific constraints remains an important direction for future work.
