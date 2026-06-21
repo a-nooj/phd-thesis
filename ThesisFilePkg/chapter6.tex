@@ -5,13 +5,13 @@
 \label{sec:generation:reframing}
 
 Diffusion models have recently emerged as an effective generative modeling approach for producing high-quality, diverse samples from learned approximations to conditional or unconditional \textsl{multimodal} distributions, albeit at the cost of longer generation times \cite{sohl2015deep,ho2020denoising,rombach2022high,nichol2021glide}.
-This class of generative methods has found application in robotics in two main areas: imitation learning \cite{chi2023diffusion,sridhar2024nomad} and seeding for trajectory optimization \cite{carvalho2023motion,huang2024diffusionseeder}, owing to its ability to represent multimodal distributions effectively and produce diverse and high-quality samples from the modeled data space.
-While existing applications have shown diverse real-world behaviors through end-effector delta actions, they primarily focus on kinematic constraints, require many human demonstrations, and necessitate training a new model for novel behaviors \cite{chi2023diffusion,ajay2023is,ha2023scaling,ze20243d}. These limitations direct my research toward the seeding problem for trajectory optimization---specifically, developing diffusion models that produce kinematically and dynamically admissible trajectories which can further be refined by standard trajectory optimization iterations.
+This class of generative methods has found application in robotics in two main areas: imitation learning \cite{chi2023diffusionpolicy,sridhar2024nomad} and seeding for trajectory optimization \cite{carvalho2023motion,huang2024diffusionseeder}, owing to its ability to represent multimodal distributions effectively and produce diverse and high-quality samples from the modeled data space.
+While existing applications have shown diverse real-world behaviors through end-effector delta actions, they primarily focus on kinematic constraints, require many human demonstrations, and necessitate training a new model for novel behaviors \cite{chi2023diffusionpolicy,ajay2023is,ha2023scaling,ze20243d}. These limitations direct my research toward the seeding problem for trajectory optimization---specifically, developing diffusion models that produce kinematically and dynamically admissible trajectories which can further be refined by standard trajectory optimization iterations.
 
 \section{Why Diffusion}
 \label{sec:generation:diffusion}
 
-Diffusion models offer a compelling solution to trajectory generation through their inherent properties: they naturally explore diverse solution trajectories through stochastic denoising \cite{chi2023diffusion} while modeling complex, multimodal distributions that accommodate rich contextual information. A distinctive advantage of diffusion models is the ability to apply cost guidance \textsl{at inference time}, steering the denoising process to generate trajectories that avoid obstacles and respect higher-order constraints---a capability not native to most alternative generative architectures.
+Diffusion models offer a compelling solution to trajectory generation through their inherent properties: they naturally explore diverse solution trajectories through stochastic denoising \cite{chi2023diffusionpolicy} while modeling complex, multimodal distributions that accommodate rich contextual information. A distinctive advantage of diffusion models is the ability to apply cost guidance \textsl{at inference time}, steering the denoising process to generate trajectories that avoid obstacles and respect higher-order constraints---a capability not native to most alternative generative architectures.
 
 \section{Background on Diffusion}
 \label{sec:generation:background}
@@ -46,7 +46,7 @@ starts from $\bm{\pi}^K \sim \mathcal{N}(0, I)$ and generates a trajectory $\bm{
 \subsection{Behavior Cloning and Imitation}
 \label{sec:generation:bc}
 
-In imitation learning, diffusion models learn a policy directly from demonstration data, generating end-effector delta actions conditioned on sensory observations \cite{chi2023diffusion,sridhar2024nomad}. This role has demonstrated impressive real-world generalization but remains fundamentally tied to kinematic, position-controlled execution.
+In imitation learning, diffusion models learn a policy directly from demonstration data, generating end-effector delta actions conditioned on sensory observations \cite{chi2023diffusionpolicy,sridhar2024nomad}. This role has demonstrated impressive real-world generalization but remains fundamentally tied to kinematic, position-controlled execution.
 
 \subsection{Trajectory-Level Planning}
 \label{sec:generation:planning}
@@ -69,12 +69,12 @@ The diffusion-based trajectory generation system comprises four core components 
 \subsection{Problem-Specific Conditioning}
 \label{sec:generation:conditioning}
 
-Real-world tasks invariably operate under both kinematic and dynamic constraints. These constraints are incorporated via the conditioning mechanism, effectively learning a conditional distribution that leverages prior work in sensory feature learning \cite{krizhevsky2012imagenet}. This conditioning can take various forms---RGB images \cite{chi2023diffusion,sridhar2024nomad}, point clouds \cite{ze20243d}, depth information \cite{huang2024diffusionseeder}, or task-centric representations \cite{seo2024presto}---all aimed at generating near-admissible motions that can be further refined by trajectory optimization.
+Real-world tasks invariably operate under both kinematic and dynamic constraints. These constraints are incorporated via the conditioning mechanism, effectively learning a conditional distribution that leverages prior work in sensory feature learning \cite{krizhevsky2012imagenet}. This conditioning can take various forms---RGB images \cite{chi2023diffusionpolicy,sridhar2024nomad}, point clouds \cite{ze20243d}, depth information \cite{huang2024diffusionseeder}, or task-centric representations \cite{seo2024presto}---all aimed at generating near-admissible motions that can be further refined by trajectory optimization.
 
 \subsection{Training Data Composition}
 \label{sec:generation:data}
 
-This unconditional approximation can be enhanced to better capture the underlying distribution through high-quality, task-specific training data. The model can also be guided toward on-manifold learning through task-specific loss function design, in addition to the standard noise prediction loss \cite{chi2023diffusion,saha2024edmp,carvalho2023motion}.
+This unconditional approximation can be enhanced to better capture the underlying distribution through high-quality, task-specific training data. The model can also be guided toward on-manifold learning through task-specific loss function design, in addition to the standard noise prediction loss \cite{chi2023diffusionpolicy,saha2024edmp,carvalho2023motion}.
 
 \subsection{Loss Design}
 \label{sec:generation:loss}

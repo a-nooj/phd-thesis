@@ -44,7 +44,7 @@ However, existing diffusion-based approaches have been confined to position-cont
 
 In this work, we propose a method that directly tackles this problem by jointly learning valid distributions of positions, velocities, and accelerations that satisfy both constraint types simultaneously---moving beyond prior work that only denoises in position space.
 Central to our approach is the use of payload mass---a high-level object property---as a conditioning signal that implicitly encodes the full complexity of payload-induced dynamics into the generative process, without requiring explicit constraint formulation at inference time.
-Through investigation of payload encoding strategies, we demonstrate that diffusion models effectively learn the complex relationships between joint states and payload-dependent dynamics, \underline{enabling constant-time generation ($\approx 10$ms) of feasible trajectories that preserve $67.6\%$ workspace accessibility at $3\times$ nominal payload capacity}---without explicit constraint checking at runtime. This demonstrates the importance of dynamics-informed generative models in expanding the operational boundaries of robotic systems.
+Through investigation of payload encoding strategies, we demonstrate that diffusion models effectively learn the complex relationships between joint states and payload-dependent dynamics, \uline{enabling constant-time generation ($\approx 10$ms) of feasible trajectories that preserve $67.6\%$ workspace accessibility at $3\times$ nominal payload capacity}---without explicit constraint checking at runtime. This demonstrates the importance of dynamics-informed generative models in expanding the operational boundaries of robotic systems.
 
 \section{Related Work}
 \label{sec:payload:related}
