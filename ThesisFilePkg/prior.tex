@@ -3,7 +3,7 @@
 Higher-order constraints such as joint torques and end-effector accelerations can be addressed through several approaches that range from ``plan-and-filter'' methods which post-process geometric paths \cite{abderezaei2024clutter,kuntz2019fast} to kinodynamic planners that directly incorporate dynamics during planning \cite{li2016asymptotically,nayak2022bidirectional}.
 Broadly there are four different approaches (\cref{fig:other-prior-work}). The literature is vast so we focus our approaches on manipulation tasks which involve the consideration of environment or object dynamics in addition to robot dynamics.
 
-% \input{figs/other-prior-work}
+\input{figs/other-prior-work}
 
 \section{Planning as Search}
 At its very basic, this class of methods involves finding a configuration-space path is generated to satisfy geometric constraints including collision avoidance and joint limits \cite{orthey2023sampling}. Subsequently, time parameterization is applied---through bang-bang control or optimization techniques---to minimize traversal time while respecting velocity and acceleration constraints \cite{pham2018new,berscheid2021jerk}. The resulting trajectory is then evaluated against environmental dynamic constraints \cite{gaz2019dynamic}. This sequential process iterates until identifying a trajectory that successfully enables the desired dynamic robot-object interaction.

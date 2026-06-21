@@ -26,7 +26,7 @@ During inference, random Gaussian noise of the same dimensionality as the target
 \end{figure}
 
 A joint space trajectory with $t$ waypoints at denoising step $k$ is defined as
-$\bm{\pi}^k = [ X_0^k, X_1^k, \dots, X_{t-1}^k ]^T$
+$\bm{\pi}^k = [ X_0^k, \dots, X_{t-1}^k ]^T$
 where $X_i = (q_i, \dot{q}_i, \ddot{q}_i) \in \mathbb{R}^n$ represents the complete state (joint angles, velocities, and accelerations) of an $n$-DoF robot arm at timestep $i$.
 The training process for the diffusion model approximates the conditional distribution $p(\bm{\pi}\ |\ \mathcal{C})$, where $\mathcal{C}$ is the target conditioning embedding (\textcolor{customred}{\cref{fig:diffusion}}).
 It samples $\bm{\pi}$ from dataset $\mathcal{D}$, adds noise according to a schedule parameterized by $\alpha$, $\gamma$, and $\sigma$, and learns to predict the underlying sample. The noise prediction network $\epsilon_\theta$, where $\theta$ represents the parameters of the 1D U-Net architecture, is trained to minimize

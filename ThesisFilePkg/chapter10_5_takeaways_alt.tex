@@ -16,7 +16,7 @@ A recurring result across the thesis is that kinematic and dynamic feasibility a
 A robot motion may be collision-free, reachable, and valid in configuration space, yet still be infeasible once timing, actuation, payload, contact, or object dynamics are considered.
 The same nominal path can become invalid when the robot carries a heavy object, operates near torque limits, transfers momentum through impulsive contact, or induces motion in a coupled system such as a liquid-filled container.
 Conversely, behaviors that appear unavailable under a purely geometric abstraction may become feasible when the planner reasons over dynamic state transitions.
-The results in \cref{ch,ch,ch} show both sides of this coupling: ignoring dynamics can cause plans to fail, but exploiting dynamics can expand the set of useful manipulation strategies.
+The results in \cref{ch:poking,ch:constrained,ch:payload} show both sides of this coupling: ignoring dynamics can cause plans to fail, but exploiting dynamics can expand the set of useful manipulation strategies.
 
 This coupling weakens the standard separation between geometric planning, time parameterization, control, and feasibility checking.
 That decomposition is effective when dynamic constraints are mild corrections to an otherwise geometric problem.
@@ -140,12 +140,12 @@ The contributions in this thesis suggest two motivations for moving beyond purel
 The first is efficiency.
 Dynamic interactions can sometimes replace slower geometric solutions even when both are feasible.
 Poking, throwing, sliding, scooping, and related behaviors can increase throughput when precise grasping is unnecessary, because they allow the robot to exploit contact, momentum, and object motion rather than rigidly controlling the object throughout the entire trajectory.
-In \cref{ch}, for example, poking enables object rearrangement in clutter by using brief impulsive contacts to produce object motions that would require longer end-effector motions under sustained pushing or grasping.
+In \cref{ch:poking}, for example, poking enables object rearrangement in clutter by using brief impulsive contacts to produce object motions that would require longer end-effector motions under sustained pushing or grasping.
 
 The second reason is coverage.
 Dynamic skills can make tasks feasible that are difficult or impossible under a purely prehensile or geometric abstraction.
 Manipulation under high payloads, joint failures, limited grasp access, cluttered reachability, sustained contact, and coupled robot-object dynamics all require reasoning about more than collision-free motion.
-The results in \cref{ch,ch,ch} show that when the planner or generator accounts for these constraints, the robot can demonstrate capabilities that would otherwise be excluded from the feasible motion space.
+The results in \cref{ch:poking,ch:constrained,ch:payload} show that when the planner or generator accounts for these constraints, the robot can demonstrate capabilities that would otherwise be excluded from the feasible motion space.
 Dynamics are therefore not only a source of modeling difficulty; they are a source of manipulation capability.
 
 Non-prehensile interaction also changes the precision assumptions built into the task.
