@@ -26,15 +26,15 @@ Simulation-in-the-loop planning shows that dynamic interactions such as poking a
 Reusable kinodynamic structure shows that dynamic feasibility can be amortized across related planning queries rather than recomputed from scratch.
 Conditional generative models show that learned trajectory distributions can absorb information about payloads, failures, and constraint manifolds, enabling fast motion generation when the relevant physical parameters are made explicit.
 Together, these results suggest that the next generation of manipulation systems should not treat geometry, timing, contact, dynamics, and learning as isolated components in a sequential pipeline.
-They should instead expose these factors through interfaces that allow planners, optimizers, simulators, and learned models to share responsibility for physical admissibility.
+They should instead expose these factors through interfaces that allow planners, optimizers, simulators, and learned models to share responsibility for physical admissibility, enabling robots to move more fluidly across the diverse interaction modes that manipulation in the physical world requires.
 
-This view also clarifies several requirements for future work.
-Manipulation systems will need better abstractions for skills: abstractions that can represent not only grasping and transport, but also transitions among pushing, poking, sliding, caging, throwing, whole-body contact, and other dynamic interactions.
-They will need better representations of constraints, so that dynamic feasibility can be searched, optimized, learned, reused, and checked at the appropriate level of the system.
-They will need data collection methods that preserve the embodiment-dependent quantities that matter for dynamic behavior, rather than reducing demonstrations to end-effector trajectories alone.
-They will also need evaluation protocols that distinguish interpolation within a training distribution from genuine generalization across new constraints, embodiments, and physical regimes.
+% This view also clarifies several requirements for future work.
+% Manipulation systems will need better abstractions for skills: abstractions that can represent not only grasping and transport, but also transitions among pushing, poking, sliding, caging, throwing, whole-body contact, and other dynamic interactions.
+% They will need better representations of constraints, so that dynamic feasibility can be searched, optimized, learned, reused, and checked at the appropriate level of the system.
+% They will need data collection methods that preserve the embodiment-dependent quantities that matter for dynamic behavior, rather than reducing demonstrations to end-effector trajectories alone.
+% They will also need evaluation protocols that distinguish interpolation within a training distribution from genuine generalization across new constraints, embodiments, and physical regimes.
 
-Dynamics complicate manipulation because they make feasibility depend on motion history, contact conditions, timing, and the physical properties of both the robot and the world.
-But those same dependencies expand the space of possible behaviors.
-They allow robots to move objects without grasping them, exploit momentum rather than avoid it, adapt to altered embodiments, and operate in regimes where geometric pick-and-place is inefficient or impossible.
-The central opportunity is therefore to design robotic systems that treat dynamics not as a disturbance to be suppressed after planning, but as structure to be represented, planned with, learned from, and exploited.
+% Dynamics complicate manipulation because they make feasibility depend on motion history, contact conditions, timing, and the physical properties of both the robot and the world.
+% But those same dependencies expand the space of possible behaviors.
+% They allow robots to move objects without grasping them, exploit momentum rather than avoid it, adapt to altered embodiments, and operate in regimes where geometric pick-and-place is inefficient or impossible.
+% The central opportunity is therefore to design robotic systems that treat dynamics not as a disturbance to be suppressed after planning, but as structure to be represented, planned with, learned from, and exploited.

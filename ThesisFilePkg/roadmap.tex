@@ -1,17 +1,63 @@
-\section{Roadmap of the Thesis}
-\label{sec:intro:roadmap}
+% \section{Roadmap of the Thesis}
+% \label{sec:intro:roadmap}
 
-\textbf{\cref{ch:prior}} establishes a conceptual framework for dynamics-constrained motion generation, organizing existing approaches along four design axes---modeling burden, problem dimensionality, system integration, and usability.
-This framework motivates the progression of methods developed throughout the remainder of the thesis.
+% \textbf{\cref{ch:prior}} establishes a conceptual framework for dynamics-constrained motion generation, organizing existing approaches along four design axes---modeling burden, problem dimensionality, system integration, and usability.
+% This framework motivates the progression of methods developed throughout the remainder of the thesis.
 
+% \begin{enumerate}
+  % \item \textbf{A design framework for dynamics-aware motion generation} (\cref{ch:prior}).
+        % A conceptual framework organizing manipulation methods along four design axes---modeling burden, problem dimensionality, system integration, and usability---providing a unified perspective on the tradeoffs underlying dynamics-aware planning systems.
+
+%   \item \textbf{PokeRRT: impulsive non-prehensile manipulation through kinodynamic search} (\cref{ch:poking}).
+%         A sampling-based kinodynamic planner that uses physics simulation as a forward model for object rearrangement via impulsive contact, without requiring explicit contact models.
+%         Across six scenarios, poking achieves higher success rates and lower task completion times than pushing and grasping baselines.
+
+%   \item \textbf{Kinodynamic planning under coupled robot-object dynamics} (\cref{ch:constrained}).
+%         Extensions of kinodynamic planning to manipulation tasks governed by coupled dynamics, including whole-body manipulation under locked multi-joint failures and spill-free liquid transport in cluttered environments.
+%         These methods maintain up to 92\% of nominal reachable workspace under failures and expand feasible spill-free solution spaces by up to $3\times$ over prior approaches.
+% \end{enumerate}
+
+
+
+% \begin{enumerate}
+%   \setcounter{enumi}{2}
+%   \item \textbf{LazyBoE: multi-query kinodynamic planning via lazy edge bundles} (\cref{ch:multiquery}).
+%         A multi-query kinodynamic planner that amortizes dynamics computation across repeated planning problems by precomputing control-parameterized edge bundles over discretized state and control spaces.
+%         Lazy propagation and collision checking substantially reduce repeated planning cost while preserving kinodynamic feasibility.
+% \end{enumerate}
+
+
+
+
+
+
+% \begin{enumerate}
+%   \setcounter{enumi}{3}
+%   \item \textbf{Motion generation as conditional sampling} (\cref{ch:generation}).
+%         A reformulation of dynamics-aware motion generation as conditional trajectory sampling, establishing a conceptual bridge between kinodynamic planning and learned generative models.
+
+%   \item \textbf{Conditional trajectory diffusion for dynamic constraint satisfaction} (\cref{ch:payload}).
+%         A diffusion-based trajectory generator conditioned on task-level dynamic properties such as payload mass and embodiment configuration.
+%         The method achieves super-nominal payload manipulation---67.6\% workspace accessibility at $3\times$ rated payload capacity---in approximately 10\,ms without runtime constraint checking, and generalizes to fail-active manipulation under actuation failures.
+
+%   \item \textbf{Task-agnostic trajectory seeding for constrained optimization} (\cref{ch:seeding}).
+%         A conditioning mechanism that represents kinematic and dynamic constraints as robot state samples in order to generate near-feasible trajectory seeds for constrained optimization.
+%         The approach improves solver convergence and feasibility across diverse manipulation tasks without task-specific engineering.
+% \end{enumerate}
+
+
+% \paragraph{Online Constraint Evaluation: Kinodynamic Planning.}
 \textbf{Chapters~\ref{ch:poking}--\ref{ch:constrained}} develop methods in which dynamic feasibility is evaluated online: constraint knowledge resides in a physics simulation forward model, and each planning query incurs the full cost of feasibility checking.
-\cref{ch:poking} introduces poking as a dynamic non-prehensile manipulation primitive, using impulsive contact within a sampling-based planner to achieve object rearrangement without explicit contact modeling.
-\cref{ch:constrained} extends kinodynamic planning to manipulation tasks governed by coupled robot-object dynamics, including whole-body manipulation under locked multi-joint failures and spill-free liquid transport in cluttered environments.
+\cref{ch:poking} introduces poking as a dynamic non-prehensile manipulation primitive, using impulsive contact within a sampling-based planner to achieve object rearrangement without explicit contact modeling. Across six scenarios, poking achieves higher success rates and lower task completion times than pushing and grasping baselines.
+\cref{ch:constrained} extends kinodynamic planning to manipulation tasks governed by coupled robot-object dynamics, including whole-body manipulation under locked multi-joint failures and spill-free liquid transport in cluttered environments. These methods maintain up to 92\% of nominal reachable workspace under failures and expand feasible spill-free solution spaces by up to $3\times$ over prior approaches \ap{fix: move liquid to next section - multiquery}.
+
+% \paragraph{Amortized Feasibility via Reusable Motion Structure.}
 \textbf{\cref{ch:multiquery}} introduces the first amortized representation: constraint knowledge is moved upstream into precomputed control-parameterized edge bundles, reducing per-query cost while preserving kinodynamic feasibility through lazy propagation and collision checking.
 
+% \paragraph{Amortized Feasibility via Learned Generative Models.}
 \textbf{Chapters~\ref{ch:generation} and \ref{ch:payload}} develop a more aggressive form of amortization: constraint knowledge is absorbed into the parameters of a conditional trajectory distribution during training, eliminating runtime feasibility checking entirely.
 \cref{ch:generation} reframes motion generation as conditional sampling, establishing the conceptual bridge between kinodynamic planning and trajectory diffusion models.
-\cref{ch:payload} develops a diffusion-based trajectory generator conditioned on task-level dynamic properties such as payload mass, enabling super-nominal payload manipulation without runtime constraint checking.
+\cref{ch:payload} develops a diffusion-based trajectory generator conditioned on task-level dynamic properties such as payload mass, enabling super-nominal payload manipulation without runtime constraint checking. The method achieves super-nominal payload manipulation---67.6\% workspace accessibility at $3\times$ rated payload capacity---in approximately 10\,ms without runtime constraint checking, and generalizes to fail-active manipulation under actuation failures.
 A case study within the chapter extends the same conditioning principle to fail-active manipulation under actuation failures, demonstrating adaptation to changes in robot embodiment and dynamic capability.
 
 \textbf{\cref{ch:seeding}} extends the learned representation to constrained trajectory optimization, completing a progression in which the same conditioning principle is applied at different stages of the motion generation pipeline.

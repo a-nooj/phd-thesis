@@ -1,8 +1,8 @@
 \section{Lessons and Open Questions}
 \label{sec:discussion:lessons}
 
-The contributions summarized above use progressively more compute-efficient mechanisms for motion generation: online kinodynamic search, reusable precomputed motion structure, and learned conditional generation.
-The contributions summarized above span very different mechanisms---online search, precomputed structure, and learned generation---but share a common motivation: that dynamic feasibility is a structured resource for manipulation, not a complication to be engineered around.
+The contributions summarized above use progressively more compute-efficient mechanisms for motion generation---online kinodynamic search, reusable precomputed motion structure, and learned conditional generation.
+% ---but share a common motivation: that dynamic feasibility is a structured resource for manipulation, not a complication to be engineered around.
 Across the thesis, the main lessons fall into three classes.
 The first concerns how constraints shape system design.
 The second concerns the capabilities that dynamic, non-prehensile interaction unlocks beyond geometric skills.
@@ -24,8 +24,7 @@ It is less effective when the dynamic constraint determines the task outcome its
 In poking, the relevant transition is produced by impulse and object inertia.
 In liquid transport, the admissibility of a motion depends on motion-induced fluid response.
 In super-nominal payload manipulation, feasible trajectories are shaped by torque, acceleration, and traversal-time limits.
-In these settings, dynamic feasibility cannot always be postponed to a final validation step.
-It must appear inside motion generation, either through simulation-in-the-loop search, reusable kinodynamic structure, learned feasibility models, or conditional generative priors.
+In these settings, dynamic feasibility must appear inside motion generation, either through simulation-in-the-loop search, reusable kinodynamic structure, learned feasibility models, or conditional generative priors.
 
 This also makes constraint representation a system-level design decision.
 A binary feasibility checker, a differentiable constraint, a physics simulator, a precomputed graph, a learned classifier, and a dataset of feasible trajectories all expose different algorithmic interfaces.
@@ -194,7 +193,7 @@ A strong claim would be that diffusion models can combine training examples to g
 A more conservative interpretation is that they interpolate effectively within the structure of their training data, but struggle when asked to invent new strategies outside that support.
 The distinction matters because robot manipulation often requires behavior under changed objects, constraints, payloads, embodiments, and environments.
 The open question is therefore not whether diffusion can produce smooth and plausible trajectories, but under what conditions it can compose physical constraints and motion patterns beyond the dataset that produced it.
-Answering this question will require training distributions and evaluation protocols designed specifically to separate interpolation from genuine generalization.
+Answering this question will require training distributions and evaluation protocols designed specifically to separate interpolation from genuine generalization \ap{cite}.
 
 The choice of input representation is part of the same issue.
 In vision--language--action systems and other visual policies, much of the computational cost is often concentrated in the visual encoder rather than the action head.
