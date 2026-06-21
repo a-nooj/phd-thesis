@@ -18,7 +18,7 @@
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{../payload/graphics/firstnew.pdf}
-  \caption{The diffusion model presented in this work learns to generate dynamically feasible trajectories directly in joint angle, velocity, and acceleration space, enabling super-nominal payload manipulation.}\label{payload:fig:firstpg}
+  \caption[Diffusion model for super-nominal payload trajectory generation.]{The diffusion model presented in this work learns to generate dynamically feasible trajectories directly in joint angle, velocity, and acceleration space, enabling super-nominal payload manipulation.}\label{payload:fig:firstpg}
 \end{figure}
 
 Manipulator design establishes fundamental performance boundaries through the interplay of mechanical structure, actuation system, and control architecture.
@@ -139,7 +139,7 @@ We extend the diffusion policy architecture to condition trajectory generation o
 \begin{wrapfigure}{l}{0.48\textwidth}
   \centering
   \includegraphics[width=\linewidth]{../payload/graphics/archnew.pdf}
-  \caption{Our model conditions a 1D UNet denoising architecture \cite{chi2023diffusionpolicy} on various payload embeddings.}
+  \caption[1D UNet architecture conditioned on payload embeddings.]{Our model conditions a 1D UNet denoising architecture \cite{chi2023diffusionpolicy} on various payload embeddings.}
   \label{payload:fig:architecture}
 \end{wrapfigure}
 
@@ -180,7 +180,7 @@ Our evaluation of different payload encodings, conducted with FiLM conditioning 
 \begin{wrapfigure}{r}{0.6\textwidth}
   \centering
   \includegraphics[width=\linewidth]{../payload/graphics/bar.pdf}
-  \caption{The aggregate success rate metric shows one-hot diffusion closely matching the underlying training data distribution.}\label{payload:fig:bar}
+  \caption[Aggregate success rate by payload and conditioning method.]{The aggregate success rate metric shows one-hot diffusion closely matching the underlying training data distribution.}\label{payload:fig:bar}
 \end{wrapfigure}
 
 Numeric and one-hot approaches demonstrate comparable effectiveness, particularly for payloads within nominal capacity ($0-3$kg). However, all methods show a tendency to underestimate success rates for higher payloads, potentially due to data imbalance in the training set. When interpreted as a less-than encoding during inference, the supported-range encoding achieves competitive performance, but its one-hot interpretation leads to significantly lower success rates.
@@ -191,7 +191,7 @@ For subsequent experiments, we use with the one-hot encoding scheme, which demon
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{../payload/graphics/eval.pdf}
-  \caption{Comparative analysis of trajectory planning methods for payloads of $3$kg, $6$kg, and $9$kg. DDIM (One-Hot) significantly outperforms a variety of baseline methods in both planning time to first solution and success rate, generating dynamically feasible trajectories in constant time across all payload conditions.}\label{payload:fig:eval}
+  \caption[Planning time and success rate across payload conditions.]{Comparative analysis of trajectory planning methods for payloads of $3$kg, $6$kg, and $9$kg. DDIM (One-Hot) significantly outperforms a variety of baseline methods in both planning time to first solution and success rate, generating dynamically feasible trajectories in constant time across all payload conditions.}\label{payload:fig:eval}
 \end{figure}
 
 \subsection{Comparison across Planner Types}
@@ -231,7 +231,7 @@ However, our baseline still highlights the computational challenge of finding fe
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{../payload/graphics/vignew.pdf}
-  \caption{Two qualitative motions of the robot carrying super-nominal payloads of \textcolor{payloadpink}{$5.4$kg ($1.8\times$ nominal capacity)} and \textcolor{payloadpastelred}{$6.8$kg ($2.3\times$ nominal capacity)} are shown. Colored dots indicate joint torques as a percentage of joint limits: \textcolor{payloadgreen}{$0-20\%$}, \textcolor{payloadmidgreen}{$20-40\%$}, \textcolor{payloadmid}{$40-60\%$}, \textcolor{payloadmidred}{$60-80\%$}, \textcolor{payloadred}{$80-100\%$}. Joints 1, 3, and 5 exhibit higher torques, with joint 1 bearing the structural load of the arm and joints 3 and 5 positioning and orienting the payload.}\label{payload:fig:vignette}
+  \caption[Joint torque profiles during super-nominal payload transport.]{Two qualitative motions of the robot carrying super-nominal payloads of \textcolor{payloadpink}{$5.4$kg ($1.8\times$ nominal capacity)} and \textcolor{payloadpastelred}{$6.8$kg ($2.3\times$ nominal capacity)} are shown. Colored dots indicate joint torques as a percentage of joint limits: \textcolor{payloadgreen}{$0-20\%$}, \textcolor{payloadmidgreen}{$20-40\%$}, \textcolor{payloadmid}{$40-60\%$}, \textcolor{payloadmidred}{$60-80\%$}, \textcolor{payloadred}{$80-100\%$}. Joints 1, 3, and 5 exhibit higher torques, with joint 1 bearing the structural load of the arm and joints 3 and 5 positioning and orienting the payload.}\label{payload:fig:vignette}
 \end{figure}
 
 \section{Conclusion}
@@ -278,7 +278,7 @@ Diffusion models are uniquely suited to solve this. Because they excel at modeli
 \begin{figure}
     \centering
     \includegraphics[width=\columnwidth]{../movingon/figures/first_page_figure_compressed.pdf}
-    \caption{DEFT takes as input a structured embodiment encoding representing joint-level failures and a constraint encoding then synthesizes a feasible robot trajectory via a diffusion model. After experiencing a failure, a given task will likely need to be completed in a different manner. In this figure, the pick-and-place segment is no longer feasible, given the failure condition of a locked second joint and reduced velocity range on joint 1 and reduced angle range on joint 5, and the robot must now push the object to a graspable state to complete the task.}
+    \caption[DEFT embodiment-aware trajectory synthesis under joint failure.]{DEFT takes as input a structured embodiment encoding representing joint-level failures and a constraint encoding then synthesizes a feasible robot trajectory via a diffusion model. After experiencing a failure, a given task will likely need to be completed in a different manner. In this figure, the pick-and-place segment is no longer feasible, given the failure condition of a locked second joint and reduced velocity range on joint 1 and reduced angle range on joint 5, and the robot must now push the object to a graspable state to complete the task.}
     \label{fig:deft:first}
 \end{figure}
 
@@ -293,7 +293,7 @@ Furthermore, we utilize start--goal inpainting and output clamping to enforce em
 \begin{figure*}
   \centering
   \includegraphics[width=\textwidth]{../movingon/figures/block_diagram.pdf}
-  \caption{Overview of DEFT. (a) joint-level embodiment constraints are encoded into a structured representation capturing failure constrained joint position and velocity limits. This embodiment encoding is processed by a multilayer perceptron (MLP) and used to condition the diffusion model. (b) Task-specific constraints (e.g.\ unconstrained or constrained) are represented as one-hot vectors and concatenated with the embodiment encoding to constrain the generative process.
+  \caption[DEFT architecture: embodiment and task conditioning.]{Overview of DEFT. (a) joint-level embodiment constraints are encoded into a structured representation capturing failure constrained joint position and velocity limits. This embodiment encoding is processed by a multilayer perceptron (MLP) and used to condition the diffusion model. (b) Task-specific constraints (e.g.\ unconstrained or constrained) are represented as one-hot vectors and concatenated with the embodiment encoding to constrain the generative process.
   Given these conditioning signals and start--goal joint configurations, the model generates feasible joint-space trajectories adapted explicitly to both the robot's degraded embodiment and task requirements. At each step of the denoising process the predicted joint values are clamped to the failure-induced robot joint limits.}
   \label{fig:deft:system}
 \end{figure*}
@@ -385,7 +385,7 @@ create multiple primitives?  & Unconstrained & 42.4\% & \textbf{99.58\%} \\ \hli
 \begin{figure}
   \centering
   \includegraphics[width=\columnwidth]{../movingon/figures/real-task-explainer-vertical-compressed-1.pdf}
-  \caption{Left (Erasing): The robot grasps an eraser from the table and performs back-and-forth sweeps to remove text. Right (Drawer): The robot opens a drawer, pushes an object to a graspable pose, places it inside, and closes the drawer.}
+  \caption[Real-world DEFT evaluation: erasing and drawer tasks.]{Left (Erasing): The robot grasps an eraser from the table and performs back-and-forth sweeps to remove text. Right (Drawer): The robot opens a drawer, pushes an object to a graspable pose, places it inside, and closes the drawer.}
   \label{fig:deft:real}
 \end{figure}
 

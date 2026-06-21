@@ -37,7 +37,7 @@ This chapter introduces behavioral anchor conditioning, a method for constructin
 \begin{figure*}
   \centering
     \includegraphics[width=\textwidth]{../anchor/figs/explanatory.png}
-  \caption{Diagnostic anchor selection. Candidate trajectory snippets are evaluated across environments using a binary feasibility oracle. Snippets that produce the same response in every environment provide little information, while snippets that split currently indistinguishable environments refine the behavioral signature. The selected anchors define a compact binary code for each environment, where environments with identical signatures are treated as equivalent by the downstream trajectory diffusion model.}\label{fig:anchor_selection}
+  \caption[Diagnostic anchor selection via binary feasibility oracle.]{Diagnostic anchor selection. Candidate trajectory snippets are evaluated across environments using a binary feasibility oracle. Snippets that produce the same response in every environment provide little information, while snippets that split currently indistinguishable environments refine the behavioral signature. The selected anchors define a compact binary code for each environment, where environments with identical signatures are treated as equivalent by the downstream trajectory diffusion model.}\label{fig:anchor_selection}
 \end{figure*}
 
 \section{Related Work}\label{sec:related-work}
@@ -288,7 +288,7 @@ We evaluate generated trajectories using four collision-related metrics. The \te
 \begin{figure*}
   \centering
     \includegraphics[width=\textwidth]{ThesisFilePkg/figs/charts-anchor.pdf}
-  \caption{Collision-avoidance evaluation across three training seeds. Anchor Traj denotes the proposed diagnostic anchor conditioning method. VAMP is shown as an oracle-like upper bound rather than a learned conditioning baseline. Point Cloud uses a PointNet++ environment encoder, Key Config uses PRESTO key configurations, Start-Goal does not condition on environment information, and Random uses random environment codes. Anchor Traj provides the strongest overall learned-model performance, with the clearest improvements appearing in collision-severity and worst-case-clearance metrics.}\label{fig:eval}
+  \caption[Collision-avoidance evaluation comparing anchor conditioning to baselines.]{Collision-avoidance evaluation across three training seeds. Anchor Traj denotes the proposed diagnostic anchor conditioning method. VAMP is shown as an oracle-like upper bound rather than a learned conditioning baseline. Point Cloud uses a PointNet++ environment encoder, Key Config uses PRESTO key configurations, Start-Goal does not condition on environment information, and Random uses random environment codes. Anchor Traj provides the strongest overall learned-model performance, with the clearest improvements appearing in collision-severity and worst-case-clearance metrics.}\label{fig:eval}
 \end{figure*}
 
 \subsection{Collision-Avoidance Results}

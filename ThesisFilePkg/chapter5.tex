@@ -21,7 +21,7 @@ To this end, our work introduces a multi-query approach in the interleaved plann
 \begin{figure}
   \centering
     \includegraphics[width=.9\linewidth]{../lazy/assets/first_pg_final.pdf}
-  \caption{Several applications motivate the need for considering dynamic constraints in motion planning. The payload transport problem requires the robot to account for the added mass at its end-effector and its effects on the inertia, Coriolis, and gravity matrices in the robot dynamics model \cite{saramago2002optimum}. Similarly, liquid transport in the General Waiter Motion Problem imposes acceleration constraints on the end-effector to ensure spill-free trajectories \cite{ichnowski2022gomp}. Nonprehensile actions like poking can be used to singulate target objects and require an understanding of combined robot and object dynamics \cite{pasricha2022pokerrt}. In this paper, we present a method for planning robot paths while considering its dynamic constraints.}\label{lazy:fig:first-page}
+  \caption[Dynamic constraint examples motivating kinodynamic planning.]{Several applications motivate the need for considering dynamic constraints in motion planning. The payload transport problem requires the robot to account for the added mass at its end-effector and its effects on the inertia, Coriolis, and gravity matrices in the robot dynamics model \cite{saramago2002optimum}. Similarly, liquid transport in the General Waiter Motion Problem imposes acceleration constraints on the end-effector to ensure spill-free trajectories \cite{ichnowski2022gomp}. Nonprehensile actions like poking can be used to singulate target objects and require an understanding of combined robot and object dynamics \cite{pasricha2022pokerrt}. In this paper, we present a method for planning robot paths while considering its dynamic constraints.}\label{lazy:fig:first-page}
 \end{figure}
 
 More specifically, our planner is conceptually aligned with the bundle of edges (BoE) framework, which adapts the probabilistic roadmap method from a kinematic setting to the kinodynamic domain \cite{kavraki1996probabilistic}.
@@ -109,7 +109,7 @@ This method of edge generation with a sampled duration is known as Monte Carlo p
 \begin{figure}
   \centering
     \includegraphics[width=.9\linewidth]{../lazy/assets/pert_mod.pdf}
-  \caption{Perturbing the start state of an edge $e_i \in \mathcal{E}$ (black arrow) by a maximum of $\theta$ and applying $e_i.u$ for duration $e_i.\Delta t$ results in a perturbed end state ($\hat{q}_f$). Applying multiple random perturbations for $e_i$ (grey arrows in (a), green and red arrows in (b)) allows us to estimate $e_i.P_{\text{lazy\_prop}} = Pr(\|\hat{q}_f - e_i.q_f\|_2 < \theta) = 2/4$ and $e_i.P_{\text{collision}} = 1/4$ for the provided example. We repeat this process for all edges in $\mathcal{E}$ to integrate lazy approaches to simulation and collision checking in \textsl{LazyBoE}.}\label{lazy:fig:pert_analysis}
+  \caption[Lazy propagation probability estimation via state perturbation.]{Perturbing the start state of an edge $e_i \in \mathcal{E}$ (black arrow) by a maximum of $\theta$ and applying $e_i.u$ for duration $e_i.\Delta t$ results in a perturbed end state ($\hat{q}_f$). Applying multiple random perturbations for $e_i$ (grey arrows in (a), green and red arrows in (b)) allows us to estimate $e_i.P_{\text{lazy\_prop}} = Pr(\|\hat{q}_f - e_i.q_f\|_2 < \theta) = 2/4$ and $e_i.P_{\text{collision}} = 1/4$ for the provided example. We repeat this process for all edges in $\mathcal{E}$ to integrate lazy approaches to simulation and collision checking in \textsl{LazyBoE}.}\label{lazy:fig:pert_analysis}
 \end{figure}
 
 The task of generating an edge bundle that uniformly samples the state and control spaces of a robot is a computationally intensive process, particularly in the case of a high-DoF robot and increased environment complexity.
@@ -147,7 +147,7 @@ These two metrics, associated with each edge, are used to guide the planner by d
 \begin{figure}
   \centering
     \includegraphics[width=.9\linewidth]{../lazy/assets/theta_over_2.pdf}
-  \caption{\textsl{LazyBoE} can lazily propagate a series of edges from $\mathcal{E}$ (shown in \textsl{grey}) in a way that minimizes heuristic cost. After a lazy candidate path is found (\textsl{blue}), a full simulation and collision check is performed along this path (\textsl{green}) to extend the planning tree (\textsl{black}). To ensure the highest rate of success when performing simulation on lazy paths, neighborhood lookup is restricted to $\theta / 2$ for lazy search to allow, in the worst case, the maximum error between the end of a simulated edge and the start of the next lazy edge to be $\theta$.}\label{lazy:fig:theta_over_2}
+  \caption[LazyBoE lazy candidate path evaluation and tree extension.]{\textsl{LazyBoE} can lazily propagate a series of edges from $\mathcal{E}$ (shown in \textsl{grey}) in a way that minimizes heuristic cost. After a lazy candidate path is found (\textsl{blue}), a full simulation and collision check is performed along this path (\textsl{green}) to extend the planning tree (\textsl{black}). To ensure the highest rate of success when performing simulation on lazy paths, neighborhood lookup is restricted to $\theta / 2$ for lazy search to allow, in the worst case, the maximum error between the end of a simulated edge and the start of the next lazy edge to be $\theta$.}\label{lazy:fig:theta_over_2}
 \end{figure}
 
 \begin{algorithm}\footnotesize
@@ -211,7 +211,7 @@ This delineation into time to initial solution and final solution cost is necess
 \begin{figure}
   \centering
     \includegraphics[width=.9\linewidth]{../lazy/assets/initial_planning_time.png}
-  \caption{Our method is able to find the first solution in less time than baseline approaches, owing to its lazy approach to simulation and collision checking. Asterisks indicate significance level when comparing our planner to the baseline methods. \textsl{ns} indicates no significant difference.}\label{lazy:fig:eval-time}
+  \caption[Time to first solution across planners.]{Our method is able to find the first solution in less time than baseline approaches, owing to its lazy approach to simulation and collision checking. Asterisks indicate significance level when comparing our planner to the baseline methods. \textsl{ns} indicates no significant difference.}\label{lazy:fig:eval-time}
 \end{figure}
 
 Our \textsl{LazyBoE} planner outperformed baseline kinodynamic methods in multiple key metrics.
@@ -231,19 +231,19 @@ Scaling the approach to cover the entire robot workspace is a pressing challenge
 \begin{figure}
   \centering
     \includegraphics[width=.9\linewidth]{../lazy/assets/final_traj_cost.png}
-  \caption{The final solution cost, i.e., the solution with the lowest cost, for our planner is comparable to the BoE planner. Asterisks indicate significance levels.}\label{lazy:fig:eval-cost}
+  \caption[Final solution cost comparison across planners.]{The final solution cost, i.e., the solution with the lowest cost, for our planner is comparable to the BoE planner. Asterisks indicate significance levels.}\label{lazy:fig:eval-cost}
 \end{figure}
 
 \begin{figure}
   \centering
     \includegraphics[width=.9\linewidth]{../lazy/assets/success_rate.png}
-  \caption{Our algorithm has a higher success rate compared to the baselines owing to the exploration of a greater number of potential solutions (\cref{lazy:fig:eval-num_solutions}).}\label{lazy:fig:eval-success}
+  \caption[Success rate comparison across planners.]{Our algorithm has a higher success rate compared to the baselines owing to the exploration of a greater number of potential solutions (\cref{lazy:fig:eval-num_solutions}).}\label{lazy:fig:eval-success}
 \end{figure}
 
 \begin{figure}
   \centering
     \includegraphics[width=.9\linewidth]{../lazy/assets/num_solutions.png}
-  \caption{Our planner is able to explore a larger number of solutions than the baseline methods. RRT terminates after finding the first solution, but the mean number of solutions is less than $1$ because RRT does not succeed in finding a solution for every planning problem \cref{lazy:fig:eval-success}. Asterisks indicate the significance levels.}\label{lazy:fig:eval-num_solutions}
+  \caption[Number of solutions explored per planner.]{Our planner is able to explore a larger number of solutions than the baseline methods. RRT terminates after finding the first solution, but the mean number of solutions is less than $1$ because RRT does not succeed in finding a solution for every planning problem \cref{lazy:fig:eval-success}. Asterisks indicate the significance levels.}\label{lazy:fig:eval-num_solutions}
 \end{figure}
 
 Of note, despite this significant performance improvement, \textsl{LazyBoE}'s final solution cost was competitive in quality ($3.42$ cost) to the best performing alternatives, BoE ($3.43$ cost) and SST (\cref{lazy:fig:eval-cost}). In essence, our method provides efficiency without sacrificing optimality.

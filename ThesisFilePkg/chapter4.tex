@@ -39,7 +39,7 @@ Failure Case~2 locks the Wrist Lift and Wrist Rotation joints, precluding use of
 \begin{figure}[h]
   \centering
   \includegraphics[width=.85\linewidth]{../wholebody/figures/Figure_3_update_02b_comp-1.pdf}
-  \caption{Two locked multi-joint (LMJ) failure cases on the Franka Emika Panda arm (failed joints indicated by red rings).
+  \caption[Two locked multi-joint failure configurations on the Franka Panda.]{Two locked multi-joint (LMJ) failure cases on the Franka Emika Panda arm (failed joints indicated by red rings).
   \textbf{Left (Case~1):} Posterior Elbow Rotation, Anterior Elbow Rotation, and Wrist Rotation joints locked, restricting grasp configurations.
   \textbf{Right (Case~2):} Wrist Lift and Wrist Rotation joints locked, precluding end-effector use entirely.}
   \label{fig:constrained:panda}
@@ -79,7 +79,7 @@ and the \textbf{Greedy} ASM scores a subset of candidate edges in simulation and
 \textit{Case 2}     & \textbf{NPM+PM} & \textbf{0.73} & $\mathbf{-21\%}$ \\
                     & PM only & 0 & $-100\%$ \\ \bottomrule
 \end{tabular}
-\caption{Reachability data. Whole-body NPM recovers most of the nominal workspace even when prehensile-only manipulation fails completely.}
+\caption[Workspace reachability under joint failure with whole-body NPM recovery.]{Reachability data. Whole-body NPM recovers most of the nominal workspace even when prehensile-only manipulation fails completely.}
 \label{tab:constrained:reach}
 \end{table}
 
@@ -154,7 +154,7 @@ We collected a total of 700 trajectories, including 655 human-performed trajecto
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{../liquid/figs/tilt_angle_ranges.png}
-  \caption{Maximum tilt angles executed across all 30 evaluation trials by SFRRT* (solid lines, within the shaded allowable range per container) compared to the SpillNot baseline~\cite{pendulum} (fixed $15^\circ$ limit). In every experiment, SFRRT* utilizes a larger tilt range than SpillNot.}
+  \caption[Tilt angle comparison between SFRRT* and SpillNot baseline.]{Maximum tilt angles executed across all 30 evaluation trials by SFRRT* (solid lines, within the shaded allowable range per container) compared to the SpillNot baseline~\cite{pendulum} (fixed $15^\circ$ limit). In every experiment, SFRRT* utilizes a larger tilt range than SpillNot.}
   \label{fig:constrained:tilt}
 \end{figure}
 
