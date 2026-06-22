@@ -3,7 +3,11 @@
 \chapter{Poking: Dynamic Primitives for Sampling-Based Planning}
 \label{ch:poking}
 
-\section{Motivating Scenario}
+\cref{ch:prior} organized existing approaches to dynamics-constrained motion generation around the question of \emph{where} knowledge of admissible motion should reside in a robotic system and \emph{what} computational form it should take.
+This chapter gives the first answer: feasibility is evaluated entirely \emph{online}, inside the planning loop, by rolling out a physics simulation as the forward model.
+Placing constraint knowledge in simulation lets a sampling-based planner discover impulsive, non-prehensile behavior---poking---that expands what a manipulator can do beyond geometric pick-and-place, at the cost of paying the full dynamic-feasibility computation anew on every planning query.
+
+\section{Introduction}
 \label{sec:poking:motivation}
 
 Humans engage naturally in multiple forms of dexterous manipulation that involve grasping, pushing, poking, rolling, and tossing objects \cite{bullock2011classifying}.
@@ -25,6 +29,11 @@ In this work, we demonstrate the utility of NPM through poking, a skill that all
 \textsl{Poking} is a NPM primitive wherein a robot end-effector applies an instantaneous force to an object of interest to set the object in planar translational and rotational motion (\textsl{impact} phase). The object eventually slows down and comes to rest due to Coulomb friction (\textsl{free-sliding} phase). Poking has a multitude of desirable properties that makes it complementary to grasping and serves as a generalized form of pushing where applied impulse forces are low \cite{Huang-1997-14452, pasricha2021pokerrt}.
 These characteristics make poking especially suitable for industrial settings where robots need to operate in their delineated workspaces alongside other robots or humans while still being able to pass objects. Additionally, in logistics or e-commerce settings, poking can be used for either stowing objects in boxes or in synergy with pick-and-place to optimize operations by increasing speed and coverage area.
 
+We design and implement two closed-loop, kinodynamic, sampling-based planners called \textsl{PokeRRT} and \textsl{PokeRRT*} which decouple skill modeling and path planning and specifically focus on leveraging the following advantages of poking over pushing and grasping:
+i) it does not require constant contact between the manipulator and the object, therefore greatly expanding the size of the manipulator's workspace,
+ii) it does not impose restrictions on the shape or size of objects that can be manipulated, and
+iii) it is inherently faster and therefore capable of covering large distances in short periods of time.
+
 \section{Background and Related Work}
 \label{poke:sec:background}
 
@@ -38,36 +47,8 @@ In all, evidence from prior work suggests that \textsl{poking}---sometimes refer
 In order to generate impulse-based action paths that obey the robot's kinematic constraints and produce feasible object motion, we use a PyBullet \cite{coumans2019} simulation environment as the forward physics model in the planning loop.
 While simulation may not accurately capture real-world dynamics \cite{collins2019quantifying}, the closed-loop nature of our planning framework compensates for this approach. This effective use of simulation captures essential characteristics of robot and object dynamics at faster than realtime speeds and in a safe manner without inducing significant wear-and-tear caused by dynamic trajectory execution on a real robot.
 
-\section{Poking as a Complementary Primitive}
+\section{Methods}
 \label{sec:poking:primitive}
-
-We design and implement two closed-loop, kinodynamic, sampling-based planners called \textsl{PokeRRT} and \textsl{PokeRRT*} which decouple skill modeling and path planning and specifically focus on leveraging the following advantages of poking over pushing and grasping:
-i) it does not require constant contact between the manipulator and the object, therefore greatly expanding the size of the manipulator's workspace,
-ii) it does not impose restrictions on the shape or size of objects that can be manipulated, and
-iii) it is inherently faster and therefore capable of covering large distances in short periods of time.
-
-\subsection{Two-Stage Mechanics}
-\label{sec:poking:mechanics}
-
-Poking manipulation is modeled as a process composed of two phases: i) \textsl{impact}, where the robot end-effector makes instantaneous contact with the object; and ii) \textsl{free-sliding}, where the object slides on a planar surface and comes to a stop due to Coulomb friction.
-As detailed in \cref{poke:fig:blockdiag}c, two parameters are required to describe the first phase of poking: the point of contact $p_c$ (i.e., where on the contour of the object to strike), and the magnitude of the impact velocity $\|\vec{v}_{EE}\|$.
-Slippage at the contact point between the end-effector and the object may lead to non-linearities; therefore, we fix the direction of $\vec{v}_{EE}$ as being normal to the object's contour.
-Importantly, in order to apply an instantaneous force, the robot must come to a complete halt upon contact with the object. Therefore, collision between the end-effector and the object is treated as an elastic collision. The motor torques applied to stop the end-effector upon contact prevent the impulsive interaction from being truly elastic; however, this can be safely ignored by stopping the end-effector slightly past the contact point.
-
-Given a uniform-density object of mass $m$ with a coefficient of friction $\mu$ whose center of mass starts in an initial planar pose $q_i = (x_i, y_i, \theta_i)$ and the control parameters (see \cref{poke:fig:blockdiag}c) that determine the contour of the object to strike ($p_c$) and the velocity magnitude ($\|\vec{v}_{EE}\|$), we can solve the second phase of poking and determine the final pose of the object $q_f = (x_f, y_f, \theta_f)$ using a physics simulation engine.
-
-\subsection{Position Relative to Quasi-Static Manipulation}
-\label{sec:poking:context}
-
-In order to understand the effects of impulsive forces on objects, we use the PyBullet physics simulation engine \cite{coumans2019}. PyBullet models rigid body dynamics by performing numerical integration over time with equations of motion to solve for object position and velocity. Joint constraints, contact forces, and friction, in addition to external forces such as gravity, are taken into account in the forward dynamics solver of the engine and modeled as constraints in a Linear Complementarity Problem (LCP).
-
-The main point of interest when modeling impulsive interactions is contact force. In the context of poking, contact is primarily dominated by frictional interactions between i) the robot end-effector and the object of interest, and ii) the object and the environment (i.e., the object's planar support surface and surrounding obstacles). Analytical models for contact make simplifying assumptions that do not fully represent the complexity of real-world dynamics, including the nonlinear nature of friction and actuator degradation and latency. Additionally, they do not generalize well to a diverse set of objects.
-Conversely, learning-based approaches, while capable of achieving generalization and modeling uncertainty and complexity, are data-inefficient. Collecting abundant and task-representative data in real-world robotics is expensive with regard to the time taken and the wear-and-tear caused on a real robot through repetitive, and potentially, high-acceleration trajectory executions such as those characteristic to poking manipulation. Executing such trajectories and modeling collisions along the action path with the object and the environment is therefore far safer in simulation.
-
-While simulation does not perfectly capture the inherent complexity and stochasticity of real-world contact dynamics due to the simplistic nature of the underlying analytical models used, it nonetheless provides a good balance between pure learning and analytical models by ensuring interaction modeling is both cheap and safe while encapsulating the essential characteristics of robot--object and object--environment interactions. The closed-loop nature of our proposed motion planner also compensates for any inaccuracies in simulation modeling while executing poke plans in the real-world. That is, if a resultant pose violates a predefined object pose threshold, we compute a new poke plan from the current object pose to the goal region. This crucial feature allows our planner to plan feasible poke paths in simulation and execute them in the real-world.
-
-\section{The Poke-RRT Algorithm}
-\label{sec:poking:algorithm}
 
 In this section, we present an overview of the proposed approach for poking (\cref{sec:poking:mechanics}), its characterization in a simulated environment (\cref{sec:poking:context}), and our motion planning algorithms, \textsl{PokeRRT} and \textsl{PokeRRT*}, that leverages the simulated environment to plan a collision-free path for the target object through its configuration space (\cref{sec:poking:rrt}). We also introduce empirically-driven heuristics to \textsl{PokeRRT} that leverage the large and quick displacement property intrinsic to poking manipulation.
 
@@ -77,18 +58,40 @@ In this section, we present an overview of the proposed approach for poking (\cr
 \caption[PokeRRT action sampling and graph expansion pipeline.]{Path planning for poking consists of 2 steps: action sampling (a, b) and graph expansion (c, d). (a) Points are sampled uniformly on the object contour (red) and filtered through a conical region originating from the target position (green). Striking points are generated by extending away from contour points in the normal direction. (b) End-effector velocity magnitudes are sampled for each striking point and filtered out if joint velocities are infeasible due to mechanical limitations of the robot. (c) Feasible actions are applied in simulation to get resultant poses. (d) The resultant pose closest to the target position is added to the planning graph.}\label{poke:fig:blockdiag}
 \end{figure*}
 
-\subsection{Heuristic Strike-Point Selection}
-\label{sec:poking:strikepoint}
+\subsection{Formalization of the Poking Motion Primitive}
+\label{sec:poking:mechanics}
+
+Poking manipulation is modeled as a process composed of two phases: i) \textsl{impact}, where the robot end-effector makes instantaneous contact with the object; and ii) \textsl{free-sliding}, where the object slides on a planar surface and comes to a stop due to Coulomb friction.
+As detailed in \cref{poke:fig:blockdiag}c, two parameters are required to describe the first phase of poking: the point of contact $p_c$ (i.e., where on the contour of the object to strike), and the magnitude of the impact velocity $\|\vec{v}_{EE}\|$.
+Slippage at the contact point between the end-effector and the object may lead to non-linearities; therefore, we fix the direction of $\vec{v}_{EE}$ as being normal to the object's contour.
+Importantly, in order to apply an instantaneous force, the robot must come to a complete halt upon contact with the object. Therefore, collision between the end-effector and the object is treated as an elastic collision. The motor torques applied to stop the end-effector upon contact prevent the impulsive interaction from being truly elastic; however, this can be safely ignored by stopping the end-effector slightly past the contact point.
+
+Given a uniform-density object of mass $m$ with a coefficient of friction $\mu$ whose center of mass starts in an initial planar pose $q_i = (x_i, y_i, \theta_i)$ and the control parameters (see \cref{poke:fig:blockdiag}c) that determine the contour of the object to strike ($p_c$) and the velocity magnitude ($\|\vec{v}_{EE}\|$), we can solve the second phase of poking and determine the final pose of the object $q_f = (x_f, y_f, \theta_f)$ using a physics simulation engine.
+
+\subsection{Simulation Model for Poking}
+\label{sec:poking:context}
+
+In order to understand the effects of impulsive forces on objects, we use the PyBullet physics simulation engine \cite{coumans2019}. PyBullet models rigid body dynamics by performing numerical integration over time with equations of motion to solve for object position and velocity. Joint constraints, contact forces, and friction, in addition to external forces such as gravity, are taken into account in the forward dynamics solver of the engine and modeled as constraints in a Linear Complementarity Problem (LCP).
+
+The main point of interest when modeling impulsive interactions is contact force. In the context of poking, contact is primarily dominated by frictional interactions between i) the robot end-effector and the object of interest, and ii) the object and the environment (i.e., the object's planar support surface and surrounding obstacles). Analytical models for contact make simplifying assumptions that do not fully represent the complexity of real-world dynamics, including the nonlinear nature of friction and actuator degradation and latency. Additionally, they do not generalize well to a diverse set of objects.
+Conversely, learning-based approaches, while capable of achieving generalization and modeling uncertainty and complexity, are data-inefficient. Collecting abundant and task-representative data in real-world robotics is expensive with regard to the time taken and the wear-and-tear caused on a real robot through repetitive, and potentially, high-acceleration trajectory executions such as those characteristic to poking manipulation. Executing such trajectories and modeling collisions along the action path with the object and the environment is therefore far safer in simulation.
+
+While simulation does not perfectly capture the inherent complexity and stochasticity of real-world contact dynamics due to the simplistic nature of the underlying analytical models used, it nonetheless provides a good balance between pure learning and analytical models by ensuring interaction modeling is both cheap and safe while encapsulating the essential characteristics of robot--object and object--environment interactions. The closed-loop nature of our proposed motion planner also compensates for any inaccuracies in simulation modeling while executing poke plans in the real-world. That is, if a resultant pose violates a predefined object pose threshold, we compute a new poke plan from the current object pose to the goal region. This crucial feature allows our planner to plan feasible poke paths in simulation and execute them in the real-world.
+
+\subsection{Motion Planning for Poking}
+\label{sec:poking:rrt}
+
+\subsubsection{Object Configuration Space}
 
 Our planner operates in $\mathcal{C}$, the continuous ($x$, $y$, $\theta$) configuration space of the object. $x$ and $y$ are confined by the limits of the planar workspace, whereas $\theta$ is defined in the range $[-180^\circ, 180^\circ)$.
+
+\subsubsection{Action Sampling}
+\label{sec:poking:action}
 
 The proposed planner decouples skill modeling and object path planning to allow for the evaluation of multiple skill models which directly improve planning outcomes. We achieve this through an action-oriented approach by employing a series of filtering steps to pick a set of valid actions $\boldsymbol{a_{valid}} = \langle \boldsymbol{p_c}, \boldsymbol{\|\vec{v}_{EE}\|}\rangle$ to apply at a given object configuration $q$. A sampling approach that yields actions which can be simulated in a physics engine is desirable since inverse modeling of frictional contact and object motion may either be intractable or not guarantee feasible robot motion.
 
 To achieve the correct direction of motion, candidates for object contour points that are ideal for impact must lie on the side nonadjacent to the target object position. Given an object configuration $q$, contour points $\boldsymbol{p_{contour}}$ are chosen as acceptable candidates if they lie within a cone originating from a target pose $q_{rand}$ (\cref{poke:fig:blockdiag}a). The target pose is sampled during path planning as described in \cref{sec:poking:rrt}.
 For each candidate contour point $p_c \in \boldsymbol{p_{contour}}$, a striking point $p_s$ is computed at a fixed distance, $d_{extend}$, from $p_c$ in the normal direction away from the object (\cref{poke:fig:blockdiag}c). The robot engages in joint space velocity control to apply a poke in its operational space by moving from $p_s$ to $p_c$ at velocity $\vec{v}_{EE}$.
-
-\subsection{End-Effector Action Computation}
-\label{sec:poking:action}
 
 Collision-free robot joint configurations, $\boldsymbol{\theta}_s$ and $\boldsymbol{\theta}_c$, for both $p_s$ and $p_c$ are computed using \textsl{TRAC-IK} \cite{7363472}. Since impactful contact is a core requirement for successful manipulation, we do not check for collisions between the robot end-effector and the object.
 A final filter is applied to see if $\boldsymbol{\dot{\theta}}_c = J^{-1}(\boldsymbol{\theta}_c)\vec{v}_{EE}$, i.e., the joint velocities at $\boldsymbol{\theta}_c$ given the given operational space velocity $\vec{v}_{EE}$, satisfies the joint velocity thresholds for the robot, $\langle\boldsymbol{\dot{\theta}}_{min}$, $\boldsymbol{\dot{\theta}}_{max}\rangle$ (\cref{poke:fig:blockdiag}b).
@@ -96,8 +99,8 @@ A final filter is applied to see if $\boldsymbol{\dot{\theta}}_c = J^{-1}(\bolds
 The kinematic feasibility check along the entire path from $\boldsymbol{\theta}_s$ to $\boldsymbol{\theta}_c$ is provided by the simulation engine, i.e., the success or failure of executing the sampled action in simulation will determine whether our planner adds this action to the planning graph.
 Given this process for generating feasible actions that move the object from its current position towards the target position, we build a global path planner to generate an action path through object configuration space from the object's current pose to task goal region.
 
-\subsection{Forward Propagation in a Kinodynamic RRT Tree}
-\label{sec:poking:rrt}
+\subsubsection{Path Planning}
+\label{sec:poking:planners}
 
 In this section, we introduce a novel motion planner named \textsl{PokeRRT}; it generates a graph of feasible robot actions in the object configuration space.
 With the aforementioned $\boldsymbol{a_{valid}}$ as a set of valid control parameters, exploration properties of the rapidly-exploring random tree (RRT) algorithm \cite{lavalle1998rapidly} are leveraged to generate a planning graph. The integration of poking-specific control inputs to RRT ensures that all nodes in the planning graph are achievable configurations, while the RRT algorithm ensures exploration bias to the largest Voronoi regions of the configuration space. This bias is especially central to poking manipulation due to its inherent ability to cover large distances in the operational space.
@@ -156,6 +159,8 @@ $\mathcal{P} = $ BACKTRACK($\mathcal{G}$, $q_{start}$, $\mathcal{Q}_{goal}$);\\
   \caption[PokeRRT evaluation across six obstacle scenarios.]{The robot successfully pokes the object (blue) from its reachable workspace (orange) to the goal region (green) in all scenarios while avoiding obstacles (red). \textsl{PokeRRT}, \textsl{PokeRRT*}, and baseline algorithms are evaluated in 6 scenarios---no obstacles (S1), $2$ obstacles (S2), $4$ obstacles (S3), wide object (S4), tunnel (S5), and non-overlapping shared workspace (S6). The robot is unable to i) push or pick-and-place in S6 due to limited robot reach, ii) push in S5 due to workspace obstruction in the action path, and iii) pick-and-place in S4 due to object being wider than gripper width.}\label{poke:fig:scenarios}
 \end{figure}
 
+\subsubsection{Online Path Smoothing}
+
 To minimize the number of pokes and enable poke planning to cover large distances, we combine empirically-derived heuristics with insights from RRT* \cite{karaman2011sampling} to develop \textsl{PokeRRT*} (\cref{poke:algo:pokerrt*}).
 RRT* allows for the discovery of new lower-cost paths until the goal region is reached by introducing two additional steps to RRT---choose-parent and rewiring.
 In the context of \textsl{PokeRRT*}, choosing the best parent node $q_{min}$ replaces the edge from $q_{near}$ to $q_{new}$ with the edge from $q_{min}$ to $q_{new}$. Planning time for \textsl{PokeRRT*} can be reduced by using a data-driven heuristic to generate $q_{new}'$---instead of applying actions from $\boldsymbol{a_{valid}}$ to get $q_{new}'$, we sample $\Delta q$ from a range of displacements from a dataset of random pokes $\mathcal{D}$.
@@ -166,7 +171,7 @@ The best action from $q_{min}$ to $q_{new}'$ is recomputed by sampling actions f
 In the rewiring step, the neighborhood of $q_{new}$ is rewired to minimize the number of pokes along the path from $q_{start}$ through $q_{new}$ to a neighboring leaf node (\cref{poke:algo:pokerrt*}, Lines 8--12). Note that \textsl{PokeRRT*} does not use the extension to RRT* that exploits the anytime nature of RRT* to continuously improve path quality by allocating planning time \cite{karaman2011anytime}---choose-parent and rewiring are the primary modes for online path sparsification.
 As a result, \textsl{PokeRRT*} leads to fewer pokes in the planned path than \textsl{PokeRRT}, thereby taking advantage of poking's core competency of allowing larger displacements.
 
-\section{Results}
+\section{Evaluation}
 \label{sec:poking:results}
 
 In this section, we qualitatively and quantitatively evaluate \textsl{PokeRRT} and \textsl{PokeRRT*} in simulation and the real-world under various environment setups. We measure success rates, task times (in seconds), and number of executed actions in the final planned path for both motion planners. Success rates are averaged across all scenarios for a given planner, whereas task times and number of executed actions are presented separately for each scenario. Task time is defined as the sum of planning, execution, and replanning times. Object start pose is kept fixed across various trials to aid reproducibility of results. Simulation and real-world results are averaged over 250 and 10 trials, respectively.
@@ -371,9 +376,13 @@ Additionally, while grasping is a faster form of manipulation with fewer actions
   \caption[Real-world task time breakdown by planning and execution phase.]{A breakdown of task time as the sum of initial planning, replanning, and execution times is presented for various planners in the real-world. A single bar indicates total task time. Long red bars indicate cases where tasks cannot be solved. Overall, poke planning demonstrates lower execution and replanning times than push planning.}\label{poke:fig:plot}
 \end{figure}
 
-\section{Reflection on the Four Design Axes}
+\section{Conclusion and Discussion}
 \label{sec:poking:reflection}
 
 In this work, we demonstrate poking manipulation as a fundamental motion primitive that complements grasping and encompasses pushing in terms of capability. Our work is the first to show qualitative and quantitative results for multiple test conditions to demonstrate the flexibility and robustness of poking as a skill through \textsl{PokeRRT}. We present the task times, number of executed actions, and success rates of our proposed motion planners and four baseline algorithms across six different scenarios. The results demonstrate the strengths of the poking motion primitive: poking is not as limited by robot reachability, robot end-effector design, object properties, and inaccuracies due to perception as grasping or pushing. Success rates are higher for poking-based planners than for the push planner indicating that poking expands the size of reachable workspace by its ability to execute longer object displacements using shorter robot end-effector trajectories. Task times for computed plans are significantly lower for poking than for pushing, indicating that poking allows fast object manipulation because it does not face the same constant-contact restriction as pushing. \textsl{PokeRRT} and \textsl{PokeRRT*} also demonstrated the qualitative behaviors visualized in \cref{poke:fig:scenarios}.
 
 Errors in dynamic modeling caused by the gap between simulation and the real-world are covered by the replanning strategy in our work. However, future work in identifying sources of uncertainty will allow for the quantification of object--obstacle collision margins and incorporating them directly into the planning process will lower the chances of collision in the real-world. In order to make plan execution in the real-world more robust, our future work will also formalize analytical and learned models for poking and quantify object constraints which will lead to additional insights about the capabilities and limitations of poking. For instance, poking may not be an effective mode of manipulation for high friction interactions and should also be used sparingly since it may cause significant wear-and-tear on a real robot through repeated execution of high-speed trajectories. Consequently, by discovering the feasibility conditions of multiple skills (e.g. poking, pushing, and grasping) through interaction and planning around the key strengths of each motion primitive, robots will be able to more efficiently manipulate objects.
+
+Because feasibility here is established by rolling out a simulation inside the planning loop, the cost of dynamic reasoning is paid in full each time the robot plans, and the resulting motion structure is discarded once a plan is found.
+\cref{ch:constrained} first carries this online, simulation-in-the-loop paradigm into settings where the robot's embodiment or its payload imposes additional dynamic constraints.
+\cref{ch:multiquery} then asks whether the repeated cost of dynamic feasibility can instead be \emph{amortized}---computed once and reused across many related queries rather than rediscovered from scratch on every plan.

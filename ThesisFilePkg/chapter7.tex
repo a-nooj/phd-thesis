@@ -12,6 +12,10 @@
 \definecolor{payloadmidred}{HTML}{F98E52}
 \definecolor{payloadred}{HTML}{A50026}
 
+The edge bundles of \cref{ch:multiquery} amortize dynamic feasibility by precomputing and storing an explicit structure of feasible motions.
+\cref{ch:generation} reframed motion generation as conditional sampling, setting up a more aggressive alternative: rather than storing feasible motions, a generative model can absorb the \emph{conditions} of feasibility into its parameters during training.
+This chapter realizes that idea for a concrete and demanding capability---manipulating payloads well beyond a robot's nominal rating---by conditioning a trajectory diffusion model on a single high-level object property, payload mass, so that dynamically feasible motions can be sampled in constant time without any runtime constraint checking.
+
 \section{Introduction}
 \label{sec:payload:introduction}
 
@@ -430,3 +434,4 @@ The result is constant-time generation that outperforms kinodynamic planners in 
 This validates a broader generalization hypothesis: \textit{if a high-level object property governs the dynamic constraints a trajectory must satisfy, conditioning the generative model on that property is sufficient to implicitly respect those constraints.}
 Payload mass is the simplest instantiation of this idea---a scalar that determines the end-effector wrench, which in turn determines joint torque feasibility throughout the workspace.
 The case study above demonstrates a second instantiation: replacing the payload scalar with a structured embodiment vector encoding per-joint failure states yields a single model capable of fail-active behavior across an effectively unbounded space of failure conditions---again without explicit constraint checking at inference time.
+Together, these two instantiations motivate the question taken up in \cref{ch:seeding}: whether the same conditioning principle can be generalized from a single governing property to arbitrary kinematic and dynamic constraints, turning constraint-aware generation into a task-agnostic seeding strategy for the downstream trajectory optimization that closes this thesis.

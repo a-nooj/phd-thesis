@@ -3,7 +3,11 @@
 \chapter{Multi-Query Kinodynamic Planning via Lazy Edge Bundles}
 \label{ch:multiquery}
 
-\section{The Bottleneck}
+The planners of \cref{ch:poking,ch:constrained} evaluate dynamic feasibility online, rebuilding their search structure from scratch for every new start and goal and paying the full cost of simulation and collision checking on each query.
+This chapter introduces the first \emph{amortized} representation in this thesis: the dynamic feasibility of a robot's motions is precomputed once into a reusable bundle of edges and shared across many related planning queries.
+By deferring---and largely reusing---propagation and collision checking through lazy evaluation, this shifts constraint knowledge upstream of any single query, reducing per-query planning time while preserving the kinodynamic feasibility guarantees that an online planner provides.
+
+\section{Introduction}
 \label{sec:multiquery:bottleneck}
 
 Robotic manipulation in complex operational environments necessitates the integration of constraints at various levels of abstraction (i.e., kinematics, statics, quasi-statics, and dynamics) in order to effectively govern the interaction between the robot and its surrounding environment \cite{ruggiero2018nonprehensile,mason2018toward}.
@@ -62,12 +66,12 @@ Existing approaches that exploit lazy strategies for collision checking involve 
 
 Overall, interleaved approaches are easy to design since they leverage general-purpose physics simulations, explore both state and control spaces uniformly, and easily adapt to environmental interactions and multi-object systems. However, they may face slow convergence owing to costly simulation and collision checking methods. Next, we outline how our contribution mitigates these issues, paving the way for fast computation of asymptotically optimal solutions.
 
-\section{Method: Edge Bundles over Discretized State and Control Spaces}
+\section{Methods}
 \label{sec:multiquery:method}
 
 In this section, we present \textsl{LazyBoE}, our multi-query kinodynamic motion planner. The planner relies on two key contributions: 1) a method for generating a bundle of edges in order to provide a discrete approximation to the robot's state and control spaces (\cref{sec:multiquery:edges}), and 2) a quantification of lazy propagation and collision probabilities to reduce planning time (\cref{sec:multiquery:lazy}). These pieces enable us to design and implement a planner that defers computation in the form of simulation and collision-checking until there is a viable path that minimizes a heuristic value (\cref{sec:multiquery:planner}).
 
-\subsection{Disconnected Bundles, Not Connected Roadmaps}
+\subsection{Problem Setup}
 \label{sec:multiquery:bundles}
 
 We formalize the problem of kinodynamic motion planning using edge bundles similarly to \cite{shome2021asymptotically}.
@@ -81,7 +85,7 @@ The objective of \textsl{LazyBoE} is to find a continuous, collision-free trajec
 $$\pi(t) : [0,1] \rightarrow \mathcal{Q}_{\text{free}} \subseteq \mathcal{Q}, \quad \pi(0) = q_0, \quad \pi(1) = q_f$$
 through the state and control space discretization enabled by $\mathcal{E}$, while respecting the dynamics constraints $\mathcal{D}$ of the robot.
 
-\subsection{Edges as Sampled Velocity Sequences}
+\subsection{Edge Bundle Construction with the Robot Dynamics Model}
 \label{sec:multiquery:edges}
 
 The backbone of our planner lies in constructing a discrete approximation of the robot's state and control spaces, as a result capturing the nuances of real-world dynamics including nonlinearities like joint friction. Defined as a bundle of edges $\mathcal{E}$, this approximation is a collection of valid, disconnected, and randomly generated forward rollouts of the robot dynamics model over a variable duration $\Delta t$.
@@ -98,12 +102,9 @@ In addition, the dynamics simulations must obey continuity constraints due to th
 For a given static environment, edges are validated to be free of self-collision and environmental collisions via geometric collision-checking algorithms. This incurs a one-time cost since the edges can be used lazily for a significant portion of our motion planning process.
 We next explain how we can compute useful quantities from this generated edge bundle to enable lazy kinodynamic planning.
 
-\subsection{Probabilistic and Asymptotic Completeness}
-\label{sec:multiquery:completeness}
-
 This method of edge generation with a sampled duration is known as Monte Carlo propagation and ensures the preservation of asymptotic optimality in kinodynamic planning algorithms \cite{kunz2015kinodynamic}. By applying rollouts from the edge bundle to the planning tree directly without resimulating them, these techniques not only significantly reduce planning time but also enable the application of this approach to higher-dimensional systems without compromising the asymptotic optimality guarantees previously established in \cite{shome2021asymptotically}.
 
-\section{Lazy Evaluation via Neighborhood Structure}
+\subsection{Edge Perturbation for Lazy Propagation and Collision-Checking}
 \label{sec:multiquery:lazy}
 
 \begin{figure}
@@ -123,15 +124,9 @@ More specifically, we need to address the following two questions for each edge 
 
 We approach the answers to these questions empirically by conducting a perturbation analysis on each edge in the bundle. A disturbance $\Delta q$ in the range $(0, \theta]$ is added to the start state for each edge. The resultant end state for an $e_i$ is computed as $\hat{q}_f^i = f(q_0^i + \Delta q, \boldsymbol{\dot{q}}^i)$. In the limit that the number of perturbations for each edge ($p$) approaches infinity, we are able to accurately estimate both the maximum error in the end state, $\Delta q_f^i = \text{max}(\|e.\boldsymbol{q}_f - \hat{\boldsymbol{q}}_f\|_2)$, and the potential collision likelihood.
 
-\subsection{Lazy Propagation Probability}
-\label{sec:multiquery:propagation}
-
 To address the first question, an edge viable for lazy propagation is characterized as one that confines the end-state error within the region radius $\theta$, so that viable edges for the next level of propagations can be picked from this fixed $\theta$-neighborhood.
 However, this criterion is subjected to a more stringent requirement, as depicted in \cref{lazy:fig:theta_over_2}, i.e., the end-state error for $e_i$ must be confined to $\theta / 2$ if $e_i$ undergoes lazy propagation to ensure the worst-case error between its real simulation and the following connection to the lazy edge is $\theta$.
 Put differently, the probability that an edge can be lazily propagated $P_{\text{lazy\_prop}}^i = Pr(\Delta q_f^i < \theta / 2)$ is the ratio of the number of valid (collision-free and dynamically-feasible) perturbations for which the maximum end state error is $\theta / 2$ to the total number of valid perturbations, $p_{valid}$ (\cref{lazy:fig:pert_analysis}a).
-
-\subsection{Lazy Collision Probability}
-\label{sec:multiquery:collision}
 
 Similarly, in response to the second question, we can quantify the probability that an edge will collide when lazily propagated, i.e., $P_{\text{collision}}^i = Pr(e_i \text{ collides})$, as the ratio of the number of edges that collide to the total number of perturbations $p$ (\cref{lazy:fig:pert_analysis}b). This is in contrast to prior work which only considers lazy collision checking in the geometric planning domain and takes a deterministic approach, iteratively discarding edges that are not collision-free \cite{kavraki2000path,hauser2015lazy}. The neighborhood-based control propagation in our work allows for a more nuanced and stochastic approach to lazy collision checking by allowing edges to be re-explored, potentially uncovering paths that would be prematurely eliminated by deterministic methods. In this work, we primarily deal with self-collisions and environmental collisions between the robot and its surrounding environment.
 These two probability values for each edge extend the definition of an edge bundle $\mathcal{E}$ to the following:
@@ -141,7 +136,7 @@ $\mathcal{E} = \{(q_0, \boldsymbol{\dot{q}}, \Delta t, q_f, P_{\text{lazy\_prop}
 
 These two metrics, associated with each edge, are used to guide the planner by deciding when to apply lazy methods for faster planning times.
 
-\section{The Planner}
+\subsection{Kinodynamic Motion Planner}
 \label{sec:multiquery:planner}
 
 \begin{figure}
@@ -198,10 +193,10 @@ In the ideal case scenario, all edges can be lazily propagated, enabling us to s
 As a result, simulation along the lazy path is triggered when these conditions hold, if the preceding edge is not a lazy one, or with probability $1 - P_{\text{select}}$ (\cref{lazy:algo:lazyboe}, Line 18).
 Next, we demonstrate how these lazy approaches lead to lower planning times and higher success rates in comparison to baseline kinodynamic motion planning algorithms.
 
-\section{Results and Trade-Offs}
+\section{Evaluation}
 \label{sec:multiquery:results}
 
-\subsection{Amortization with Known Dynamics and Collision Geometry}
+\subsection{Test Setup}
 \label{sec:multiquery:amortization}
 
 We benchmark \textsl{LazyBoE} against a number of kinodynamic planners with forward propagation, namely RRT \cite{lavalle2001randomized}, SST \cite{li2016asymptotically}, and BoE \cite{shome2021asymptotically}. We test three variants of SST based on different selection-to-pruning radius ($0.5$x, $1$x, and $2$x).
@@ -214,19 +209,11 @@ This delineation into time to initial solution and final solution cost is necess
   \caption[Time to first solution across planners.]{Our method is able to find the first solution in less time than baseline approaches, owing to its lazy approach to simulation and collision checking. Asterisks indicate significance level when comparing our planner to the baseline methods. \textsl{ns} indicates no significant difference.}\label{lazy:fig:eval-time}
 \end{figure}
 
+\subsection{Quantitative Analysis}
+
 Our \textsl{LazyBoE} planner outperformed baseline kinodynamic methods in multiple key metrics.
 First, it achieved an average solution time of $1.06$s, substantially faster than the other methods that were in the range $[2.18$s$, 21.94$s$]$ (\cref{lazy:fig:eval-time}).
 This is due to deferred propagation and collision checking, which enable a more focused search.
-
-\subsection{Pre-Processing Cost and Re-Bundling}
-\label{sec:multiquery:preprocess}
-
-For a given static environment, edges are validated to be free of self-collision and environmental collisions via geometric collision-checking algorithms. This incurs a one-time pre-processing cost since the edges can be used lazily for a significant portion of the motion planning process. Each algorithm was given a time budget of $60$s (amortized across planning problems), except RRT, which terminates on the first solution.
-Due to memory limitations, \textsl{LazyBoE} is confined to a limited subset of the robot's state and control spaces.
-Scaling the approach to cover the entire robot workspace is a pressing challenge, stemming from memory constraints, especially when planning dynamically-feasible trajectories that may involve higher-order derivatives of the state space variables. While strategies such as selective loading or using a database could alleviate this, they require significant engineering optimizations. Re-bundling is required when the collision geometry or dynamics model changes, representing a one-time cost amortized over subsequent queries.
-
-\subsection{Path Quality vs.\ Storage and Lookup Costs}
-\label{sec:multiquery:quality}
 
 \begin{figure}
   \centering
@@ -252,6 +239,8 @@ The planner also found an average of $3.12$ solutions, over $1.5$x more than the
 This increased solution diversity arises from stochastic edge selection and reuse compared to greedy approaches. Lazily reusing edges rather than discarding them expands the search frontier faster. More paths are available to evaluate and iterate on, thereby directly translating to higher success rates. With more valid candidate paths approximated and available to the search, the likelihood of discovering a collision-free solution path increases substantially. The results validate this, with \textsl{LazyBoE} succeeding $92$\% of the time compared to $[80-88]$\% for other methods (\cref{lazy:fig:eval-success}).
 In summary, \textsl{LazyBoE}'s use of lazy propagation and collisions to minimize wasted computations allows efficient searches that find high quality solutions quickly, while maintaining a broad exploration. This quantitative analysis validates lazy techniques can improve performance in kinodynamic planning.
 
+\subsection{Significance Testing}
+
 Statistical analysis using the Mann-Whitney U test further reinforces the results above.
 $p$-values for each test are highlighted in \cref{lazy:fig:eval-time}, \cref{lazy:fig:eval-cost}, and \cref{lazy:fig:eval-num_solutions} and marked by `ns' for $p > 0.05$, `*' for $p \leq 0.05$, `**' for $p \leq 0.01$, `***' for $p \leq 0.001$, and `****' for $p \leq 0.0001$.
 
@@ -262,7 +251,7 @@ For a more robust analysis, we look at the median value, which provides a more a
 Our algorithm also generated a higher median number of solutions compared to all baselines, with statistically significant results in all comparisons.
 In summary, this significance testing reinforces our claims that \textsl{LazyBoE} offers performance improvements in terms of both speed and cost-effectiveness.
 
-\section{The Opening This Leaves}
+\section{Conclusion and Discussion}
 \label{sec:multiquery:opening}
 
 In this work, we presented \textsl{LazyBoE}, a multi-query approach to kinodynamic motion planning that takes advantage of lazy propagation and collision checking to outperform existing baselines in a number of key metrics. Specifically, our method reduces planning time and demonstrates a high success rate, given its ability to explore a wider range of solutions.
@@ -274,3 +263,7 @@ Beyond the engineering required to scale this method, we also intend to explore
 application-centric extensions, such as planning for heavy payloads, liquid transport, and nonprehensile manipulation,
 which can benefit from assigning task-specific weights to edges for more biased, multi-query exploration.
 While our implementation focuses on kinodynamic planning for robotic manipulation, the foundational principles of our planner are designed with broader applicability in mind. Generalizing the planner to accommodate a wider array of kinodynamic planning problems, beyond the realm of robotic manipulation, represents a promising direction for future work.
+
+Amortization here takes the form of an \emph{explicit} precomputed structure: the edge bundle stores dynamically feasible motions directly, and it need only be re-bundled when the collision geometry or dynamics model changes---a one-time cost paid up front and recovered over subsequent queries.
+This explicit representation keeps feasibility inspectable and preserves the asymptotic-optimality guarantees of the underlying planner, but it still stores motion structure rather than the conditions that make motion feasible.
+\cref{ch:generation,ch:payload} pursue a more aggressive form of amortization, absorbing dynamic feasibility into the parameters of a learned generative model so that feasible trajectories can be sampled directly, without storing or searching an explicit structure at all.

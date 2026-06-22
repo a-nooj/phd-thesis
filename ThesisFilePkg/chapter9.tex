@@ -3,6 +3,10 @@
 \chapter{Behavioral Anchor Conditioning for Constrained Trajectory Diffusion}
 \label{ch:seeding}
 
+\cref{ch:payload} showed that conditioning a trajectory diffusion model on a single governing property---payload mass---is enough to make generated motions respect the dynamic constraints that property induces.
+This chapter asks how far that principle extends when no single scalar captures the relevant constraints.
+Instead of conditioning on a hand-chosen property, it represents an environment by its \emph{behavioral} response to a set of diagnostic motion probes, yielding a compact, constraint-agnostic conditioning signal.
+The goal shifts accordingly: rather than producing directly executable trajectories, the model amortizes constraint reasoning into near-feasible \emph{seeds} that make downstream trajectory optimization converge faster and more reliably.
 
 % ── 1. Introduction ──────────────────────────────────────────────────────────
 
@@ -361,3 +365,7 @@ This chapter presented behavioral anchor conditioning for environment-conditione
 In collision-avoidance experiments, anchor conditioning produced stronger learned-model performance than point-cloud, key-configuration, start-goal-only, and random conditioning baselines. The clearest benefit was not only an improvement in collision-free rate, but a reduction in the severity of failed samples. Anchor-conditioned trajectories had lower collision fraction and improved worst-case clearance, indicating that they are closer to feasibility and therefore better suited as initial guesses for downstream planning or trajectory optimization.
 
 The formulation is more general than the collision checker used in this evaluation. Any constraint model that can produce binary feasibility responses for trajectory snippets can, in principle, be used to construct anchor signatures. However, the empirical validation in this chapter is limited to geometric collision avoidance. Extending the evaluation to dynamic, torque, contact, and task-specific constraints remains an important direction for future work.
+
+Across \cref{ch:payload} and this chapter, amortization reaches its most aggressive form in this thesis: dynamic and geometric feasibility is absorbed into the parameters of a learned generative model and recovered at sampling time, rather than recomputed online or stored as an explicit structure.
+Where payload conditioning targeted a specific dynamic capability, behavioral anchor conditioning targets feasibility itself, providing a task-agnostic interface between learned generation and classical optimization.
+\cref{ch:discussion} steps back to draw the broader lessons that connect online evaluation, amortized reusable structure, and learned conditional generation into a single account of where knowledge of dynamic feasibility should reside in a manipulation system.
